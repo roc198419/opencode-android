@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   check:
-    runs-on: blacksmith-8vcpu-ubuntu-2404
+    runs-on: ${{ github.repository == 'anomalyco/opencode-android' && 'blacksmith-8vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
     timeout-minutes: 60
     env:
       OC_VERSION_CODE: ${{ github.run_number }}
@@ -40,7 +40,7 @@ jobs:
           packages: platform-tools
 
       - name: Install the SDK platform and build tools
-        run: yes | sdkmanager "platforms;android-37.0" "build-tools;37.0.0" > /dev/null
+        run: yes | sdkmanager "platforms;android-37.1" "build-tools;37.0.0" > /dev/null
 
       - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
         with:

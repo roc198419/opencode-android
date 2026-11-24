@@ -91,3 +91,16 @@ It reads `opencode-android/release/*` from AWS Secrets Manager, step by step
   then leaves the build as the open testing track's draft and the job warns: send it for review
   in Play Console (Publishing overview → Send changes for review). v0.2.2 (33) was the first,
   sent for review on 2026-11-08.
+
+
+## Fork GitHub APK releases
+
+Forks use GitHub-hosted Ubuntu runners for CI. To publish a sideloadable preview APK from a fork, squash-merge the feature PR into `dev`, wait for its push CI to pass, then dispatch:
+
+```sh
+gh workflow run github-apk.yml --repo OWNER/opencode-android --ref dev -f bump=patch
+```
+
+The first tag is `v0.1.0`; later tags increment the latest `vX.Y.Z` according to `bump`. The workflow publishes the successful CI run’s existing debug APK and `SHA256SUMS` as a GitHub pre-release. Its Android version remains the CI-stamped `0.1.0-<sha>` and CI run number. It never builds or executes downloaded artifacts, and needs only the repository’s `GITHUB_TOKEN`. Google Play, AWS credentials and the upstream release workflow are separate.
+
+The workflow refuses a non-`dev` ref, a commit without successful push CI, or a commit that is already released. Review `.github/` changes as required by this repository before merging and dispatching.

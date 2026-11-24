@@ -1,0 +1,87 @@
+name: Publish GitHub APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Version bump (first release is v0.1.0)
+        type: choice
+        options: [patch, minor, major]
+        default: patch
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-github-apk
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository != 'anomalyco/opencode-android'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      BUMP: ${{ inputs.bump }}
+    steps:
+      - name: Verify the source and successful CI build
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ "$GITHUB_REF" = refs/heads/dev ] || { echo '::error::Publish from dev only'; exit 1; }
+          run=$(gh run list --workflow ci.yml --branch dev --event push --commit "$GITHUB_SHA" --status success --limit 1 --json databaseId,number)
+          id=$(jq -r '.[0].databaseId // empty' <<< "$run")
+          [ -n "$id" ] || { echo '::error::CI has not passed for this dev commit'; exit 1; }
+          echo "run_id=$id" >> "$GITHUB_OUTPUT"
+          echo "run_number=$(jq -r '.[0].number' <<< "$run")" >> "$GITHUB_OUTPUT"
+          echo "short=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - name: Choose the next release version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$BUMP" in patch|minor|major) ;; *) exit 1 ;; esac
+          latest=$(gh api --paginate "repos/$GH_REPO/git/matching-refs/tags/v" --jq '.[].ref' |
+            sed 's|refs/tags/v||' | { grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' || true; } | sort -V | tail -1)
+          if [ -z "$latest" ]; then
+            version=0.1.0
+          else
+            released=$(gh api "repos/$GH_REPO/commits/v$latest" --jq .sha)
+            [ "$released" != "$GITHUB_SHA" ] || { echo '::error::This dev commit is already released'; exit 1; }
+            IFS=. read -r major minor patch <<< "$latest"
+            case "$BUMP" in
+              major) major=$((major + 1)); minor=0; patch=0 ;;
+              minor) minor=$((minor + 1)); patch=0 ;;
+              patch) patch=$((patch + 1)) ;;
+            esac
+            version="$major.$minor.$patch"
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Download the verified CI artifact and publish
+        shell: bash
+        env:
+          RUN_ID: ${{ steps.source.outputs.run_id }}
+          RUN_NUMBER: ${{ steps.source.outputs.run_number }}
+          SHORT: ${{ steps.source.outputs.short }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/github-apk"
+          cd "$RUNNER_TEMP/github-apk"
+          gh run download "$RUN_ID" --name "opencode-android-$SHORT" --dir .
+          mv "opencode-android-$SHORT.apk" "opencode-android-$VERSION.apk"
+          sha256sum "opencode-android-$VERSION.apk" > SHA256SUMS
+          printf 'Preview APK built by GitHub Actions from `%s` (version `0.1.0-%s`, code `%s`).\n\nThis is a fork preview for sideloading; it installs alongside the Google Play app.\n' \
+            "$GITHUB_SHA" "$SHORT" "$RUN_NUMBER" > notes.md
+          gh release create "v$VERSION" "opencode-android-$VERSION.apk" SHA256SUMS \
+            --target "$GITHUB_SHA" --title "OpenCode Android $VERSION (Preview)" \
+            --notes-file notes.md --prerelease
+          echo "Published v$VERSION from $GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
