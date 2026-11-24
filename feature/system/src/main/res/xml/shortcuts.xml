@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Launcher shortcuts, App Actions and direct-share targets (iOS: the static New Session quick
      action in Info.plist, OpenCodeShortcuts' App Shortcuts, and the share extension's
-     IntentsSupported). targetPackage is the application ID, so the debug build has its own copy
-     in src/debug/res/xml/shortcuts.xml. -->
+     IntentsSupported). targetPackage resolves to the application ID generated for each app variant. -->
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- iOS UIApplicationShortcutItems: New Session, shown before first launch. -->
     <shortcut
@@ -14,7 +13,7 @@
         <intent
             android:action="ai.opencode.mobilecode.SYSTEM_ACTION"
             android:targetClass="ai.opencode.feature.system.intents.SystemActionActivity"
-            android:targetPackage="ai.opencode.mobilecode">
+            android:targetPackage="@string/system_application_id">
             <extra android:name="quickAction" android:value="ai.opencode.mobilecode.new-session" />
         </intent>
     </shortcut>
@@ -23,7 +22,7 @@
     <capability android:name="actions.intent.CREATE_MESSAGE">
         <intent
             android:targetClass="ai.opencode.feature.system.intents.AskOpenCodeActivity"
-            android:targetPackage="ai.opencode.mobilecode">
+            android:targetPackage="@string/system_application_id">
             <parameter android:name="message.text" android:key="android.intent.extra.TEXT" />
         </intent>
     </capability>
@@ -33,7 +32,7 @@
         <intent
             android:action="ai.opencode.mobilecode.SYSTEM_ACTION"
             android:targetClass="ai.opencode.feature.system.intents.AppActionActivity"
-            android:targetPackage="ai.opencode.mobilecode">
+            android:targetPackage="@string/system_application_id">
             <parameter android:name="feature" android:key="appFeature" />
         </intent>
     </capability>

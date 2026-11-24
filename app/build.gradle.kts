@@ -47,6 +47,7 @@ android {
     }
     buildFeatures {
         buildConfig = true
+        resValues = true
     }
     androidResources {
         // Library (Material, AndroidX) translations are kept only for the app's own languages, so
@@ -55,6 +56,13 @@ android {
         // Android's per-app language setting lists the languages that have a values-xx folder.
         generateLocaleConfig = true
     }
+}
+
+androidComponents.onVariants { variant ->
+    variant.resValues.put(
+        variant.makeResValueKey("string", "system_application_id"),
+        variant.applicationId.map { com.android.build.api.variant.ResValue(it) },
+    )
 }
 
 dependencies {
