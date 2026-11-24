@@ -353,4 +353,9 @@
     <string name="session_media_loading_earlier">Завантаження…</string>
     <string name="session_media_earlier_failed">Не вдалося завантажити попередні повідомлення. Перевірте підключення й спробуйте ще раз.</string>
     <string name="session_media_earlier_nothing_new">У щойно завантажених повідомленнях нічого нового. Можливо, у попередніх є більше.</string>
+    <string name="session_project_files_title">Файли проєкту</string>
+    <string name="session_project_files_hidden">Показати приховані файли</string>
+    <string name="session_project_files_refresh">Оновити файли</string>
+    <string name="session_project_files_search">Знайти файл у цьому проєкті</string>
+    <string name="session_project_files_search_limit">Показано до 200 відповідних файлів</string>
 </resources>

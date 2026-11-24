@@ -341,4 +341,9 @@
     <string name="session_media_loading_earlier">Učitavanje…</string>
     <string name="session_media_earlier_failed">Nije moguće učitati ranije poruke. Provjerite vezu i pokušajte ponovno.</string>
     <string name="session_media_earlier_nothing_new">U upravo učitanim porukama nema ničeg novog. Ranije poruke možda imaju više.</string>
+    <string name="session_project_files_title">Datoteke projekta</string>
+    <string name="session_project_files_hidden">Prikaži skrivene datoteke</string>
+    <string name="session_project_files_refresh">Osvježi datoteke</string>
+    <string name="session_project_files_search">Pronađite datoteku u ovom projektu</string>
+    <string name="session_project_files_search_limit">Prikazuje se do 200 odgovarajućih datoteka</string>
 </resources>

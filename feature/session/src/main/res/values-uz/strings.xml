@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Yuklanmoqda…</string>
     <string name="session_media_earlier_failed">Oldingi xabarlarni yuklab bo‘lmadi. Ulanishni tekshirib, qayta urinib ko‘ring.</string>
     <string name="session_media_earlier_nothing_new">Hozir yuklangan xabarlarda yangilik yo‘q. Oldingilarida bo‘lishi mumkin.</string>
+    <string name="session_project_files_title">Loyiha fayllari</string>
+    <string name="session_project_files_hidden">Yashirin fayllarni koʻrsatish</string>
+    <string name="session_project_files_refresh">Fayllarni yangilash</string>
+    <string name="session_project_files_search">Bu loyihada fayl qidiring</string>
+    <string name="session_project_files_search_limit">200 tagacha mos fayl koʻrsatilmoqda</string>
 </resources>

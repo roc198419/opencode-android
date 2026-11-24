@@ -317,4 +317,9 @@
     <string name="session_media_loading_earlier">로딩 중…</string>
     <string name="session_media_earlier_failed">이전 메시지를 불러올 수 없어요. 연결을 확인하고 다시 시도해 주세요.</string>
     <string name="session_media_earlier_nothing_new">방금 불러온 메시지에는 새로운 내용이 없어요. 더 이전 메시지에는 있을 수 있어요.</string>
+    <string name="session_project_files_title">프로젝트 파일</string>
+    <string name="session_project_files_hidden">숨김 파일 표시</string>
+    <string name="session_project_files_refresh">파일 새로고침</string>
+    <string name="session_project_files_search">이 프로젝트에서 파일 찾기</string>
+    <string name="session_project_files_search_limit">일치하는 파일을 최대 200개 표시합니다</string>
 </resources>

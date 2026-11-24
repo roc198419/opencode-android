@@ -317,4 +317,9 @@
     <string name="session_media_loading_earlier">Đang tải…</string>
     <string name="session_media_earlier_failed">Không thể tải các tin nhắn trước đó. Hãy kiểm tra kết nối và thử lại.</string>
     <string name="session_media_earlier_nothing_new">Không có gì mới trong các tin nhắn vừa tải. Các tin nhắn trước đó có thể còn nhiều nội dung hơn.</string>
+    <string name="session_project_files_title">Tệp dự án</string>
+    <string name="session_project_files_hidden">Hiện tệp ẩn</string>
+    <string name="session_project_files_refresh">Làm mới tệp</string>
+    <string name="session_project_files_search">Tìm tệp trong dự án này</string>
+    <string name="session_project_files_search_limit">Hiển thị tối đa 200 tệp phù hợp</string>
 </resources>

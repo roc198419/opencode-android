@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Laddar…</string>
     <string name="session_media_earlier_failed">Kunde inte ladda tidigare meddelanden. Kontrollera anslutningen och försök igen.</string>
     <string name="session_media_earlier_nothing_new">Inget nytt bland de meddelanden som just laddades. Tidigare meddelanden kan innehålla mer.</string>
+    <string name="session_project_files_title">Projektfiler</string>
+    <string name="session_project_files_hidden">Visa dolda filer</string>
+    <string name="session_project_files_refresh">Uppdatera filer</string>
+    <string name="session_project_files_search">Hitta en fil i det här projektet</string>
+    <string name="session_project_files_search_limit">Visar upp till 200 matchande filer</string>
 </resources>

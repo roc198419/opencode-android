@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Po ngarkohet…</string>
     <string name="session_media_earlier_failed">Mesazhet e mëparshme nuk u ngarkuan dot. Kontrollo lidhjen dhe provo sërish.</string>
     <string name="session_media_earlier_nothing_new">Asgjë e re te mesazhet që sapo u ngarkuan. Të mëparshmet mund të kenë më shumë.</string>
+    <string name="session_project_files_title">Skedarët e projektit</string>
+    <string name="session_project_files_hidden">Shfaq skedarët e fshehur</string>
+    <string name="session_project_files_refresh">Rifresko skedarët</string>
+    <string name="session_project_files_search">Gjej një skedar në këtë projekt</string>
+    <string name="session_project_files_search_limit">Shfaqen deri në 200 skedarë që përputhen</string>
 </resources>

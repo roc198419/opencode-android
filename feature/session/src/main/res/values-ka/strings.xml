@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">იტვირთება…</string>
     <string name="session_media_earlier_failed">წინა შეტყობინებების ჩატვირთვა ვერ მოხერხდა. შეამოწმეთ კავშირი და სცადეთ ხელახლა.</string>
     <string name="session_media_earlier_nothing_new">ახლახან ჩატვირთულ შეტყობინებებში ახალი არაფერია. შესაძლოა, უფრო ძველებში მეტი იყოს.</string>
+    <string name="session_project_files_title">პროექტის ფაილები</string>
+    <string name="session_project_files_hidden">დამალული ფაილების ჩვენება</string>
+    <string name="session_project_files_refresh">ფაილების განახლება</string>
+    <string name="session_project_files_search">მოძებნეთ ფაილი ამ პროექტში</string>
+    <string name="session_project_files_search_limit">ნაჩვენებია მაქსიმუმ 200 შესაბამისი ფაილი</string>
 </resources>

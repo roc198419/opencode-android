@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Φόρτωση…</string>
     <string name="session_media_earlier_failed">Αδυναμία φόρτωσης προηγούμενων μηνυμάτων. Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά.</string>
     <string name="session_media_earlier_nothing_new">Δεν υπάρχει κάτι νέο στα μηνύματα που μόλις φορτώθηκαν. Τα προηγούμενα μπορεί να έχουν περισσότερα.</string>
+    <string name="session_project_files_title">Αρχεία έργου</string>
+    <string name="session_project_files_hidden">Εμφάνιση κρυφών αρχείων</string>
+    <string name="session_project_files_refresh">Ανανέωση αρχείων</string>
+    <string name="session_project_files_search">Βρείτε ένα αρχείο σε αυτό το έργο</string>
+    <string name="session_project_files_search_limit">Εμφανίζονται έως 200 αρχεία που ταιριάζουν</string>
 </resources>

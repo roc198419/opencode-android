@@ -32,4 +32,4 @@ internal fun HomeFeature.State.clearingSessionCovers(): HomeFeature.State =
         .syncingTranscriptCover()
 
 private fun SessionFeature.State.clearingVoiceNavigationCovers(): SessionFeature.State =
-    copy(browser = browser.close(), activePicker = null, folderBrowser = null, shellOutput = null)
+    copy(browser = browser.close(), activePicker = null, folderBrowser = null, shellOutput = null, projectFiles = null)

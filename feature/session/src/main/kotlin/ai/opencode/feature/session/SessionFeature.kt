@@ -338,6 +338,7 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         val sessionMediaNothingNew: Boolean = false,
         /** The server's folders, browsed from the Project sheet (`@Presents`). */
         val folderBrowser: FolderBrowserFeature.State? = null,
+        val projectFiles: ProjectFilesFeature.State? = null,
         /** What the latest reply filled; null when unknown or nothing fills it. */
         val contextUsage: OpenCodeContextUsage? = null,
         /** A step ended since the last context read, so the next refresh reads it. */
@@ -781,6 +782,8 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         data object SessionInfoTapped : Action
         data object ReportProblemTapped : Action
         /** The header menu's Session Media: what the session shared, opening on Media. */
+        data object ProjectFilesTapped : Action
+        data class ProjectFiles(val action: PresentationAction<ProjectFilesFeature.Action>) : Action
         data object SessionMediaTapped : Action
         data class SessionMediaFilterPicked(val filter: SessionMedia.Filter) : Action
         /** Session Media's Load Earlier Messages: always an older page, never just the transcript's window. */
@@ -1009,6 +1012,7 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
          * take the action, and the next one runs.
          */
         internal val coreSteps: List<SessionFeature.(State, Action) -> Reduced<State, Action>?> = listOf(
+            SessionFeature::reduceProjectFiles,
             SessionFeature::reduceCallAndBindings,
             SessionFeature::reduceStream,
             SessionFeature::reducePendingInputs,

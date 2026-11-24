@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Loading…</string>
     <string name="session_media_earlier_failed">Couldn’t load earlier messages. Check your connection and try again.</string>
     <string name="session_media_earlier_nothing_new">Nothing new here in the messages just loaded. Earlier ones may have more.</string>
+    <string name="session_project_files_title">Project Files</string>
+    <string name="session_project_files_hidden">Show Hidden Files</string>
+    <string name="session_project_files_refresh">Refresh Files</string>
+    <string name="session_project_files_search">Find a file in this project</string>
+    <string name="session_project_files_search_limit">Showing up to 200 matching files</string>
 </resources>

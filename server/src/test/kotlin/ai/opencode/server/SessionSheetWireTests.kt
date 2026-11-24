@@ -26,6 +26,31 @@ class SessionSheetWireTests {
     private val model = OpenCodeModelRef(id = "fixture-model", providerID = "fixture")
     private fun json(text: String): JsonElement = Json.parseToJsonElement(text)
 
+    @Test fun projectFileListingUsesTheDefaultLocationAndSearchPreservesWindowsPaths() = runTest {
+        val fixture = WireFixture { request ->
+            when (request.route) {
+                "GET /api/fs/list" -> Reply.Json(200, """{"location":{"directory":"C:/work/app"},"data":[{"path":"src/file.kt","type":"file"},{"path":"src/nested","type":"directory"}]}""")
+                "GET /api/fs/find" -> Reply.Json(200, """{"data":[{"path":"C:/work/app/src/file.kt"}]}""")
+                else -> Reply.status(404)
+            }
+        }
+        try {
+            val client = OpenCodeClient.liveValue
+            val listing = client.listProjectFiles(fixture.server, "C:/work/app", "C:/work/app/src")
+            assertEquals(listOf("nested", "file.kt"), listing.entries.map { it.name })
+            val found = client.findFiles(fixture.server, "C:/work/app", "file", 200)
+            assertEquals("C:/work/app/src/file.kt", found.single().absolutePath)
+            assertEquals("src/file.kt", found.single().relativePath)
+            val requests = fixture.requests
+            assertEquals("C:/work/app/src", requests[0].queryValue("path"))
+            assertNull(requests[0].queryValue("location[directory]"))
+            assertEquals("C:/work/app", requests[1].queryValue("location[directory]"))
+            assertEquals("200", requests[1].queryValue("limit"))
+        } finally {
+            fixture.close()
+        }
+    }
+
     @Test fun contextDecodingMatchesTheTUI() {
         fun reading(messages: String, next: Boolean = false): OpenCodeContextReading {
             val cursor = if (next) ""","cursor":{"next":"c1"}""" else ""

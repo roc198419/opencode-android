@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Зареждане…</string>
     <string name="session_media_earlier_failed">По-ранните съобщения не можаха да бъдат заредени. Проверете връзката си и опитайте отново.</string>
     <string name="session_media_earlier_nothing_new">В току-що заредените съобщения няма нищо ново. По-ранните може да съдържат още.</string>
+    <string name="session_project_files_title">Файлове на проекта</string>
+    <string name="session_project_files_hidden">Показване на скритите файлове</string>
+    <string name="session_project_files_refresh">Обновяване на файловете</string>
+    <string name="session_project_files_search">Намерете файл в този проект</string>
+    <string name="session_project_files_search_limit">Показват се до 200 съответстващи файла</string>
 </resources>

@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Wird geladen…</string>
     <string name="session_media_earlier_failed">Frühere Nachrichten konnten nicht geladen werden. Prüfe deine Verbindung und versuche es erneut.</string>
     <string name="session_media_earlier_nothing_new">Unter den gerade geladenen Nachrichten ist nichts Neues. Frühere enthalten vielleicht mehr.</string>
+    <string name="session_project_files_title">Projektdateien</string>
+    <string name="session_project_files_hidden">Versteckte Dateien anzeigen</string>
+    <string name="session_project_files_refresh">Dateien aktualisieren</string>
+    <string name="session_project_files_search">Eine Datei in diesem Projekt suchen</string>
+    <string name="session_project_files_search_limit">Bis zu 200 passende Dateien werden angezeigt</string>
 </resources>

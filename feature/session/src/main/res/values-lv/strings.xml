@@ -341,4 +341,9 @@
     <string name="session_media_loading_earlier">Notiek ielāde…</string>
     <string name="session_media_earlier_failed">Neizdevās ielādēt iepriekšējās ziņas. Pārbaudi savienojumu un mēģini vēlreiz.</string>
     <string name="session_media_earlier_nothing_new">Tikko ielādētajās ziņās nekā jauna nav. Iepriekšējās var saturēt vairāk.</string>
+    <string name="session_project_files_title">Projekta faili</string>
+    <string name="session_project_files_hidden">Rādīt slēptos failus</string>
+    <string name="session_project_files_refresh">Atsvaidzināt failus</string>
+    <string name="session_project_files_search">Atrast failu šajā projektā</string>
+    <string name="session_project_files_search_limit">Tiek rādīti līdz 200 atbilstošiem failiem</string>
 </resources>

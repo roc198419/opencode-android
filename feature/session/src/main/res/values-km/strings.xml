@@ -317,4 +317,9 @@
     <string name="session_media_loading_earlier">កំពុងផ្ទុក…</string>
     <string name="session_media_earlier_failed">មិនអាចផ្ទុកសារមុនៗបានទេ។ សូមពិនិត្យការតភ្ជាប់របស់អ្នក រួចព្យាយាមម្តងទៀត។</string>
     <string name="session_media_earlier_nothing_new">គ្មានអ្វីថ្មីក្នុងសារដែលទើបតែផ្ទុកនេះទេ។ សារមុនៗអាចមានច្រើនជាងនេះ។</string>
+    <string name="session_project_files_title">ឯកសារគម្រោង</string>
+    <string name="session_project_files_hidden">បង្ហាញឯកសារដែលលាក់</string>
+    <string name="session_project_files_refresh">ផ្ទុកឯកសារឡើងវិញ</string>
+    <string name="session_project_files_search">ស្វែងរកឯកសារក្នុងគម្រោងនេះ</string>
+    <string name="session_project_files_search_limit">បង្ហាញឯកសារដែលត្រូវគ្នារហូតដល់ 200</string>
 </resources>

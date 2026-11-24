@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Ачааж байна…</string>
     <string name="session_media_earlier_failed">Өмнөх мессежүүдийг ачаалж чадсангүй. Холболтоо шалгаад дахин оролдоно уу.</string>
     <string name="session_media_earlier_nothing_new">Дөнгөж ачаалсан мессежүүдэд шинэ зүйл алга. Үүнээс өмнөх мессежүүдэд байж магадгүй.</string>
+    <string name="session_project_files_title">Төслийн файлууд</string>
+    <string name="session_project_files_hidden">Нуугдсан файлуудыг харуулах</string>
+    <string name="session_project_files_refresh">Файлуудыг шинэчлэх</string>
+    <string name="session_project_files_search">Энэ төслөөс файл хайх</string>
+    <string name="session_project_files_search_limit">Тохирох 200 хүртэлх файлыг харуулж байна</string>
 </resources>

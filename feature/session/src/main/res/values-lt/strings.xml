@@ -353,4 +353,9 @@
     <string name="session_media_loading_earlier">Įkeliama…</string>
     <string name="session_media_earlier_failed">Nepavyko įkelti ankstesnių žinučių. Patikrinkite ryšį ir bandykite dar kartą.</string>
     <string name="session_media_earlier_nothing_new">Ką tik įkeltose žinutėse nieko naujo. Ankstesnėse gali būti daugiau.</string>
+    <string name="session_project_files_title">Projekto failai</string>
+    <string name="session_project_files_hidden">Rodyti paslėptus failus</string>
+    <string name="session_project_files_refresh">Atnaujinti failus</string>
+    <string name="session_project_files_search">Rasti failą šiame projekte</string>
+    <string name="session_project_files_search_limit">Rodoma iki 200 atitinkančių failų</string>
 </resources>

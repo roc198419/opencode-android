@@ -106,7 +106,7 @@ val State.backgroundShells: List<OpenCodeShell>
 /** Something the person opened over this session. */
 val State.presentsOverSession: Boolean
     get() = activePicker != null || voice != null || folderBrowser != null || shellOutput != null ||
-        browser.isOpen || requestDock.isAnswering
+        browser.isOpen || projectFiles != null || requestDock.isAnswering
 
 /** Only the transcript's tail can hold the run's current tool. */
 val State.foregroundWork: State.ForegroundWork?

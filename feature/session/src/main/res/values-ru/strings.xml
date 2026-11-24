@@ -353,4 +353,9 @@
     <string name="session_media_loading_earlier">Загрузка…</string>
     <string name="session_media_earlier_failed">Не удалось загрузить предыдущий вывод. Проверьте подключение и попробуйте снова.</string>
     <string name="session_media_earlier_nothing_new">В только что загруженном выводе ничего нового. Возможно, что-то есть в более раннем.</string>
+    <string name="session_project_files_title">Файлы проекта</string>
+    <string name="session_project_files_hidden">Показать скрытые файлы</string>
+    <string name="session_project_files_refresh">Обновить файлы</string>
+    <string name="session_project_files_search">Найти файл в этом проекте</string>
+    <string name="session_project_files_search_limit">Показано до 200 подходящих файлов</string>
 </resources>

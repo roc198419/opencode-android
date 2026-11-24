@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Laden…</string>
     <string name="session_media_earlier_failed">Eerdere uitvoer laden mislukt. Controleer je verbinding en probeer het opnieuw.</string>
     <string name="session_media_earlier_nothing_new">Niets nieuws in de zojuist geladen uitvoer. Eerdere uitvoer bevat mogelijk meer.</string>
+    <string name="session_project_files_title">Projectbestanden</string>
+    <string name="session_project_files_hidden">Verborgen bestanden tonen</string>
+    <string name="session_project_files_refresh">Bestanden vernieuwen</string>
+    <string name="session_project_files_search">Een bestand in dit project zoeken</string>
+    <string name="session_project_files_search_limit">Er worden maximaal 200 overeenkomende bestanden getoond</string>
 </resources>

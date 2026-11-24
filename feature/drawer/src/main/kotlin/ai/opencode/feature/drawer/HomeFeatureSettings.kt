@@ -226,6 +226,10 @@ internal fun HomeFeature.tryWhatsNew(destination: WhatsNewEntry.Destination, ent
                 val close = SessionFeature.Action.Browser(BrowserFeature.Action.CloseTapped)
                 effects += Effect.send(if (top != null) Action.SubagentStack(top.navigationID, close) else Action.detail(close))
             }
+            if ((top ?: s.sessionDetail)?.projectFiles != null) {
+                val close = SessionFeature.Action.ProjectFiles(ai.opencode.core.store.PresentationAction.Dismiss)
+                effects += Effect.send(if (top != null) Action.SubagentStack(top.navigationID, close) else Action.detail(close))
+            }
             if (destination == WhatsNewEntry.Destination.Call) {
                 // A pushed subagent's call belongs to the root, aimed at the top.
                 val call = if (top == null) startSystemCall(s, trigger = CallTrigger.WhatsNew) else startCallOnTop(s)

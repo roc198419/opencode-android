@@ -1,5 +1,7 @@
 package ai.opencode.server.live
 
+import ai.opencode.server.model.ProjectFilePaths
+
 import ai.opencode.core.strings.localized
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
@@ -65,10 +67,9 @@ internal suspend fun requestFindFiles(server: OpenCodeServer, directory: String,
     val items = locationQuery(directory) + listOf("query" to query, "type" to "file", "limit" to limit.toString())
     val response = perform("/api/fs/find", query = items, timeout = 15.seconds, server = server)
     val entries = decoded(response.data) { it.obj().req("data") { d -> d.list(::decodeFindEntry) } }
-    val base = directory.removeSuffix("/")
     return entries.map { path ->
-        val relative = path.removePrefix("/")
-        val absolute = if (path.startsWith("/")) path else "$base/$relative"
+        val absolute = ProjectFilePaths.resolve(directory, path) ?: path
+        val relative = ProjectFilePaths.relative(directory, absolute) ?: path.removePrefix("/")
         OpenCodeAutocompleteFile(relativePath = relative, absolutePath = absolute, directory = directory)
     }
 }

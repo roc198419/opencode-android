@@ -158,6 +158,7 @@ class HomeViewState internal constructor(
         if (state.catchUp != null) return "Catch Up"
         if (isSessionDrawerPresented || state.isDrawerOpen) return "Sessions"
         val top = state.topDetail ?: return "Sessions"
+        if (top.projectFiles != null) return "Project Files"
         if (top.browser.pageID != null) return "In-App Browser"
         if (state.subagentStack.isNotEmpty()) return "Session · subagent"
         return if (top.session == null) "New Session" else "Session"

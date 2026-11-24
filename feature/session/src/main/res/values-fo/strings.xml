@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Heintar…</string>
     <string name="session_media_earlier_failed">Kundi ikki heinta eldri boð. Kanna sambandið og royn aftur.</string>
     <string name="session_media_earlier_nothing_new">Einki nýtt her í boðunum, sum júst vórðu heintað. Eldri boð kunnu hava meira.</string>
+    <string name="session_project_files_title">Verkætlanarfílur</string>
+    <string name="session_project_files_hidden">Vís fjaldar fílur</string>
+    <string name="session_project_files_refresh">Dagfør fílur</string>
+    <string name="session_project_files_search">Finn eina fílu í hesi verkætlan</string>
+    <string name="session_project_files_search_limit">Vísir upp til 200 samsvarandi fílur</string>
 </resources>

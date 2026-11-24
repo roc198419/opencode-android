@@ -64,6 +64,8 @@ import ai.opencode.core.store.Reduced
 import ai.opencode.core.store.Reducer
 import ai.opencode.core.store.Store
 import ai.opencode.feature.media.BrowserFeature
+import ai.opencode.feature.session.ProjectFilesPage
+import ai.opencode.feature.session.sessionProjectFilesStackPage
 import ai.opencode.feature.session.SessionBrowserPage
 import ai.opencode.feature.session.ServerConnectionNotice
 import ai.opencode.feature.session.SessionListContext
@@ -353,6 +355,7 @@ private sealed interface StackEntry {
 
     /** [owner]: the screen that opened it, a subagent's `navigationID` or null for the session. */
     data class Web(val owner: Int?, override val page: SessionStackPage) : StackEntry
+    data class Files(val owner: Int?, override val page: SessionStackPage) : StackEntry
 }
 
 /**
@@ -361,14 +364,14 @@ private sealed interface StackEntry {
  */
 private fun stackEntries(state: HomeFeature.State): List<StackEntry> {
     val entries = ArrayList<StackEntry>()
-    fun web(owner: Int?, screen: SessionFeature.State) {
-        val page = sessionBrowserStackPage(screen) ?: return
-        entries += StackEntry.Web(owner, page)
+    fun pages(owner: Int?, screen: SessionFeature.State) {
+        sessionBrowserStackPage(screen)?.let { entries += StackEntry.Web(owner, it) }
+        sessionProjectFilesStackPage(screen)?.let { entries += StackEntry.Files(owner, it) }
     }
-    state.sessionDetail?.let { web(null, it) }
+    state.sessionDetail?.let { pages(null, it) }
     for ((index, child) in state.subagentStack.withIndex()) {
         entries += StackEntry.Subagent(index, child.navigationID, SessionStackPage(id = child.navigationID))
-        web(child.navigationID, child)
+        pages(child.navigationID, child)
     }
     return entries
 }
@@ -414,6 +417,10 @@ private fun HomeSessionStack(
                     val close = SessionFeature.Action.Browser(BrowserFeature.Action.CloseTapped)
                     store.send(if (entry.owner == null) HomeFeature.Action.detail(close) else HomeFeature.Action.SubagentStack(entry.owner, close))
                 }
+                is StackEntry.Files -> {
+                    val close = SessionFeature.Action.ProjectFiles(ai.opencode.core.store.PresentationAction.Dismiss)
+                    store.send(if (entry.owner == null) HomeFeature.Action.detail(close) else HomeFeature.Action.SubagentStack(entry.owner, close))
+                }
                 is StackEntry.Subagent -> store.send(HomeFeature.Action.SubagentsPopped(entry.index))
             }
         },
@@ -444,6 +451,7 @@ private fun HomeSessionStack(
                 )
             }
             is StackEntry.Web -> SessionBrowserPage(if (entry.owner == null) root else subagent(entry.owner), Modifier.fillMaxSize())
+            is StackEntry.Files -> ProjectFilesPage(if (entry.owner == null) root else subagent(entry.owner), Modifier.fillMaxSize())
             null -> Unit
         }
     }

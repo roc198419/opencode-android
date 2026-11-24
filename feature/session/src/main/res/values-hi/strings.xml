@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">लोड हो रहा है…</string>
     <string name="session_media_earlier_failed">पहले के संदेश लोड नहीं हो सके। अपना कनेक्शन जाँचें और फिर से कोशिश करें।</string>
     <string name="session_media_earlier_nothing_new">अभी लोड हुए संदेशों में कुछ नया नहीं है। पहले के संदेशों में और कुछ हो सकता है।</string>
+    <string name="session_project_files_title">प्रोजेक्ट की फ़ाइलें</string>
+    <string name="session_project_files_hidden">छिपी हुई फ़ाइलें दिखाएँ</string>
+    <string name="session_project_files_refresh">फ़ाइलें रीफ़्रेश करें</string>
+    <string name="session_project_files_search">इस प्रोजेक्ट में फ़ाइल खोजें</string>
+    <string name="session_project_files_search_limit">अधिकतम 200 मेल खाती फ़ाइलें दिखाई जा रही हैं</string>
 </resources>

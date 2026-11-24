@@ -341,4 +341,9 @@
     <string name="session_media_loading_earlier">Se încarcă…</string>
     <string name="session_media_earlier_failed">Mesajele anterioare nu s-au putut încărca. Verifică conexiunea și încearcă din nou.</string>
     <string name="session_media_earlier_nothing_new">Nimic nou în mesajele tocmai încărcate. Cele anterioare ar putea avea mai mult.</string>
+    <string name="session_project_files_title">Fișierele proiectului</string>
+    <string name="session_project_files_hidden">Afișează fișierele ascunse</string>
+    <string name="session_project_files_refresh">Reîmprospătează fișierele</string>
+    <string name="session_project_files_search">Caută un fișier în acest proiect</string>
+    <string name="session_project_files_search_limit">Se afișează până la 200 de fișiere corespunzătoare</string>
 </resources>

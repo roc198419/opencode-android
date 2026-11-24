@@ -317,4 +317,9 @@
     <string name="session_media_loading_earlier">Memuat…</string>
     <string name="session_media_earlier_failed">Gagal memuat pesan sebelumnya. Periksa koneksi Anda lalu coba lagi.</string>
     <string name="session_media_earlier_nothing_new">Tidak ada yang baru di pesan yang baru dimuat. Pesan sebelumnya mungkin masih ada isinya.</string>
+    <string name="session_project_files_title">File Proyek</string>
+    <string name="session_project_files_hidden">Tampilkan File Tersembunyi</string>
+    <string name="session_project_files_refresh">Muat Ulang File</string>
+    <string name="session_project_files_search">Cari file dalam proyek ini</string>
+    <string name="session_project_files_search_limit">Menampilkan hingga 200 file yang cocok</string>
 </resources>

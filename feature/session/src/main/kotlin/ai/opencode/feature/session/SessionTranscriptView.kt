@@ -618,21 +618,7 @@ object SessionTranscriptView {
                     flightAccessories = drawingAccessories(store, context),
                 )
             }
-            is TranscriptAction.OpenFile -> {
-                host?.dismissComposerKeyboard()
-                val addDrawing = drawingHandler(store)
-                val server = store.state.server
-                val directory = store.state.session?.directory
-                val checks = dependency(AgentFileChecks)
-                val file = checks.shown(server, directory, action.file) ?: action.file
-                val target = AgentFileDestination(file, directory)
-                val items = store.state.hidingUndone(store.state.items)
-                val gallery = { destination: AgentFileDestination ->
-                    SessionVisualMedia.preview(destination, items, server, directory, theme) { checks.shown(server, directory, it) }
-                }
-                val preview = gallery(target) ?: TranscriptImagePreview(target, server)
-                presenter?.presentPreview(preview, addDrawing, gallery, drawingAccessories(store, context))
-            }
+            is TranscriptAction.OpenFile -> openFile(action.file, store, context, host, presenter, theme)
             is TranscriptAction.OpenPastedText -> {
                 host?.dismissComposerKeyboard()
                 presenter?.present(sourceID = action.sourceID, isMedia = false, reducesMotion = reducedMotion, screenName = localized(R.string.session_pasted_text_viewer_screen_title)) { viewer ->
@@ -647,6 +633,29 @@ object SessionTranscriptView {
             }
             else -> sessionAction(action)?.let(store::send)
         }
+    }
+
+    fun openFile(
+        reference: ai.opencode.server.model.AgentFileReference,
+        store: StoreOf<State, Action>,
+        context: Context,
+        host: SessionComposerHost?,
+        presenter: MediaPresenter?,
+        theme: MermaidTheme = MermaidTheme.Light,
+    ) {
+        host?.dismissComposerKeyboard()
+        val addDrawing = drawingHandler(store)
+        val server = store.state.server
+        val directory = store.state.effectiveDirectory
+        val checks = dependency(AgentFileChecks)
+        val file = checks.shown(server, directory, reference) ?: reference
+        val target = AgentFileDestination(file, directory)
+        val items = store.state.hidingUndone(store.state.items)
+        val gallery = { destination: AgentFileDestination ->
+            SessionVisualMedia.preview(destination, items, server, directory, theme) { checks.shown(server, directory, it) }
+        }
+        val preview = gallery(target) ?: TranscriptImagePreview(target, server)
+        presenter?.presentPreview(preview, addDrawing, gallery, drawingAccessories(store, context))
     }
 
     /** The `SessionFeature` action a [TranscriptAction] stands for; null for the screen's own. */

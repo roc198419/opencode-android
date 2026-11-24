@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Ladataan…</string>
     <string name="session_media_earlier_failed">Aiempien viestien lataus epäonnistui. Tarkista yhteytesi ja yritä uudelleen.</string>
     <string name="session_media_earlier_nothing_new">Juuri ladatuissa viesteissä ei ole mitään uutta. Aiemmissa voi olla lisää.</string>
+    <string name="session_project_files_title">Projektin tiedostot</string>
+    <string name="session_project_files_hidden">Näytä piilotetut tiedostot</string>
+    <string name="session_project_files_refresh">Päivitä tiedostot</string>
+    <string name="session_project_files_search">Etsi tiedosto tästä projektista</string>
+    <string name="session_project_files_search_limit">Näytetään enintään 200 vastaavaa tiedostoa</string>
 </resources>

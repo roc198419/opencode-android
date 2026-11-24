@@ -317,4 +317,9 @@
     <string name="session_media_loading_earlier">တင်နေသည်…</string>
     <string name="session_media_earlier_failed">အစောပိုင်း မက်ဆေ့ဂျ်များကို မဖွင့်နိုင်ပါ။ သင့်ချိတ်ဆက်မှုကို စစ်ပြီး ပြန်ကြိုးစားပါ။</string>
     <string name="session_media_earlier_nothing_new">ယခုလေးတင် ဖွင့်ထားသော မက်ဆေ့ဂျ်များတွင် အသစ်ဘာမှ မရှိပါ။ ပိုစောသော မက်ဆေ့ဂျ်များတွင် ရှိနိုင်ပါသည်။</string>
+    <string name="session_project_files_title">ပရောဂျက်ဖိုင်များ</string>
+    <string name="session_project_files_hidden">ဝှက်ထားသောဖိုင်များကို ပြပါ</string>
+    <string name="session_project_files_refresh">ဖိုင်များကို ပြန်လည်စတင်ပါ</string>
+    <string name="session_project_files_search">ဤပရောဂျက်တွင် ဖိုင်တစ်ခုကို ရှာပါ</string>
+    <string name="session_project_files_search_limit">ကိုက်ညီသော ဖိုင် 200 အထိ ပြသထားသည်</string>
 </resources>

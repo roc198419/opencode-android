@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">লোড হচ্ছে…</string>
     <string name="session_media_earlier_failed">আগের বার্তাগুলো লোড করা যায়নি। আপনার সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।</string>
     <string name="session_media_earlier_nothing_new">এইমাত্র লোড হওয়া বার্তাগুলোতে নতুন কিছু নেই। আরও আগের বার্তায় কিছু থাকতে পারে।</string>
+    <string name="session_project_files_title">প্রকল্পের ফাইল</string>
+    <string name="session_project_files_hidden">লুকানো ফাইল দেখান</string>
+    <string name="session_project_files_refresh">ফাইল রিফ্রেশ করুন</string>
+    <string name="session_project_files_search">এই প্রকল্পে একটি ফাইল খুঁজুন</string>
+    <string name="session_project_files_search_limit">সর্বোচ্চ 200টি মিলে যাওয়া ফাইল দেখানো হচ্ছে</string>
 </resources>

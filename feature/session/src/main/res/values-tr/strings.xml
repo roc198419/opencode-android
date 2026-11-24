@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Yükleniyor…</string>
     <string name="session_media_earlier_failed">Önceki mesajlar yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.</string>
     <string name="session_media_earlier_nothing_new">Yeni yüklenen mesajlarda yeni bir şey yok. Daha eskilerde olabilir.</string>
+    <string name="session_project_files_title">Proje Dosyaları</string>
+    <string name="session_project_files_hidden">Gizli Dosyaları Göster</string>
+    <string name="session_project_files_refresh">Dosyaları Yenile</string>
+    <string name="session_project_files_search">Bu projede bir dosya bulun</string>
+    <string name="session_project_files_search_limit">En fazla 200 eşleşen dosya gösteriliyor</string>
 </resources>

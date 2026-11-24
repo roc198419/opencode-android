@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Се вчитува…</string>
     <string name="session_media_earlier_failed">Претходните пораки не се вчитаа. Провери ја врската и обиди се повторно.</string>
     <string name="session_media_earlier_nothing_new">Нема ништо ново во штотуку вчитаните пораки. Претходните може да имаат повеќе.</string>
+    <string name="session_project_files_title">Датотеки на проектот</string>
+    <string name="session_project_files_hidden">Прикажи скриени датотеки</string>
+    <string name="session_project_files_refresh">Освежи датотеки</string>
+    <string name="session_project_files_search">Најдете датотека во овој проект</string>
+    <string name="session_project_files_search_limit">Се прикажуваат до 200 соодветни датотеки</string>
 </resources>

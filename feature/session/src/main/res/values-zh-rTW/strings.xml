@@ -317,4 +317,9 @@
     <string name="session_media_loading_earlier">載入中…</string>
     <string name="session_media_earlier_failed">無法載入較早的訊息。請檢查連線後再試一次。</string>
     <string name="session_media_earlier_nothing_new">剛載入的訊息中沒有新內容，更早的訊息可能還有。</string>
+    <string name="session_project_files_title">專案檔案</string>
+    <string name="session_project_files_hidden">顯示隱藏檔案</string>
+    <string name="session_project_files_refresh">重新整理檔案</string>
+    <string name="session_project_files_search">在此專案中尋找檔案</string>
+    <string name="session_project_files_search_limit">最多顯示 200 個相符檔案</string>
 </resources>

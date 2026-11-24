@@ -353,4 +353,9 @@
     <string name="session_media_loading_earlier">Načítání…</string>
     <string name="session_media_earlier_failed">Starší zprávy se nepodařilo načíst. Zkontrolujte připojení a zkuste to znovu.</string>
     <string name="session_media_earlier_nothing_new">Mezi právě načtenými zprávami není nic nového. Starší zprávy mohou obsahovat více.</string>
+    <string name="session_project_files_title">Soubory projektu</string>
+    <string name="session_project_files_hidden">Zobrazit skryté soubory</string>
+    <string name="session_project_files_refresh">Obnovit soubory</string>
+    <string name="session_project_files_search">Najít soubor v tomto projektu</string>
+    <string name="session_project_files_search_limit">Zobrazuje se až 200 odpovídajících souborů</string>
 </resources>

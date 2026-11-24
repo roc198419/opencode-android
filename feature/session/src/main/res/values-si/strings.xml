@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">පූරණය වෙමින්…</string>
     <string name="session_media_earlier_failed">පෙර පණිවිඩ පූරණය කිරීමට නොහැකි විය. ඔබේ සම්බන්ධතාවය පරීක්ෂා කර නැවත උත්සාහ කරන්න.</string>
     <string name="session_media_earlier_nothing_new">දැන් පූරණය වූ පණිවිඩවල අලුත් දෙයක් නැත. පෙර පණිවිඩවල තවත් තිබිය හැක.</string>
+    <string name="session_project_files_title">ව්‍යාපෘති ගොනු</string>
+    <string name="session_project_files_hidden">සැඟවුණු ගොනු පෙන්වන්න</string>
+    <string name="session_project_files_refresh">ගොනු නැවුම් කරන්න</string>
+    <string name="session_project_files_search">මෙම ව්‍යාපෘතියේ ගොනුවක් සොයන්න</string>
+    <string name="session_project_files_search_limit">ගැළපෙන ගොනු 200ක් දක්වා පෙන්වයි</string>
 </resources>

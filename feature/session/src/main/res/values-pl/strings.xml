@@ -353,4 +353,9 @@
     <string name="session_media_loading_earlier">Ładowanie…</string>
     <string name="session_media_earlier_failed">Nie udało się wczytać wcześniejszych wiadomości. Sprawdź połączenie i spróbuj ponownie.</string>
     <string name="session_media_earlier_nothing_new">W właśnie wczytanych wiadomościach nie ma nic nowego. Wcześniejsze mogą zawierać więcej.</string>
+    <string name="session_project_files_title">Pliki projektu</string>
+    <string name="session_project_files_hidden">Pokaż ukryte pliki</string>
+    <string name="session_project_files_refresh">Odśwież pliki</string>
+    <string name="session_project_files_search">Znajdź plik w tym projekcie</string>
+    <string name="session_project_files_search_limit">Wyświetlanych jest do 200 pasujących plików</string>
 </resources>

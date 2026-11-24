@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Բեռնվում է…</string>
     <string name="session_media_earlier_failed">Չհաջողվեց բեռնել նախորդ հաղորդագրությունները։ Ստուգեք կապը և կրկին փորձեք։</string>
     <string name="session_media_earlier_nothing_new">Հենց բեռնված հաղորդագրություններում նոր ոչինչ չկա։ Նախորդներում կարող է ավելին լինել։</string>
+    <string name="session_project_files_title">Նախագծի ֆայլեր</string>
+    <string name="session_project_files_hidden">Ցուցադրել թաքնված ֆայլերը</string>
+    <string name="session_project_files_refresh">Թարմացնել ֆայլերը</string>
+    <string name="session_project_files_search">Գտեք ֆայլ այս նախագծում</string>
+    <string name="session_project_files_search_limit">Ցուցադրվում է մինչև 200 համապատասխան ֆայլ</string>
 </resources>

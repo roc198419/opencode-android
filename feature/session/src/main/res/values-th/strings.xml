@@ -317,4 +317,9 @@
     <string name="session_media_loading_earlier">กำลังโหลด…</string>
     <string name="session_media_earlier_failed">โหลดข้อความก่อนหน้าไม่ได้ ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง</string>
     <string name="session_media_earlier_nothing_new">ข้อความที่เพิ่งโหลดไม่มีอะไรใหม่ ข้อความก่อนหน้าอาจมีเพิ่มเติม</string>
+    <string name="session_project_files_title">ไฟล์โครงการ</string>
+    <string name="session_project_files_hidden">แสดงไฟล์ที่ซ่อนอยู่</string>
+    <string name="session_project_files_refresh">รีเฟรชไฟล์</string>
+    <string name="session_project_files_search">ค้นหาไฟล์ในโครงการนี้</string>
+    <string name="session_project_files_search_limit">แสดงไฟล์ที่ตรงกันสูงสุด 200 ไฟล์</string>
 </resources>

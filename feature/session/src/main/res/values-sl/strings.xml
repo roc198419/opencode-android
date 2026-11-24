@@ -353,4 +353,9 @@
     <string name="session_media_loading_earlier">Nalaganje…</string>
     <string name="session_media_earlier_failed">Prejšnjih sporočil ni bilo mogoče naložiti. Preverite povezavo in poskusite znova.</string>
     <string name="session_media_earlier_nothing_new">V pravkar naloženih sporočilih ni nič novega. Morda je več v prejšnjih.</string>
+    <string name="session_project_files_title">Datoteke projekta</string>
+    <string name="session_project_files_hidden">Prikaži skrite datoteke</string>
+    <string name="session_project_files_refresh">Osveži datoteke</string>
+    <string name="session_project_files_search">Poiščite datoteko v tem projektu</string>
+    <string name="session_project_files_search_limit">Prikazanih je do 200 ujemajočih se datotek</string>
 </resources>

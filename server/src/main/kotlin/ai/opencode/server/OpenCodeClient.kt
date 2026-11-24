@@ -22,6 +22,7 @@ import ai.opencode.server.live.requestCreateSession
 import ai.opencode.server.live.requestDeleteSession
 import ai.opencode.server.live.requestExportSession
 import ai.opencode.server.live.requestFamilyPendingRequests
+import ai.opencode.server.live.requestProjectFiles
 import ai.opencode.server.live.requestFindFiles
 import ai.opencode.server.live.requestForkSession
 import ai.opencode.server.live.requestGetSession
@@ -83,6 +84,7 @@ import ai.opencode.server.model.OpenCodeAutocompleteMentions
 import ai.opencode.server.model.OpenCodeAutocompleteSkill
 import ai.opencode.server.model.OpenCodeContextReading
 import ai.opencode.server.model.OpenCodeDelivery
+import ai.opencode.server.model.OpenCodeProjectFiles
 import ai.opencode.server.model.OpenCodeDirectoryListing
 import ai.opencode.server.model.OpenCodeFileReference
 import ai.opencode.server.model.OpenCodeFormValue
@@ -170,6 +172,7 @@ data class OpenCodeClient(
     val modelCatalog: suspend (server: OpenCodeServer, directory: String?) -> OpenCodeModelCatalog,
     /** The folders in one directory on the server (its default folder when `path` is null). Never location-scoped. */
     val listDirectory: suspend (server: OpenCodeServer, path: String?) -> OpenCodeDirectoryListing,
+    val listProjectFiles: suspend (server: OpenCodeServer, root: String, path: String) -> OpenCodeProjectFiles,
     val switchModel: suspend (server: OpenCodeServer, sessionID: String, model: OpenCodeModelRef) -> Unit,
     val familyPendingRequests: suspend (server: OpenCodeServer, sessionIDs: List<String>, directory: String) -> OpenCodePendingRequests,
     val pendingInputs: suspend (server: OpenCodeServer, sessionID: String) -> List<OpenCodePendingInput>,
@@ -303,6 +306,7 @@ data class OpenCodeClient(
             sessionFamily = ::requestSessionFamily,
             modelCatalog = ::requestModelCatalog,
             listDirectory = ::requestListDirectory,
+            listProjectFiles = ::requestProjectFiles,
             switchModel = ::requestSwitchModel,
             familyPendingRequests = ::requestFamilyPendingRequests,
             pendingInputs = ::requestPendingInputs,
@@ -384,6 +388,7 @@ data class OpenCodeClient(
                     sessionFamily = { _, _ -> unimplemented("sessionFamily") },
                     modelCatalog = { _, _ -> unimplemented("modelCatalog") },
                     listDirectory = { _, _ -> unimplemented("listDirectory") },
+                    listProjectFiles = { _, _, _ -> unimplemented("listProjectFiles") },
                     switchModel = { _, _, _ -> unimplemented("switchModel") },
                     familyPendingRequests = { _, _, _ -> unimplemented("familyPendingRequests") },
                     pendingInputs = { _, _ -> unimplemented("pendingInputs") },

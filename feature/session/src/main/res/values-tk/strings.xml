@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Ýüklenýär…</string>
     <string name="session_media_earlier_failed">Öňki habarlary ýükläp bolmady. Baglanyşygyňyzy barlap, täzeden synanyşyň.</string>
     <string name="session_media_earlier_nothing_new">Täze ýüklenen habarlarda bu ýerde täzelik ýok. Has öňkülerde has köp zat bolmagy mümkin.</string>
+    <string name="session_project_files_title">Taslama faýllary</string>
+    <string name="session_project_files_hidden">Gizlin faýllary görkez</string>
+    <string name="session_project_files_refresh">Faýllary täzele</string>
+    <string name="session_project_files_search">Bu taslamada faýl gözläň</string>
+    <string name="session_project_files_search_limit">200-e çenli gabat gelýän faýl görkezilýär</string>
 </resources>

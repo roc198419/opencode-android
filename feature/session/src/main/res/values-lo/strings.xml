@@ -317,4 +317,9 @@
     <string name="session_media_loading_earlier">ກຳລັງໂຫຼດ…</string>
     <string name="session_media_earlier_failed">ໂຫຼດຂໍ້ຄວາມກ່ອນໜ້າບໍ່ໄດ້. ກວດການເຊື່ອມຕໍ່ຂອງເຈົ້າແລ້ວລອງໃໝ່.</string>
     <string name="session_media_earlier_nothing_new">ຂໍ້ຄວາມທີ່ຫາກໍໂຫຼດບໍ່ມີຫຍັງໃໝ່. ຂໍ້ຄວາມກ່ອນໜ້າອາດມີເພີ່ມ.</string>
+    <string name="session_project_files_title">ໄຟລ໌ໂຄງການ</string>
+    <string name="session_project_files_hidden">ສະແດງໄຟລ໌ທີ່ເຊື່ອງໄວ້</string>
+    <string name="session_project_files_refresh">ໂຫຼດໄຟລ໌ຄືນໃໝ່</string>
+    <string name="session_project_files_search">ຊອກຫາໄຟລ໌ໃນໂຄງການນີ້</string>
+    <string name="session_project_files_search_limit">ສະແດງໄຟລ໌ທີ່ກົງກັນສູງສຸດ 200 ໄຟລ໌</string>
 </resources>

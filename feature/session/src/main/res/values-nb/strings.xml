@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Laster…</string>
     <string name="session_media_earlier_failed">Kunne ikke laste inn tidligere meldinger. Sjekk tilkoblingen og prøv igjen.</string>
     <string name="session_media_earlier_nothing_new">Ingenting nytt her i meldingene som nettopp ble lastet inn. Tidligere meldinger kan ha mer.</string>
+    <string name="session_project_files_title">Prosjektfiler</string>
+    <string name="session_project_files_hidden">Vis skjulte filer</string>
+    <string name="session_project_files_refresh">Oppdater filer</string>
+    <string name="session_project_files_search">Finn en fil i dette prosjektet</string>
+    <string name="session_project_files_search_limit">Viser opptil 200 samsvarende filer</string>
 </resources>

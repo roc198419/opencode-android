@@ -317,4 +317,9 @@
     <string name="session_media_loading_earlier">読み込み中…</string>
     <string name="session_media_earlier_failed">以前のメッセージを読み込めませんでした。接続を確認して、もう一度お試しください。</string>
     <string name="session_media_earlier_nothing_new">読み込んだメッセージに新しい内容はありません。さらに以前のメッセージに続きがあるかもしれません。</string>
+    <string name="session_project_files_title">プロジェクトファイル</string>
+    <string name="session_project_files_hidden">隠しファイルを表示</string>
+    <string name="session_project_files_refresh">ファイルを更新</string>
+    <string name="session_project_files_search">このプロジェクト内のファイルを検索</string>
+    <string name="session_project_files_search_limit">一致するファイルを最大200件表示</string>
 </resources>

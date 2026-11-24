@@ -583,6 +583,9 @@ private fun SessionMenu(
                 contentPadding = PaddingWithIndent,
             )
         }
+        MenuItem(stringResource(R.string.session_project_files_title), SFSymbol.Folder, Modifier.testTag("session-menu-project-files")) {
+            send(Action.ProjectFilesTapped)
+        }
         MenuItem(stringResource(R.string.session_media_title), SFSymbol.PhotoOnRectangle, Modifier.testTag("session-menu-media")) {
             send(Action.SessionMediaTapped)
         }

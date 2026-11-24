@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">लोड गर्दै…</string>
     <string name="session_media_earlier_failed">अघिल्ला सन्देशहरू लोड गर्न सकिएन। आफ्नो जडान जाँच गरेर फेरि प्रयास गर्नुहोस्।</string>
     <string name="session_media_earlier_nothing_new">भर्खरै लोड भएका सन्देशहरूमा यहाँ केही नयाँ छैन। अघिल्ला सन्देशहरूमा थप हुन सक्छ।</string>
+    <string name="session_project_files_title">परियोजनाका फाइलहरू</string>
+    <string name="session_project_files_hidden">लुकेका फाइलहरू देखाउनुहोस्</string>
+    <string name="session_project_files_refresh">फाइलहरू रिफ्रेस गर्नुहोस्</string>
+    <string name="session_project_files_search">यस परियोजनामा फाइल खोज्नुहोस्</string>
+    <string name="session_project_files_search_limit">मिल्ने अधिकतम 200 फाइलहरू देखाइँदै छ</string>
 </resources>

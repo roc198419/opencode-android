@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Laadimine…</string>
     <string name="session_media_earlier_failed">Varasemate sõnumite laadimine ebaõnnestus. Kontrolli ühendust ja proovi uuesti.</string>
     <string name="session_media_earlier_nothing_new">Äsja laaditud sõnumites pole siin midagi uut. Varasemates võib veel olla.</string>
+    <string name="session_project_files_title">Projekti failid</string>
+    <string name="session_project_files_hidden">Näita peidetud faile</string>
+    <string name="session_project_files_refresh">Värskenda faile</string>
+    <string name="session_project_files_search">Leia fail sellest projektist</string>
+    <string name="session_project_files_search_limit">Kuvatakse kuni 200 sobivat faili</string>
 </resources>

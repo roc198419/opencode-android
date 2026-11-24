@@ -338,6 +338,19 @@ class BrowserLifetimeTests {
     }
 
     @Test
+    fun projectFilesCoverTheTranscriptAndReopeningTheSessionDismissesThem() = homeTest { h ->
+        val store = h.store(listOf(session("root")), LockIsolated(emptyList()))
+        store.send(detail(SessionFeature.Action.ProjectFilesTapped))
+        assertTrue(store.state.sessionDetail?.projectFiles != null)
+        assertTrue(store.state.sessionDetail?.isTranscriptCovered == true)
+        store.send(Action.SessionTapped("root"))
+        store.skipReceivedActions()
+        assertNull(store.state.sessionDetail?.projectFiles)
+        assertFalse(store.state.sessionDetail?.isTranscriptCovered == true)
+        h.skipInFlightEffects()
+    }
+
+    @Test
     fun theSessionsOwnRowGoesBackToItFromUnderItsPage() = homeTest { h ->
         val discarded = LockIsolated<List<UUID>>(emptyList())
         val store = h.store(listOf(session("root")), discarded)

@@ -1,6 +1,7 @@
 package ai.opencode.feature.session
 
 import ai.opencode.core.diagnostics.LabMarks
+import ai.opencode.core.store.PresentationAction
 import ai.opencode.core.store.Effect
 import ai.opencode.core.store.Reduced
 import ai.opencode.core.store.Reducer
@@ -33,6 +34,7 @@ internal fun SessionFeature.reduceCore(state: State, action: Action): Reduced<St
 }
 
 private object ShellOutputSlot
+private object ProjectFilesSlot
 private object FolderBrowserSlot
 private object VoiceSlot
 
@@ -103,6 +105,21 @@ internal fun SessionFeature.composedBody(): Reducer<State, Action> {
             action = { (it as? Action.ShellOutput)?.action },
             embed = Action::ShellOutput,
             child = ShellOutputFeature(),
+        )
+        reducer = ifLet(
+            id = ProjectFilesSlot,
+            parent = reducer.onChange({ it.streamIsHealthy }) { _, healthy, state ->
+                if (healthy && state.projectFiles != null) Reduced(state, Effect.send(Action.ProjectFiles(PresentationAction.Presented(ProjectFilesFeature.Action.Refresh))))
+                else Reduced(state)
+            }.onChange({ it.server.persistenceID to it.effectiveDirectory }) { _, _, state ->
+                Reduced(state.copy(projectFiles = null))
+            },
+            state = { it.projectFiles },
+            setState = { s, c -> s.copy(projectFiles = c) },
+            action = { (it as? Action.ProjectFiles)?.action },
+            embed = Action::ProjectFiles,
+            child = ProjectFilesFeature(),
+            childID = { it.pageID },
         )
         // Plain optional: `sessionSheet` runs header `…` menu actions and confirmations while the
         // sheet is closed and keeps in-flight fork/export work alive across sheet dismissal.

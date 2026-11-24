@@ -341,4 +341,9 @@
     <string name="session_media_loading_earlier">Carregant…</string>
     <string name="session_media_earlier_failed">No s\'han pogut carregar els missatges anteriors. Comprova la connexió i torna-ho a provar.</string>
     <string name="session_media_earlier_nothing_new">Als missatges que s\'acaben de carregar no hi ha res de nou. Els anteriors potser en tenen més.</string>
+    <string name="session_project_files_title">Fitxers del projecte</string>
+    <string name="session_project_files_hidden">Mostra els fitxers ocults</string>
+    <string name="session_project_files_refresh">Actualitza els fitxers</string>
+    <string name="session_project_files_search">Cerca un fitxer en aquest projecte</string>
+    <string name="session_project_files_search_limit">Es mostren fins a 200 fitxers coincidents</string>
 </resources>

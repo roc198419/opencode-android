@@ -317,4 +317,9 @@
     <string name="session_media_loading_earlier">加载中…</string>
     <string name="session_media_earlier_failed">无法加载更早的消息。请检查网络连接后重试。</string>
     <string name="session_media_earlier_nothing_new">刚加载的消息中没有新内容，更早的消息里可能还有。</string>
+    <string name="session_project_files_title">项目文件</string>
+    <string name="session_project_files_hidden">显示隐藏文件</string>
+    <string name="session_project_files_refresh">刷新文件</string>
+    <string name="session_project_files_search">在此项目中查找文件</string>
+    <string name="session_project_files_search_limit">最多显示 200 个匹配文件</string>
 </resources>

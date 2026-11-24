@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Бор карда мешавад…</string>
     <string name="session_media_earlier_failed">Паёмҳои қаблӣ бор нашуданд. Пайвастшавиро санҷед ва аз нав кӯшиш кунед.</string>
     <string name="session_media_earlier_nothing_new">Дар паёмҳои навбор чизи нав нест. Дар паёмҳои қаблӣ шояд бештар бошад.</string>
+    <string name="session_project_files_title">Файлҳои лоиҳа</string>
+    <string name="session_project_files_hidden">Намоиши файлҳои пинҳон</string>
+    <string name="session_project_files_refresh">Навсозии файлҳо</string>
+    <string name="session_project_files_search">Дар ин лоиҳа файл ёбед</string>
+    <string name="session_project_files_search_limit">То 200 файли мувофиқ нишон дода мешавад</string>
 </resources>

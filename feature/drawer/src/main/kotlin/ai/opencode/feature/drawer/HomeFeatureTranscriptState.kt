@@ -92,7 +92,7 @@ fun HomeFeature.State.restoringTranscriptCache(): HomeFeature.State {
  * its browser or Settings.
  */
 private fun HomeFeature.State.coversTranscript(detail: SessionFeature.State, onTop: Boolean): Boolean =
-    !onTop || isSettingsShown || detail.browser.isOpen
+    !onTop || isSettingsShown || detail.browser.isOpen || detail.projectFiles != null
 
 val HomeFeature.State.transcriptCoverIsStale: Boolean
     get() {

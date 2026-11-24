@@ -11,6 +11,9 @@ import ai.opencode.server.R
 import ai.opencode.server.ServerLinkClient
 import ai.opencode.server.OpenCodeTransport
 import ai.opencode.core.files.AttachmentFileType
+import ai.opencode.server.model.OpenCodeProjectFile
+import ai.opencode.server.model.OpenCodeProjectFiles
+import ai.opencode.server.model.ProjectFilePaths
 import ai.opencode.server.model.FileReadTarget
 import ai.opencode.server.model.OpenCodeDirectoryListing
 import ai.opencode.server.model.OpenCodeUploadEvent
@@ -20,6 +23,8 @@ import ai.opencode.server.retry.RetryPolicy
 import ai.opencode.server.retry.ServerContact
 import ai.opencode.server.retry.TransportFailure
 import ai.opencode.server.internal.UrlParts
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.Flow
@@ -251,16 +256,37 @@ internal suspend fun requestListDirectory(server: OpenCodeServer, path: String?)
     return directoryListing(payload.location.directory, path, payload.data.map { it.path to it.type })
 }
 
+internal suspend fun requestProjectFiles(server: OpenCodeServer, root: String, path: String): OpenCodeProjectFiles {
+    require(ProjectFilePaths.relative(root, path) != null)
+    val payload = request<DirectoryListingPayload>("/api/fs/list", query = listOf("path" to path), server = server)
+    return withContext(Dispatchers.Default) { projectFiles(root, path, payload.location.directory, payload.data.map { it.path to it.type }) }
+}
+
+internal fun projectFiles(root: String, path: String, location: String, entries: List<Pair<String, String>>): OpenCodeProjectFiles {
+    val directory = ProjectFilePaths.normalize(path) ?: error("Invalid project path")
+    val collator = standardCollator()
+    val files = entries.mapNotNull { (entry, type) ->
+        if (type != "file" && type != "directory") return@mapNotNull null
+        val absolute = ProjectFilePaths.resolve(location, entry) ?: return@mapNotNull null
+        if (ProjectFilePaths.relative(root, absolute).isNullOrEmpty()) return@mapNotNull null
+        val parent = ProjectFilePaths.parent(absolute) ?: return@mapNotNull null
+        if (ProjectFilePaths.relative(directory, parent) != "") return@mapNotNull null
+        OpenCodeProjectFile(absolute, type == "directory")
+    }.distinctBy { it.path }.sortedWith { a, b ->
+        when {
+            a.isDirectory != b.isDirectory -> if (a.isDirectory) -1 else 1
+            a.name.startsWith('.') != b.name.startsWith('.') -> if (a.name.startsWith('.')) 1 else -1
+            else -> naturalCompare(a.name, b.name, collator)
+        }
+    }
+    return OpenCodeProjectFiles(directory, files)
+}
+
 /** Entry paths are relative to the location. Folders sort by name, hidden ones after the rest. */
 internal fun directoryListing(location: String, path: String?, entries: List<Pair<String, String>>): OpenCodeDirectoryListing {
-    val base = File(location)
-    fun resolve(relative: String): String {
-        val file = if (relative.startsWith("/")) File(relative) else File(base, relative)
-        val normalized = file.toPath().normalize().toString()
-        return normalized.ifEmpty { "/" }
-    }
-    val directory = resolve(path ?: location)
-    val folders = entries.filter { it.second == "directory" }.map { resolve(it.first) }.filter { it != directory }
+    fun resolve(relative: String): String? = ProjectFilePaths.resolve(location, relative)
+    val directory = resolve(path ?: location) ?: throw OpenCodeClientError(localized(R.string.server_error_list_folder))
+    val folders = entries.filter { it.second == "directory" }.mapNotNull { resolve(it.first) }.filter { it != directory }
     fun name(path: String) = path.trimEnd('/').substringAfterLast('/')
     val collator = standardCollator()
     val sorted = folders.toSet().sortedWith { x, y ->

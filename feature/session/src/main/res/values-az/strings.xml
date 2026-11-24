@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Yüklənir…</string>
     <string name="session_media_earlier_failed">Əvvəlki mesajları yükləmək mümkün olmadı. Əlaqənizi yoxlayın və yenidən cəhd edin.</string>
     <string name="session_media_earlier_nothing_new">İndicə yüklənən mesajlarda yeni heç nə yoxdur. Əvvəlkilərdə daha çox ola bilər.</string>
+    <string name="session_project_files_title">Layihə faylları</string>
+    <string name="session_project_files_hidden">Gizli faylları göstər</string>
+    <string name="session_project_files_refresh">Faylları yenilə</string>
+    <string name="session_project_files_search">Bu layihədə fayl tapın</string>
+    <string name="session_project_files_search_limit">200-ə qədər uyğun fayl göstərilir</string>
 </resources>

@@ -341,4 +341,9 @@
     <string name="session_media_loading_earlier">Caricamento…</string>
     <string name="session_media_earlier_failed">Impossibile caricare i messaggi precedenti. Controlla la connessione e riprova.</string>
     <string name="session_media_earlier_nothing_new">Nessuna novità nei messaggi appena caricati. Quelli precedenti potrebbero avere altro.</string>
+    <string name="session_project_files_title">File del progetto</string>
+    <string name="session_project_files_hidden">Mostra file nascosti</string>
+    <string name="session_project_files_refresh">Aggiorna file</string>
+    <string name="session_project_files_search">Cerca un file in questo progetto</string>
+    <string name="session_project_files_search_limit">Vengono mostrati fino a 200 file corrispondenti</string>
 </resources>

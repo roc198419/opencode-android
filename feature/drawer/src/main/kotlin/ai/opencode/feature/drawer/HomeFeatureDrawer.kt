@@ -387,9 +387,13 @@ private fun HomeFeature.sessionTapped(state: State, sessionID: String): HomeRedu
         // The drawer's row for the session on screen goes back to it, from under any page or subagent.
         if (s.sessionDetail?.browser?.isOpen == true) s = s.updatingDetail { it.copy(browser = it.browser.close()) }
         s = s.poppingSubagents(toDepth = 0, reason = moveReason).pushingPendingSubagent(moveReason)
-        val pushedID = s.subagentStack.lastOrNull()?.session?.id ?: return Reduced(s, viewed.effect)
+        val closeFiles = if (s.sessionDetail?.projectFiles != null) {
+            Effect.send(Action.detail(SessionFeature.Action.ProjectFiles(ai.opencode.core.store.PresentationAction.Dismiss)))
+        } else Effect.none()
+        val effects = Effect.merge(viewed.effect, closeFiles)
+        val pushedID = s.subagentStack.lastOrNull()?.session?.id ?: return Reduced(s, effects)
         val cancelled = cancelBackgroundTranscriptReads(s, setOf(sessionID, pushedID))
-        return Reduced(cancelled.state, Effect.merge(cancelled.effect, viewed.effect))
+        return Reduced(cancelled.state, Effect.merge(cancelled.effect, effects))
     }
     LabMarks.mark("session_tap", sessionID = sessionID)
     PerfTimeline.switchStarted(sessionID)

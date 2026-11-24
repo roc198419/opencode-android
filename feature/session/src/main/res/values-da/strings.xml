@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Indlæser…</string>
     <string name="session_media_earlier_failed">Kunne ikke indlæse tidligere beskeder. Tjek din forbindelse, og prøv igen.</string>
     <string name="session_media_earlier_nothing_new">Intet nyt her i de netop indlæste beskeder. Tidligere beskeder kan have mere.</string>
+    <string name="session_project_files_title">Projektfiler</string>
+    <string name="session_project_files_hidden">Vis skjulte filer</string>
+    <string name="session_project_files_refresh">Opdater filer</string>
+    <string name="session_project_files_search">Find en fil i dette projekt</string>
+    <string name="session_project_files_search_limit">Viser op til 200 matchende filer</string>
 </resources>

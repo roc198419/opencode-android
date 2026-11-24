@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Hleður…</string>
     <string name="session_media_earlier_failed">Ekki tókst að hlaða eldri skilaboðum. Athugaðu tenginguna og reyndu aftur.</string>
     <string name="session_media_earlier_nothing_new">Ekkert nýtt hér í skilaboðunum sem voru að hlaðast. Eldri skilaboð gætu haft meira.</string>
+    <string name="session_project_files_title">Verkefnisskrár</string>
+    <string name="session_project_files_hidden">Sýna faldar skrár</string>
+    <string name="session_project_files_refresh">Endurnýja skrár</string>
+    <string name="session_project_files_search">Finndu skrá í þessu verkefni</string>
+    <string name="session_project_files_search_limit">Sýnir allt að 200 samsvarandi skrár</string>
 </resources>

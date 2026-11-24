@@ -317,4 +317,9 @@
     <string name="session_media_loading_earlier">Memuatkan…</string>
     <string name="session_media_earlier_failed">Tidak dapat memuatkan mesej terdahulu. Semak sambungan anda dan cuba lagi.</string>
     <string name="session_media_earlier_nothing_new">Tiada yang baharu dalam mesej yang baru dimuatkan. Mesej terdahulu mungkin ada lebih banyak.</string>
+    <string name="session_project_files_title">Fail Projek</string>
+    <string name="session_project_files_hidden">Tunjukkan Fail Tersembunyi</string>
+    <string name="session_project_files_refresh">Muat Semula Fail</string>
+    <string name="session_project_files_search">Cari fail dalam projek ini</string>
+    <string name="session_project_files_search_limit">Memaparkan sehingga 200 fail yang sepadan</string>
 </resources>

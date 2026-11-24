@@ -1,5 +1,35 @@
 package ai.opencode.feature.session
 
+import ai.opencode.core.store.Reduced
+import ai.opencode.core.store.Reducer
+import ai.opencode.core.store.Store
+import ai.opencode.core.testing.TestIsolationRule
+import ai.opencode.core.ui.OpenCodeAppTheme
+import ai.opencode.server.model.OpenCodeProjectFile
+import ai.opencode.server.model.OpenCodeProjectFiles
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.os.Looper
+import android.view.View
+import android.view.ViewGroup
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.node.RootForTest
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.semantics.SemanticsNode
+import androidx.compose.ui.semantics.SemanticsProperties
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import org.junit.Rule
+import org.junit.runner.RunWith
+import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+
+import androidx.compose.ui.semantics.getOrNull
+
 import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.DependencyValues
 import ai.opencode.core.dependencies.ImmediateClock
@@ -50,7 +80,7 @@ class NewSessionDraftTests {
     /** Failed at the end of the test. */
     private val issues = LockIsolated(listOf<String>())
 
-    private fun draftTest(block: suspend kotlinx.coroutines.CoroutineScope.(Harness) -> Unit) = sessionTest { h ->
+    private fun draftTest(block: suspend CoroutineScope.(Harness) -> Unit) = sessionTest { h ->
         block(h)
         assertEquals(emptyList<String>(), issues.value)
     }
@@ -499,4 +529,171 @@ class NewSessionDraftTests {
     }
 
     // endregion
+}
+
+
+class ProjectFilesBrowsingTests {
+    @get:Rule val isolation = TestIsolationRule()
+    private val server = OpenCodeServer(url = "http://localhost:9", username = "", password = "")
+    private fun initial() = ProjectFilesFeature.State(server, "/project", -1)
+
+    @Test fun browsingLoadsOnDemandAndBackUsesTheCachedDirectory() = sessionTest { h ->
+        val root = OpenCodeProjectFiles("/project", listOf(OpenCodeProjectFile("/project/src", true)))
+        val child = OpenCodeProjectFiles("/project/src", emptyList())
+        val reads = LockIsolated(listOf<String>())
+        val store = h.store(initial(), { ProjectFilesFeature() }) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(listProjectFiles = { _, _, path ->
+                reads.append(path)
+                if (path == root.directory) root else child
+            })
+        }
+        store.send(ProjectFilesFeature.Action.Appeared) { it.copy(loading = true, generation = 1) }
+        store.receive(ProjectFilesFeature.Action.Loaded(1, "/project", Result.success(root))) {
+            it.copy(loading = false, listings = mapOf("/project" to root))
+        }
+        store.send(ProjectFilesFeature.Action.DirectoryTapped("/project/src")) { it.copy(paths = listOf("/project", "/project/src"), loading = true, generation = 2) }
+        store.receive(ProjectFilesFeature.Action.Loaded(2, "/project/src", Result.success(child))) {
+            it.copy(loading = false, listings = it.listings + ("/project/src" to child))
+        }
+        store.send(ProjectFilesFeature.Action.Back) { it.copy(paths = listOf("/project"), generation = 3) }
+        store.send(ProjectFilesFeature.Action.DirectoryTapped("/elsewhere"))
+        assertEquals(listOf("/project", "/project/src"), reads.value)
+        store.finish()
+    }
+
+    @Test fun aFailedDirectoryCanBeRetried() = sessionTest { h ->
+        var attempts = 0
+        val listing = OpenCodeProjectFiles("/project", emptyList())
+        val error = OpenCodeClientError("Unavailable")
+        val store = h.store(initial(), { ProjectFilesFeature() }) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(listProjectFiles = { _, _, _ ->
+                if (++attempts == 1) throw error
+                listing
+            })
+        }
+        store.send(ProjectFilesFeature.Action.Appeared) { it.copy(loading = true, generation = 1) }
+        store.receive(ProjectFilesFeature.Action.Loaded(1, "/project", Result.failure(error))) { it.copy(loading = false, error = "Unavailable") }
+        store.send(ProjectFilesFeature.Action.Refresh) { it.copy(loading = true, error = null, generation = 2) }
+        store.receive(ProjectFilesFeature.Action.Loaded(2, "/project", Result.success(listing))) { it.copy(loading = false, listings = mapOf("/project" to listing)) }
+        store.finish()
+    }
+
+    @Test fun searchingUsesTheProjectRootAndRejectsPathsOutsideIt() = sessionTest { h ->
+        val found = listOf(OpenCodeProjectFile("/project/src/file.kt", false))
+        val store = h.store(initial(), { ProjectFilesFeature() }) {
+            this[Clock] = ImmediateClock()
+            this[OpenCodeClient] = this[OpenCodeClient].copy(findFiles = { _, root, query, limit ->
+                assertEquals("/project", root)
+                assertEquals("file", query)
+                assertEquals(200, limit)
+                listOf(
+                    ai.opencode.server.model.OpenCodeAutocompleteFile("src/file.kt", "/project/src/file.kt", root),
+                    ai.opencode.server.model.OpenCodeAutocompleteFile("../secret", "/secret", root),
+                )
+            })
+        }
+        store.send(ProjectFilesFeature.Action.QueryChanged("file")) { it.copy(query = "file", generation = 1, loading = true) }
+        store.receive(ProjectFilesFeature.Action.Searched(1, Result.success(found))) { it.copy(loading = false, searchResults = found) }
+        store.finish()
+    }
+
+    @Test fun staleSearchAndDirectoryResponsesDoNotReplaceCurrentResults() {
+        val reducer = ProjectFilesFeature()
+        val state = initial().copy(query = "new", generation = 4, loading = true)
+        assertEquals(state, reducer.reduce(state, ProjectFilesFeature.Action.Searched(3, Result.success(emptyList()))).state)
+        assertEquals(state, reducer.reduce(state, ProjectFilesFeature.Action.Loaded(4, "/project", Result.success(OpenCodeProjectFiles("/project", emptyList())))).state)
+        val normal = initial().copy(generation = 6)
+        assertEquals(normal, reducer.reduce(normal, ProjectFilesFeature.Action.Searched(6, Result.success(emptyList()))).state)
+    }
+
+    @Test fun searchFiltersHiddenAncestorsUntilTheyAreEnabled() {
+        val hidden = OpenCodeProjectFile("/project/.config/file", false)
+        val visible = OpenCodeProjectFile("/project/src/file", false)
+        val state = initial().copy(query = "file", searchResults = listOf(hidden, visible))
+        assertEquals(listOf(visible), state.entries)
+        assertEquals(listOf(hidden, visible), ProjectFilesFeature().reduce(state, ProjectFilesFeature.Action.ToggleHidden).state.entries)
+    }
+
+    @Test fun closingTheBrowserCancelsItsInFlightDirectoryRead() = sessionTest { h ->
+        val state = h.state { SessionFeature.State.session(server, OpenCodeSession(id = "ses_files", serverTitle = "Files", projectID = "p", directory = "/project", updatedAt = java.time.Instant.EPOCH)) }
+            .copy(projectFiles = initial())
+        val store = h.store(state) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(listProjectFiles = { _, _, _ -> awaitCancellation() })
+        }
+        store.send(Action.ProjectFiles(PresentationAction.Presented(ProjectFilesFeature.Action.Appeared))) {
+            it.copy(projectFiles = it.projectFiles!!.copy(loading = true, generation = 1))
+        }
+        store.send(Action.ProjectFiles(PresentationAction.Dismiss)) { it.copy(projectFiles = null) }
+        store.finish()
+    }
+}
+
+
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [35], qualifiers = "en-rUS-w360dp-h800dp-xxhdpi")
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+class ProjectFilesViewTests {
+    @get:Rule val isolation = TestIsolationRule()
+
+    @Test fun aLoadedProjectShowsItsFilesAndFolders() {
+        val root = "/workspace/opencode"
+        val server = SessionTestSupport.testServer
+        val listing = OpenCodeProjectFiles(root, listOf(
+            OpenCodeProjectFile("$root/docs", true),
+            OpenCodeProjectFile("$root/src", true),
+            OpenCodeProjectFile("$root/README.md", false),
+            OpenCodeProjectFile("$root/build.gradle.kts", false),
+            OpenCodeProjectFile("$root/.gitignore", false),
+        ))
+        val state = SessionFeature.State.session(server, SessionTestSupport.testSession(directory = root)).copy(
+            projectFiles = ProjectFilesFeature.State(server, root, -1, listings = mapOf(root to listing)),
+        )
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+        val store = Store(state, Reducer<SessionFeature.State, SessionFeature.Action> { current, _ ->
+            Reduced(current)
+        }, scope = scope)
+        val controller = Robolectric.buildActivity(ComponentActivity::class.java).setup()
+        val activity = controller.get()
+        val view = ComposeView(activity)
+        activity.setContentView(view)
+        try {
+            view.setContent { OpenCodeAppTheme { ProjectFilesPage(store) } }
+            org.robolectric.Shadows.shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(20))
+            view.measure(
+                View.MeasureSpec.makeMeasureSpec(1080, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(2400, View.MeasureSpec.EXACTLY),
+            )
+            view.layout(0, 0, 1080, 2400)
+            org.robolectric.Shadows.shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(20))
+            val semantics = requireNotNull(findRoot(view)).semanticsOwner.unmergedRootSemanticsNode
+            val labels = text(semantics)
+            assertTrue(labels.contains("Project Files"))
+            assertTrue(labels.contains("src"))
+            assertTrue(labels.contains("README.md"))
+            assertFalse(labels.contains(".gitignore"))
+            System.getProperty("opencode.projectFilesScreenshot")?.let { path ->
+                val bitmap = Bitmap.createBitmap(1080, 2400, Bitmap.Config.ARGB_8888)
+                view.draw(Canvas(bitmap))
+                val file = java.io.File(path)
+                file.parentFile?.mkdirs()
+                file.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+                bitmap.recycle()
+            }
+        } finally {
+            view.disposeComposition()
+            scope.coroutineContext[Job]?.cancel()
+            controller.pause().stop().destroy()
+        }
+    }
+
+    private fun findRoot(view: View): RootForTest? {
+        if (view is RootForTest) return view
+        if (view is ViewGroup) for (index in 0 until view.childCount) {
+            findRoot(view.getChildAt(index))?.let { return it }
+        }
+        return null
+    }
+
+    private fun text(node: SemanticsNode): List<String> =
+        node.config.getOrNull(SemanticsProperties.Text).orEmpty().map { it.text } + node.children.flatMap(::text)
 }

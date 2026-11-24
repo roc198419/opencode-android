@@ -353,4 +353,9 @@
     <string name="session_media_loading_earlier">Načítava sa…</string>
     <string name="session_media_earlier_failed">Starší výstup sa nepodarilo načítať. Skontrolujte pripojenie a skúste znova.</string>
     <string name="session_media_earlier_nothing_new">Medzi práve načítanými správami nie je nič nové. Staršie môžu obsahovať viac.</string>
+    <string name="session_project_files_title">Súbory projektu</string>
+    <string name="session_project_files_hidden">Zobraziť skryté súbory</string>
+    <string name="session_project_files_refresh">Obnoviť súbory</string>
+    <string name="session_project_files_search">Nájsť súbor v tomto projekte</string>
+    <string name="session_project_files_search_limit">Zobrazuje sa až 200 zodpovedajúcich súborov</string>
 </resources>

@@ -329,4 +329,9 @@
     <string name="session_media_loading_earlier">Betöltés…</string>
     <string name="session_media_earlier_failed">Nem sikerült betölteni a korábbi üzeneteket. Ellenőrizze a kapcsolatot, és próbálja újra.</string>
     <string name="session_media_earlier_nothing_new">Az imént betöltött üzenetek között nincs semmi új. A korábbiakban lehet még több.</string>
+    <string name="session_project_files_title">Projektfájlok</string>
+    <string name="session_project_files_hidden">Rejtett fájlok megjelenítése</string>
+    <string name="session_project_files_refresh">Fájlok frissítése</string>
+    <string name="session_project_files_search">Fájl keresése ebben a projektben</string>
+    <string name="session_project_files_search_limit">Legfeljebb 200 egyező fájl megjelenítése</string>
 </resources>
