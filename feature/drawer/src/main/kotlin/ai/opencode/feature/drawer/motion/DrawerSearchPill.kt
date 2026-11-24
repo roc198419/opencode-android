@@ -78,8 +78,8 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 
 /**
- * The drawer's search. One circle at rest that stretches leftward into the search field while a
- * circular × button buds off its trailing edge. Tapping × or pressing Escape clears the query,
+ * The drawer's search. One button at rest that stretches leftward into the search field while a
+ * matching × button buds off its trailing edge. Tapping × or pressing Escape clears the query,
  * dismisses the keyboard and merges the × back into the search button. Under Reduce Motion the two
  * states cross-fade in place.
  *
@@ -87,7 +87,7 @@ import kotlin.math.roundToInt
  * capsule whose width springs on [DrawerSearchPillDefaults.morph].
  */
 object DrawerSearchPillDefaults {
-    /** The circle at rest and the field's height (`DrawerTunables.searchSize`, at least Android's 48 dp target). */
+    /** The layout includes Android's 48 dp touch target around the visible control. */
     val size: Dp get() = maxOf(DrawerTunables.searchSize, OpenCodeMinTapTarget)
     /**
      * The capsule grows from its circle on `MotionRole.PanelOpen` and folds back on its exit; under
@@ -98,7 +98,7 @@ object DrawerSearchPillDefaults {
     /** The magnifier's box, centred in the circle and, opened, starting on the drawer's text inset. */
     val glyphWidth: Dp = 20.dp
     /** Between the open field and the × button. */
-    val cancelGap: Dp = 10.dp
+    val cancelGap: Dp = 4.dp
     /** Opened, the magnifier starts on the drawer's one leading edge (`DrawerMetrics.textInset`). */
     val textInset: Dp get() = DrawerMetrics.textInset
 }
@@ -211,7 +211,7 @@ fun DrawerSearchPill(
         )
     }
 
-    val restPadding = (size - DrawerSearchPillDefaults.glyphWidth) / 2
+    val restPadding = (DrawerTunables.searchSize - DrawerSearchPillDefaults.glyphWidth) / 2
 
     if (reducedMotion) {
         // A new identity per state, so they cross-fade rather than stretch.
@@ -289,7 +289,7 @@ private fun SearchCapsule(
     val searchDescription = stringResource(R.string.drawer_search_description)
     Surface(
         // The drawer's floating control, as its footer buttons: popover fill, hairline ring, soft shadow.
-        shape = RoundedCornerShape(OpenCodeRadius.panel),
+        shape = RoundedCornerShape(OpenCodeRadius.control),
         color = OpenCodeSurfaces.color,
         border = OpenCodeSurfaces.border,
         shadowElevation = OpenCodeSurfaces.raisedShadow,
@@ -303,10 +303,11 @@ private fun SearchCapsule(
                     Modifier.testTag("drawer-search-pill")
                 } else {
                     Modifier
-                        .clearAndSetSemantics { contentDescription = searchDescription }
                         .testTag("drawer-search")
+                        .clearAndSetSemantics { contentDescription = searchDescription }
                 },
-            ),
+            )
+            .padding((size - DrawerTunables.searchSize).coerceAtLeast(0.dp) / 2),
     ) {
         Row(Modifier.clipToBounds(), verticalAlignment = Alignment.CenterVertically) {
             Box(
@@ -319,6 +320,7 @@ private fun SearchCapsule(
                 OpenCodeIcon(
                     SFSymbol.Magnifyingglass,
                     contentDescription = null,
+                    size = DrawerSearchPillDefaults.glyphWidth,
                     tint = if (isSearching) OpenCodeTheme.colors.secondaryText else OpenCodeTheme.colors.text,
                 )
             }
@@ -339,7 +341,7 @@ private fun SearchCapsule(
 private fun CancelButton(size: Dp, enabled: Boolean = true, onClick: () -> Unit) {
     val cancelDescription = stringResource(R.string.drawer_search_cancel_description)
     Surface(
-        shape = RoundedCornerShape(OpenCodeRadius.panel),
+        shape = RoundedCornerShape(OpenCodeRadius.control),
         color = OpenCodeSurfaces.color,
         border = OpenCodeSurfaces.border,
         shadowElevation = OpenCodeSurfaces.raisedShadow,
@@ -348,10 +350,11 @@ private fun CancelButton(size: Dp, enabled: Boolean = true, onClick: () -> Unit)
             .size(size)
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
             .semantics { contentDescription = cancelDescription }
-            .testTag("drawer-search-cancel"),
+            .testTag("drawer-search-cancel")
+            .padding((size - DrawerTunables.searchSize).coerceAtLeast(0.dp) / 2),
     ) {
         Box(contentAlignment = Alignment.Center) {
-            OpenCodeIcon(SFSymbol.Xmark, contentDescription = null)
+            OpenCodeIcon(SFSymbol.Xmark, contentDescription = null, size = DrawerSearchPillDefaults.glyphWidth)
         }
     }
 }

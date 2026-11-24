@@ -10,6 +10,7 @@ import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.SFSymbol
 import ai.opencode.feature.drawer.R
+import ai.opencode.feature.session.ComposerTunables
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -254,9 +255,10 @@ object DrawerTunables {
     /** Title text. */
     val titleFont: DrawerTextStyle = DrawerTextStyle.Title
     /** New Session button height. */
-    val footerHeight: Dp = 50.dp
+    val footerHeight: Dp = ComposerTunables.faceDiameter.dp
     /** New Session padding. */
-    val footerPadding: Dp = 18.dp
+    val footerPadding: Dp = 12.dp
+    val footerBottom: Dp = 12.dp
     /**
      * New Session's symbol starts as far from the pill's end as it sits from the top:
      * `(height − glyph) / 2` less the symbol's own side bearing, both scaled with the text.
@@ -285,7 +287,7 @@ object DrawerTunables {
     /** Selected fill. */
     const val selectionOpacity: Float = 0.14f
     /** Search button size. */
-    val searchSize: Dp = 44.dp
+    val searchSize: Dp = ComposerTunables.faceDiameter.dp
     /** Project icon size. */
     val projectIconSize: Dp = 20.dp
     /** Project icon corner radius (at a 20 dp tile; scales with the tile). */

@@ -11,18 +11,25 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.node.RootForTest
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Density
 import ai.opencode.core.ui.OpenCodeAppTheme
+import ai.opencode.core.store.Store
+import ai.opencode.core.store.Reduced
+import ai.opencode.core.store.Reducer
 import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.TestClock
 import ai.opencode.core.store.TestStore
@@ -36,6 +43,10 @@ import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.OpenCodeHomeSnapshot
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -159,6 +170,94 @@ class ServerSwitchingTests {
 class ServerManagementViewTests {
     @get:Rule val isolation = TestIsolationRule()
 
+    @Test fun compactDrawerControlsClearTheBottomInsetAndKeepTheirTouchTargets() {
+        val frameDelay = ShadowChoreographer.getFrameDelay()
+        val paused = ShadowChoreographer.isPaused()
+        ShadowChoreographer.setPaused(true)
+        ShadowChoreographer.setFrameDelay(java.time.Duration.ofMillis(16))
+        try {
+            for ((bottomInset, fontScale) in listOf(0 to 1f, 24 to 1f, 24 to 2f)) {
+                val server = OpenCodeServer(url = "https://computer.invalid", username = "opencode", password = "", name = "Work Laptop")
+                val snapshot = OpenCodeHomeSnapshot(projects = emptyList(), sessions = emptyList(), activeSessionIDs = emptySet())
+                val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+                val store = Store(HomeFeature.State(server, snapshot).copy(showsWhatsNewButton = false), Reducer<HomeFeature.State, HomeFeature.Action> { state, _ -> Reduced(state) }, scope = scope)
+                val controller = Robolectric.buildActivity(ComponentActivity::class.java).setup()
+                var view = ComposeView(controller.get())
+                controller.get().setContentView(view)
+                try {
+                    fun show(drawer: HomeViewState) {
+                        view.disposeComposition()
+                        view = ComposeView(controller.get())
+                        controller.get().setContentView(view)
+                        view.setContent {
+                            OpenCodeAppTheme {
+                                CompositionLocalProvider(LocalDensity provides Density(3f, fontScale)) {
+                                    HomeDrawer(store, drawer, Modifier.fillMaxSize(), safeInsets = WindowInsets(0, 72, 0, bottomInset * 3))
+                                }
+                            }
+                        }
+                        pump()
+                        repeat(3) {
+                            view.forceLayout()
+                            view.measure(View.MeasureSpec.makeMeasureSpec(1080, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(2400, View.MeasureSpec.EXACTLY))
+                            view.layout(0, 0, 1080, 2400)
+                            pump()
+                        }
+                    }
+                    val drawer = HomeViewState(store, initiallyOpenDrawer = true)
+                    show(drawer)
+                    drawerScreenshot(view, "drawer-controls-$bottomInset-$fontScale")
+                    for (tag in listOf("drawer-new-session", "drawer-settings", "drawer-search")) {
+                        val node = tagged(tag)
+                        assertTrue("$tag keeps a 48 dp touch target", node.touchBoundsInRoot.height >= 144f && node.touchBoundsInRoot.width >= 144f)
+                        if (tag != "drawer-search") {
+                            assertTrue("$tag clears the navigation inset and bottom padding", node.boundsInRoot.bottom <= 2400f - (bottomInset + 12) * 3)
+                        }
+                    }
+                    val search = nodes().first { it.config.getOrNull(SemanticsProperties.TestTag) == "drawer-search" }
+                    assertTrue(requireNotNull(search.config.getOrNull(SemanticsActions.OnClick)?.action).invoke())
+                    pump()
+                    assertTrue(drawer.search.isSearching)
+                    val expanded = HomeViewState(store, initiallyOpenDrawer = true).apply {
+                        this.search.isSearching = true
+                        this.search.isFocused = true
+                    }
+                    show(expanded)
+                    val field = tagged("drawer-search-pill")
+                    val cancel = tagged("drawer-search-cancel")
+                    assertEquals("Search field and Cancel align", field.boundsInRoot.height, cancel.boundsInRoot.height)
+                    assertTrue("Cancel keeps a 48 dp touch target", cancel.touchBoundsInRoot.height >= 144f && cancel.touchBoundsInRoot.width >= 144f)
+                    assertTrue("The search field stays usable", nodes().any { it.config.getOrNull(SemanticsActions.SetText) != null })
+                    drawerScreenshot(view, "drawer-search-$bottomInset-$fontScale")
+                    assertTrue(requireNotNull(cancel.config.getOrNull(SemanticsActions.OnClick)?.action).invoke())
+                    pump()
+                    assertFalse(expanded.search.isSearching)
+                } finally {
+                    view.disposeComposition()
+                    scope.cancel()
+                    controller.pause().stop().destroy()
+                }
+            }
+        } finally {
+            ShadowChoreographer.setFrameDelay(frameDelay)
+            ShadowChoreographer.setPaused(paused)
+        }
+    }
+
+    private fun tagged(tag: String): SemanticsNode = nodes().firstOrNull { it.config.getOrNull(SemanticsProperties.TestTag) == tag }
+        ?: error("Missing $tag: ${nodes().mapNotNull { it.config.getOrNull(SemanticsProperties.TestTag) ?: it.config.getOrNull(SemanticsProperties.ContentDescription)?.joinToString() }}")
+
+    private fun drawerScreenshot(view: View, name: String) {
+        System.getProperty("opencode.drawerControlsScreenshots")?.let { directory ->
+            val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+            view.draw(Canvas(bitmap))
+            val file = java.io.File(directory, "$name.png")
+            file.parentFile?.mkdirs()
+            file.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+            bitmap.recycle()
+        }
+    }
+
     @Test fun oneConnectedComputerOffersAddingPairingRenamingAndManagement() {
         val frameDelay = ShadowChoreographer.getFrameDelay()
         val paused = ShadowChoreographer.isPaused()
@@ -231,7 +330,10 @@ class ServerManagementViewTests {
         }
     }
 
-    private fun pump() = repeat(8) { shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(50)) }
+    private fun pump() = repeat(8) {
+        androidx.compose.runtime.snapshots.Snapshot.sendApplyNotifications()
+        shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(50))
+    }
 
     private fun root(view: View): RootForTest? = when (view) {
         is RootForTest -> view

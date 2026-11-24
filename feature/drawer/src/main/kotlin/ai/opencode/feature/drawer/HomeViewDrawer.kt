@@ -21,6 +21,7 @@ import ai.opencode.core.ui.OpenCodeIconButton
 import ai.opencode.core.ui.OpenCodeIconButtonStyle
 import ai.opencode.core.ui.OpenCodeNotice
 import ai.opencode.core.ui.OpenCodeNoticePresence
+import ai.opencode.core.ui.OpenCodeMinTapTarget
 import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.SFSymbol
@@ -142,12 +143,6 @@ import kotlin.math.min
 private val DrawerHeaderTop: Dp = 8.dp
 
 /**
- * New Session and Settings centred on the resting composer's line (`ComposerTunables.bottomGap` 0 +
- * (bar 56 − footer 50) / 2).
- */
-private val DrawerFooterBottom: Dp = ((ComposerTunables.barHeight - DrawerTunables.footerHeight.value) / 2).dp
-
-/**
  * The session drawer's panel: everything inside the drawer, for the container's `drawer` slot.
  *
  * Size it with [modifier] (the drawer's width, full height); it pads itself by the system bars
@@ -166,14 +161,14 @@ fun HomeDrawer(
     viewState: HomeViewState,
     modifier: Modifier = Modifier,
     hostsDeleteConfirmation: Boolean = true,
+    safeInsets: WindowInsets = WindowInsets.systemBars.union(WindowInsets.displayCutout),
 ) {
     val density = LocalDensity.current
     val colors = OpenCodeTheme.colors
     val reducedMotion = rememberReduceMotion()
     val highContrast = rememberHighContrast()
-    val safe = WindowInsets.systemBars.union(WindowInsets.displayCutout)
-    val insetTop = with(density) { safe.getTop(this).toDp() }
-    val insetBottom = with(density) { safe.getBottom(this).toDp() }
+    val insetTop = with(density) { safeInsets.getTop(this).toDp() }
+    val insetBottom = with(density) { safeInsets.getBottom(this).toDp() }
 
     val pinDrag = remember { DrawerPinDrag() }
     DisposableEffect(pinDrag, viewState) {
@@ -201,9 +196,9 @@ fun HomeDrawer(
 
     // Measured: the first row starts below the title, the last scrolls clear of the controls.
     var headerHeight by remember { mutableFloatStateOf(0f) }
-    var controlsHeight by remember { mutableFloatStateOf(DrawerTunables.footerHeight.value) }
+    var controlsHeight by remember { mutableFloatStateOf(OpenCodeMinTapTarget.value) }
     val controlsReach = (controlsHeight * DrawerTunables.controlsReach.coerceIn(0f, 1f)).dp
-    val footerBottom = DrawerFooterBottom
+    val footerBottom = DrawerTunables.footerBottom
 
     // Selection mode: while rows are chosen a tap adds or removes one, and system back, ✕ or the
     // drawer closing ends it.
@@ -435,17 +430,17 @@ fun HomeDrawer(
                     // Their band takes its own touches, the disabled pill's included.
                     .swallowingTouches(),
             ) {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .onSizeChanged { controlsHeight = it.height / density.density },
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                DrawerNewSessionButton(enabled = !disconnected, onClick = viewState::startNewSessionFromDrawer)
-                Spacer(Modifier.weight(1f))
-                DrawerFooterTrailing(store, disconnected, reducedMotion, onOpenSettings = viewState::openSettings)
-            }
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .onSizeChanged { controlsHeight = it.height / density.density },
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    DrawerNewSessionButton(enabled = !disconnected, onClick = viewState::startNewSessionFromDrawer)
+                    Spacer(Modifier.weight(1f))
+                    DrawerFooterTrailing(store, disconnected, reducedMotion, onOpenSettings = viewState::openSettings)
+                }
             }
         }
     }
@@ -493,7 +488,7 @@ fun HomeDeleteConfirmation(store: StoreOf<HomeFeature.State, HomeFeature.Action>
 }
 
 /**
- * New Session's pill. The symbol's ink sits as far from the pill's leading end as from its top at
+ * New Session's button. The symbol's ink sits as far from the pill's leading end as from its top at
  * every text size, so its leading padding shrinks as the symbol grows; the trailing stays
  * `footerPadding`. Disconnected, the label dims (not the capsule) and it takes no taps.
  */
@@ -509,9 +504,7 @@ private fun DrawerNewSessionButton(enabled: Boolean, onClick: () -> Unit) {
     val tint = if (enabled) colors.text else colors.tertiaryText
     val newSession = stringResource(R.string.drawer_new_session)
     Surface(
-        // The desktop's floating control: the popover fill, hairline ring and a soft shadow, at the
-        // floating panels' radius so the tall footer buttons don't read as keys.
-        shape = RoundedCornerShape(OpenCodeRadius.panel),
+        shape = RoundedCornerShape(OpenCodeRadius.control),
         color = OpenCodeSurfaces.color,
         border = OpenCodeSurfaces.border,
         shadowElevation = OpenCodeSurfaces.raisedShadow,
@@ -519,6 +512,7 @@ private fun DrawerNewSessionButton(enabled: Boolean, onClick: () -> Unit) {
         modifier = Modifier
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
             .openCodeTapTarget()
+            .padding(horizontal = (OpenCodeMinTapTarget - DrawerTunables.footerHeight) / 2)
             .testTag("drawer-new-session")
             .clearAndSetSemantics {
                 contentDescription = newSession
@@ -559,10 +553,8 @@ private fun Modifier.swallowingTouches(): Modifier = pointerInput(Unit) {
 }
 
 /**
- * The footer's trailing controls: the call button and Settings in one tonal capsule, the New
- * Session pill's colour and height, each a `footerHeight` square. Without the call button (during a
- * call, or Voice not set up) the capsule is Settings' circle alone: Settings keeps its place, and
- * the call's half folds into it.
+ * The footer's call and Settings controls share a compact surface. During a call, or without
+ * Voice set up, Settings keeps its place while the call's half folds into it.
  */
 @Composable
 private fun DrawerFooterTrailing(
@@ -582,7 +574,7 @@ private fun DrawerFooterTrailing(
             center.drawerCallButton = null
         }
     }
-    val square = DrawerTunables.footerHeight
+    val square = OpenCodeMinTapTarget
     Box(contentAlignment = Alignment.CenterEnd) {
         if (offersCall) {
             // The call's half stands left of Settings, shown or not, so a call ending with the
@@ -596,52 +588,54 @@ private fun DrawerFooterTrailing(
             }
         }
         Surface(
-            shape = RoundedCornerShape(OpenCodeRadius.panel),
+            shape = RoundedCornerShape(OpenCodeRadius.control),
             color = OpenCodeSurfaces.color,
             border = OpenCodeSurfaces.border,
             shadowElevation = OpenCodeSurfaces.raisedShadow,
             contentColor = OpenCodeTheme.colors.text,
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                AnimatedVisibility(
-                    visible = offersCall && showsCall,
-                    // The call button comes on layout and goes on collapse.
-                    enter = if (reducedMotion) {
-                        fadeIn(MotionRole.Layout.animation(reduceMotion = true))
-                    } else {
-                        expandHorizontally(MotionRole.Layout.animation(visibilityThreshold = IntSize.VisibilityThreshold), expandFrom = Alignment.End) +
-                            fadeIn(MotionRole.Layout.animation())
-                    },
-                    exit = if (reducedMotion) {
-                        fadeOut(MotionRole.Layout.animation(MotionPhase.Exit, reduceMotion = true))
-                    } else {
-                        shrinkHorizontally(MotionRole.Layout.animation(MotionPhase.Exit, visibilityThreshold = IntSize.VisibilityThreshold), shrinkTowards = Alignment.End) +
-                            fadeOut(MotionRole.Layout.animation(MotionPhase.Exit))
-                    },
-                ) {
-                    OpenCodeIconButton(
-                        symbol = SFSymbol.PhoneFill,
-                        contentDescription = stringResource(R.string.drawer_start_voice_call_description),
-                        onClick = {
-                            // The orb breaks out of this button, not the composer's under the drawer.
-                            center.breakoutFrom = center.drawerCallButton
-                            store.send(HomeFeature.Action.DrawerCallTapped)
-                        },
-                        style = OpenCodeIconButtonStyle.Standard,
-                        size = square,
-                        enabled = !disconnected,
-                        modifier = Modifier.testTag("drawer-call"),
-                    )
-                }
+            modifier = Modifier.matchParentSize().padding((square - DrawerTunables.footerHeight) / 2),
+        ) {}
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            AnimatedVisibility(
+                visible = offersCall && showsCall,
+                // The call button comes on layout and goes on collapse.
+                enter = if (reducedMotion) {
+                    fadeIn(MotionRole.Layout.animation(reduceMotion = true))
+                } else {
+                    expandHorizontally(MotionRole.Layout.animation(visibilityThreshold = IntSize.VisibilityThreshold), expandFrom = Alignment.End) +
+                        fadeIn(MotionRole.Layout.animation())
+                },
+                exit = if (reducedMotion) {
+                    fadeOut(MotionRole.Layout.animation(MotionPhase.Exit, reduceMotion = true))
+                } else {
+                    shrinkHorizontally(MotionRole.Layout.animation(MotionPhase.Exit, visibilityThreshold = IntSize.VisibilityThreshold), shrinkTowards = Alignment.End) +
+                        fadeOut(MotionRole.Layout.animation(MotionPhase.Exit))
+                },
+            ) {
                 OpenCodeIconButton(
-                    symbol = SFSymbol.GearshapeFill,
-                    contentDescription = stringResource(CoreR.string.common_settings),
-                    onClick = onOpenSettings,
+                    symbol = SFSymbol.PhoneFill,
+                    contentDescription = stringResource(R.string.drawer_start_voice_call_description),
+                    onClick = {
+                        // The orb breaks out of this button, not the composer's under the drawer.
+                        center.breakoutFrom = center.drawerCallButton
+                        store.send(HomeFeature.Action.DrawerCallTapped)
+                    },
                     style = OpenCodeIconButtonStyle.Standard,
                     size = square,
-                    modifier = Modifier.testTag("drawer-settings"),
+                    iconSize = 20.dp,
+                    enabled = !disconnected,
+                    modifier = Modifier.testTag("drawer-call"),
                 )
             }
+            OpenCodeIconButton(
+                symbol = SFSymbol.GearshapeFill,
+                contentDescription = stringResource(CoreR.string.common_settings),
+                onClick = onOpenSettings,
+                style = OpenCodeIconButtonStyle.Standard,
+                size = square,
+                iconSize = 20.dp,
+                modifier = Modifier.testTag("drawer-settings"),
+            )
         }
     }
 }
