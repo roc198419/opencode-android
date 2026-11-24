@@ -23,6 +23,7 @@ accepts: `--model <provider/model>` to translate, `--review-model <provider/mode
 Or leave the strings for a maintainer to translate; CI flags them as missing.
 """
 import argparse
+import functools
 import json
 import os
 import re
@@ -207,7 +208,7 @@ def write_translation(english_path, qualifier, translations):
     lines.append("</resources>")
     path = translated_path(english_path, qualifier)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(lines) + "\n")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 desktop_files = {}
@@ -287,13 +288,21 @@ def relevant_terms(terms, chunk_text, limit):
     return picked
 
 
+@functools.cache
+def model_command():
+    executable = shutil.which("opencode") or "opencode"
+    help_text = subprocess.run([executable, "run", "--help"], capture_output=True, text=True, encoding="utf-8", timeout=30).stdout
+    return [executable, "run", "--agent", "translator"] + (["--archived"] if "--archived" in help_text else [])
+
+
 def call_model(model, prompt, workdir):
     """Sends one prompt through `opencode run` and returns the JSON object it answers with."""
     result = subprocess.run(
-        ["opencode", "run", "--agent", "translator", "--archived", "-m", model, "Follow the instructions below."],
+        [*model_command(), "-m", model, "Follow the instructions below."],
         input=prompt,
         capture_output=True,
         text=True,
+        encoding="utf-8",
         cwd=workdir,
         # OpenCode takes the project directory from PWD, which `cwd` alone doesn't change.
         env={**os.environ, "PWD": workdir},
@@ -509,7 +518,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix="translate-") as workdir:
         agent = Path(workdir) / ".opencode" / "agent" / "translator.md"
         agent.parent.mkdir(parents=True)
-        agent.write_text(AGENT)
+        agent.write_text(AGENT, encoding="utf-8")
         # OpenCode reads project agents only inside a repository.
         subprocess.run(["git", "init", "-q", workdir], check=True)
         with ThreadPoolExecutor(max_workers=args.jobs) as pool:
