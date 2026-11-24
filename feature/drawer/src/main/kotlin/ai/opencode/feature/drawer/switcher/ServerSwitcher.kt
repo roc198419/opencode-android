@@ -73,7 +73,6 @@ object DrawerTitle {
     data class Presentation(
         /** A confirmed outage of the server in use; not a reconnect or a switch. */
         val isDimmed: Boolean,
-        /** A pull-down: with several servers always, with one only while offline. */
         val hasMenu: Boolean,
         val listsServers: Boolean,
         val offersTryAgain: Boolean,
@@ -100,21 +99,15 @@ object DrawerTitle {
                 val listsServers = serverCount > 1
                 val offersTryAgain = status == HomeConnectionFeature.State.ConnectionStatus.disconnected && !rejected
                 val offersEdit = rejected
-                val hasMenu = listsServers || offersTryAgain || offersEdit
                 return Presentation(
                     isDimmed = status == HomeConnectionFeature.State.ConnectionStatus.disconnected && switchingTo == null,
-                    hasMenu = hasMenu,
+                    hasMenu = true,
                     listsServers = listsServers,
                     offersTryAgain = offersTryAgain,
                     offersEdit = offersEdit,
                     issue = issue,
                     accessibilityValue = switchingTo?.let { localized(R.string.drawer_server_connecting_to_state, it) } ?: issue ?: "",
-                    accessibilityHint = when {
-                        listsServers -> localized(R.string.drawer_server_show_servers_hint)
-                        offersEdit -> localized(R.string.drawer_server_offer_edit_hint)
-                        hasMenu -> localized(R.string.drawer_server_offer_try_again_hint)
-                        else -> null
-                    },
+                    accessibilityHint = localized(R.string.drawer_server_show_servers_hint),
                 )
             }
 

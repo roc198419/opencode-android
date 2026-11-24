@@ -40,6 +40,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -88,7 +89,6 @@ fun SettingsServersSection(
 ) {
     val savedServers by remember { shared(ServerSharedKeys.savedServers).flow }.collectAsState()
     var renaming by remember { mutableStateOf<OpenCodeServer?>(null) }
-    var nameDraft by remember { mutableStateOf("") }
     var removing by remember { mutableStateOf<OpenCodeServer?>(null) }
     // A steady order, so rows never move as servers are used.
     val servers = remember(current, savedServers) {
@@ -102,10 +102,7 @@ fun SettingsServersSection(
                 server = server,
                 isCurrent = server.persistenceID == current.persistenceID,
                 onSwitch = onSwitch,
-                onRename = {
-                    nameDraft = server.name ?: ""
-                    renaming = server
-                },
+                onRename = { renaming = server },
                 onEdit = { send(SettingsDelegate.EditServer(server)) },
                 onRemove = { removing = server },
             )
@@ -123,30 +120,10 @@ fun SettingsServersSection(
     }
 
     renaming?.let { server ->
-        OpenCodeAlertDialog(
+        RenameServerDialog(
+            server = server,
             onDismissRequest = { renaming = null },
-            title = { Text(stringResource(R.string.settings_server_rename_title)) },
-            text = {
-                Column {
-                    Text(stringResource(R.string.settings_servers_rename_message, ai.opencode.core.ui.ThisDevice.name))
-                    OpenCodeTextField(
-                        value = nameDraft,
-                        onValueChange = { nameDraft = it },
-                        placeholder = server.friendlyName,
-                        trailingIcon = AlertTextFields.clearButton(nameDraft) { nameDraft = "" },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
-                        modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
-                    )
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    renaming = null
-                    send(SettingsDelegate.RenameServer(server, nameDraft))
-                }) { Text(stringResource(CoreR.string.common_save)) }
-            },
-            dismissButton = { TextButton(onClick = { renaming = null }) { Text(stringResource(CoreR.string.common_cancel)) } },
+            onRename = { send(SettingsDelegate.RenameServer(server, it)) },
         )
     }
 
@@ -164,6 +141,36 @@ fun SettingsServersSection(
             dismissButton = { TextButton(onClick = { removing = null }) { Text(stringResource(CoreR.string.common_cancel)) } },
         )
     }
+}
+
+@Composable
+fun RenameServerDialog(server: OpenCodeServer, onDismissRequest: () -> Unit, onRename: (String) -> Unit) {
+    var nameDraft by rememberSaveable(server.persistenceID) { mutableStateOf(server.name.orEmpty()) }
+    OpenCodeAlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = { Text(stringResource(R.string.settings_server_rename_title)) },
+        text = {
+            Column {
+                Text(stringResource(R.string.settings_servers_rename_message, ai.opencode.core.ui.ThisDevice.name))
+                OpenCodeTextField(
+                    value = nameDraft,
+                    onValueChange = { nameDraft = it },
+                    placeholder = server.friendlyName,
+                    trailingIcon = AlertTextFields.clearButton(nameDraft) { nameDraft = "" },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+                    modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = {
+                onRename(nameDraft)
+                onDismissRequest()
+            }) { Text(stringResource(CoreR.string.common_save)) }
+        },
+        dismissButton = { TextButton(onClick = onDismissRequest) { Text(stringResource(CoreR.string.common_cancel)) } },
+    )
 }
 
 /** One saved server: name and address, the current one checked; its options in a menu (and on long press). */

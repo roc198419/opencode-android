@@ -17,6 +17,8 @@ import ai.opencode.feature.drawer.R
 import ai.opencode.feature.drawer.ServerMenuStatus
 import ai.opencode.feature.drawer.ServerReachability
 import ai.opencode.feature.drawer.style.DrawerTunables
+import ai.opencode.feature.settings.R as SettingsR
+import ai.opencode.feature.settings.connection.RenameServerDialog
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.ServerSharedKeys
 import ai.opencode.server.friendlyName
@@ -54,7 +56,6 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -84,12 +85,16 @@ fun ServerFlowTitle(
     onRetry: () -> Unit,
     onEdit: () -> Unit,
     onManage: () -> Unit,
+    onAdd: () -> Unit,
+    onPair: () -> Unit,
+    onRename: (String) -> Unit,
     modifier: Modifier = Modifier,
     credentialsRejected: Boolean = false,
     switchingTo: OpenCodeServer? = null,
     reachability: Map<String, ServerReachability> = emptyMap(),
 ) {
     val shown = switchingTo ?: current
+    var renaming by rememberSaveable(current.persistenceID) { mutableStateOf(false) }
     // A switch speaks for itself: the server it left has nothing to offer.
     val presentation = DrawerTitle.Presentation(
         serverCount = servers.size,
@@ -100,97 +105,117 @@ fun ServerFlowTitle(
     val selectedText = stringResource(R.string.drawer_row_selected)
     BoxWithConstraints(modifier.fillMaxWidth()) {
         val available = maxWidth
-        if (presentation.hasMenu) {
-            var expanded by rememberSaveable { mutableStateOf(false) }
-            Box {
-                Label(
-                    shown, presentation, isConnecting = switchingTo != null, chevron = true, available = available,
-                    modifier = Modifier
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            role = Role.DropdownList,
-                            onClickLabel = presentation.accessibilityHint,
-                        ) { expanded = true }
-                        .clearAndSetSemantics {
-                            contentDescription = shown.friendlyName
-                            stateDescription = accessibilityValue
-                            heading()
-                            testTag = DrawerTitle.TAG
-                        },
-                )
-                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    if (presentation.listsServers) {
-                        for (server in servers) {
-                            val isShown = server.persistenceID == shown.persistenceID
-                            val serverStatus = ServerMenuStatus.of(server, current, status, credentialsRejected, switchingTo, reachability)
-                            DropdownMenuItem(
-                                text = {
-                                    Column {
-                                        Text(server.friendlyName, maxLines = 1, overflow = TextOverflow.MiddleEllipsis)
-                                        if (serverStatus != null) {
-                                            Text(serverStatus.title, style = OpenCodeTextStyles.footnote, color = OpenCodeTheme.colors.secondaryText)
-                                        }
-                                    }
-                                },
-                                leadingIcon = {
-                                    // A menu toggle draws the checkmark.
-                                    if (isShown) OpenCodeIcon(SFSymbol.Checkmark, contentDescription = null) else Spacer(Modifier.size(24.dp))
-                                },
-                                trailingIcon = serverStatus?.let { { OpenCodeIcon(it.systemImage, contentDescription = null) } },
-                                onClick = {
-                                    expanded = false
-                                    if (!isShown) onSwitch(server)
-                                },
-                                // Picking a server switches to it, so it reads as chosen, not as a toggle.
-                                modifier = Modifier.semantics { if (isShown) stateDescription = selectedText },
-                            )
-                        }
-                        HorizontalDivider()
-                    }
-                    if (presentation.offersTryAgain) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(CoreR.string.common_try_again)) },
-                            leadingIcon = { OpenCodeIcon(SFSymbol.ArrowClockwise, contentDescription = null) },
-                            onClick = {
-                                expanded = false
-                                onRetry()
-                            },
-                        )
-                    }
-                    if (presentation.offersEdit) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.drawer_server_edit)) },
-                            leadingIcon = { OpenCodeIcon(SFSymbol.Key, contentDescription = null) },
-                            onClick = {
-                                expanded = false
-                                onEdit()
-                            },
-                        )
-                    }
-                    if (presentation.offersTryAgain || presentation.offersEdit) HorizontalDivider()
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.drawer_server_manage)) },
-                        leadingIcon = { OpenCodeIcon(SFSymbol.Gearshape, contentDescription = null) },
-                        onClick = {
-                            expanded = false
-                            onManage()
-                        },
-                    )
-                }
-            }
-        } else {
+        var expanded by rememberSaveable { mutableStateOf(false) }
+        Box {
             Label(
-                shown, presentation, isConnecting = switchingTo != null, chevron = false, available = available,
+                shown, presentation, isConnecting = switchingTo != null, chevron = true, available = available,
                 modifier = Modifier
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        role = Role.DropdownList,
+                        onClickLabel = presentation.accessibilityHint,
+                    ) { expanded = true }
                     .clearAndSetSemantics {
                         contentDescription = shown.friendlyName
                         stateDescription = accessibilityValue
                         heading()
-                    }
-                    .testTag(DrawerTitle.TAG),
+                        testTag = DrawerTitle.TAG
+                    },
             )
+            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                if (presentation.listsServers) {
+                    for (server in servers) {
+                        val isShown = server.persistenceID == shown.persistenceID
+                        val serverStatus = ServerMenuStatus.of(server, current, status, credentialsRejected, switchingTo, reachability)
+                        DropdownMenuItem(
+                            text = {
+                                Column {
+                                    Text(server.friendlyName, maxLines = 1, overflow = TextOverflow.MiddleEllipsis)
+                                    if (serverStatus != null) {
+                                        Text(serverStatus.title, style = OpenCodeTextStyles.footnote, color = OpenCodeTheme.colors.secondaryText)
+                                    }
+                                }
+                            },
+                            leadingIcon = {
+                                // A menu toggle draws the checkmark.
+                                if (isShown) OpenCodeIcon(SFSymbol.Checkmark, contentDescription = null) else Spacer(Modifier.size(24.dp))
+                            },
+                            trailingIcon = serverStatus?.let { { OpenCodeIcon(it.systemImage, contentDescription = null) } },
+                            onClick = {
+                                expanded = false
+                                if (!isShown) onSwitch(server)
+                            },
+                            // Picking a server switches to it, so it reads as chosen, not as a toggle.
+                            modifier = Modifier.semantics { if (isShown) stateDescription = selectedText },
+                        )
+                    }
+                    HorizontalDivider()
+                }
+                if (presentation.offersTryAgain) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(CoreR.string.common_try_again)) },
+                        leadingIcon = { OpenCodeIcon(SFSymbol.ArrowClockwise, contentDescription = null) },
+                        onClick = {
+                            expanded = false
+                            onRetry()
+                        },
+                    )
+                }
+                if (presentation.offersEdit) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.drawer_server_edit)) },
+                        leadingIcon = { OpenCodeIcon(SFSymbol.Key, contentDescription = null) },
+                        onClick = {
+                            expanded = false
+                            onEdit()
+                        },
+                    )
+                }
+                if (presentation.offersTryAgain || presentation.offersEdit) HorizontalDivider()
+                DropdownMenuItem(
+                    text = { Text(stringResource(SettingsR.string.settings_servers_add_server)) },
+                    leadingIcon = { OpenCodeIcon(SFSymbol.Plus, contentDescription = null) },
+                    onClick = {
+                        expanded = false
+                        onAdd()
+                    },
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(SettingsR.string.settings_servers_scan_pairing_code)) },
+                    leadingIcon = { OpenCodeIcon(SFSymbol.QrcodeViewfinder, contentDescription = null) },
+                    onClick = {
+                        expanded = false
+                        onPair()
+                    },
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(SettingsR.string.settings_server_rename_server_ellipsis)) },
+                    leadingIcon = { OpenCodeIcon(SFSymbol.Pencil, contentDescription = null) },
+                    enabled = switchingTo == null,
+                    onClick = {
+                        expanded = false
+                        renaming = true
+                    },
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.drawer_server_manage)) },
+                    leadingIcon = { OpenCodeIcon(SFSymbol.Gearshape, contentDescription = null) },
+                    onClick = {
+                        expanded = false
+                        onManage()
+                    },
+                )
+            }
         }
+
+    }
+    if (renaming) {
+        RenameServerDialog(
+            server = current,
+            onDismissRequest = { renaming = false },
+            onRename = onRename,
+        )
     }
 }
 
@@ -215,6 +240,9 @@ fun ServerFlowTitle(
         onRetry = { store.send(HomeFeature.Action.RetryConnectionTapped) },
         onEdit = { store.send(HomeFeature.Action.Delegate(HomeFeature.DelegateAction.EditServerRequested(current))) },
         onManage = onManage,
+        onAdd = { store.send(HomeFeature.Action.Delegate(HomeFeature.DelegateAction.AddServerRequested)) },
+        onPair = { store.send(HomeFeature.Action.Delegate(HomeFeature.DelegateAction.PairServerRequested)) },
+        onRename = { store.send(HomeFeature.Action.Delegate(HomeFeature.DelegateAction.ServerRenamed(current, it))) },
         modifier = modifier,
         credentialsRejected = credentialsRejected,
         switchingTo = switchingTo,
@@ -240,7 +268,7 @@ private fun Label(
     val colors = OpenCodeTheme.colors
     val limit = maxOf(available - if (chevron) chevronWidth else 0.dp, 40.dp)
     Row(
-        modifier.heightIn(min = 48.dp),
+        modifier.heightIn(min = 48.dp).widthIn(min = 48.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(chevronGap),
     ) {
