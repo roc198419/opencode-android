@@ -53,7 +53,8 @@ class AppUpdateFeature : Reducer<AppUpdateFeature.State, AppUpdateFeature.Action
             val installed = client.installed()
             if (!installed.supported) {
                 if (action.manual) Reduced(state.copy(presented = true, phase = Phase.Unsupported)) else Reduced(state)
-            } else if (state.phase in setOf(Phase.Checking, Phase.Downloading, Phase.Permission, Phase.Installing)) {
+            } else if (state.phase in setOf(Phase.Checking, Phase.Downloading, Phase.Permission, Phase.Installing) ||
+                action.manual && state.phase == Phase.Ready) {
                 Reduced(if (action.manual) state.copy(presented = true) else state)
             } else {
                 val automatically = shared(AppUpdateSharedKeys.automaticallyChecks).value

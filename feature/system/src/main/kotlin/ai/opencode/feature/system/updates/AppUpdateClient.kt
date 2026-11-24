@@ -60,13 +60,15 @@ internal class LiveAppUpdater(private val context: Context, private val http: Ok
     private val downloads = Mutex()
     private val flags = PackageManager.PackageInfoFlags.of(PackageManager.GET_SIGNING_CERTIFICATES.toLong())
 
-    fun installed(): InstalledAppUpdate {
+    fun installed(): InstalledAppUpdate = try {
         val info = context.packageManager.getPackageInfo(context.packageName, flags)
-        return InstalledAppUpdate(
+        InstalledAppUpdate(
             context.packageName, info.versionName.orEmpty(), info.longVersionCode,
             certificate(info).orEmpty(), info.applicationInfo?.flags?.and(ApplicationInfo.FLAG_DEBUGGABLE) != 0,
             Build.VERSION.SDK_INT,
         )
+    } catch (_: Exception) {
+        InstalledAppUpdate()
     }
 
     suspend fun check(): AppUpdateRelease? = latestAppUpdate(installed(), ::readJson)
@@ -153,7 +155,7 @@ internal class LiveAppUpdater(private val context: Context, private val http: Ok
             }
         }
         requireUpdate(digest.digest().hex() == release.sha256)
-        val info = context.packageManager.getPackageArchiveInfo(file.path, flags)
+        val info = context.packageManager.getPackageArchiveInfo(file.path, PackageManager.GET_SIGNING_CERTIFICATES)
             ?: throw AppUpdateException(AppUpdateError.Verification)
         requireUpdate(info.packageName == release.packageName && info.longVersionCode == release.versionCode && info.versionName == release.versionName)
         requireUpdate(info.applicationInfo?.let { it.flags and ApplicationInfo.FLAG_DEBUGGABLE == 0 && it.minSdkVersion <= installed.sdk } == true)

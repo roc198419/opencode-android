@@ -685,6 +685,14 @@ class AppUpdateTests {
         store.finish()
     }
 
+    @Test fun reopeningAVerifiedDownloadKeepsTheInstallAction() = runTest {
+        val store = TestStore(AppUpdateFeature.State(release = release, downloaded = true, phase = AppUpdateFeature.Phase.Ready), AppUpdateFeature(), this) {
+            this[AppUpdateClient] = client.copy(check = { fail("Do not discard the prepared download"); null })
+        }
+        store.send(AppUpdateFeature.Action.Check(true)) { it.copy(presented = true) }
+        store.finish()
+    }
+
     @Test fun cancellationRejectsLateDownloadEvents() = runTest {
         val store = TestStore(AppUpdateFeature.State(presented = true, release = release, phase = AppUpdateFeature.Phase.Available), AppUpdateFeature(), this) {
             this[AppUpdateClient] = client.copy(download = { _, progress -> progress(25); kotlinx.coroutines.awaitCancellation() })
@@ -749,7 +757,7 @@ class AppUpdateInstallerTests {
 
     private class Fixture {
         val intents = mutableListOf<Intent>()
-        val base = RuntimeEnvironment.getApplication<android.app.Application>()
+        val base = RuntimeEnvironment.getApplication()
         val context = object : android.content.ContextWrapper(base) {
             override fun getPackageName() = AppUpdateChannel.packageName
             override fun startActivity(intent: Intent) { intents.add(intent) }
@@ -803,6 +811,14 @@ class AppUpdateInstallerTests {
         }
     }
 
+    @Test fun unavailablePackageMetadataDoesNotCrashTheApp() {
+        val context = object : android.content.ContextWrapper(RuntimeEnvironment.getApplication()) {
+            override fun getPackageManager(): android.content.pm.PackageManager = error("Package manager unavailable")
+        }
+        val updater = ai.opencode.feature.system.updates.LiveAppUpdater(context, okhttp3.OkHttpClient())
+        assertFalse(updater.installed().supported)
+    }
+
     @Test fun verifiedApkRequiresPermissionThenGrantsOnlyReadAccessToTheInstaller() = runTest {
         kotlinx.coroutines.Dispatchers.setMain(kotlinx.coroutines.test.UnconfinedTestDispatcher(testScheduler))
         try {
@@ -814,6 +830,7 @@ class AppUpdateInstallerTests {
             assertEquals(android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, f.intents.single().action)
             assertEquals("package:${AppUpdateChannel.packageName}", f.intents.single().data.toString())
             f.intents.clear()
+            org.junit.Assume.assumeTrue("AndroidX FileProvider requires Android path separators", java.io.File.separatorChar == '/')
             f.pm.setCanRequestPackageInstalls(true)
             assertEquals(AppUpdateClient.InstallResult.Opened, f.updater.install(f.release))
             val intent = f.intents.single()
