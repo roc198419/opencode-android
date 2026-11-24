@@ -241,11 +241,13 @@ class ServerManagementViewTests {
                         view.disposeComposition()
                         scope.cancel()
                         controller.pause().stop().destroy()
+                        pump()
                     }
                 }
             }
         } finally {
             org.robolectric.RuntimeEnvironment.setFontScale(1f)
+            pump()
             ShadowChoreographer.setFrameDelay(frameDelay)
             ShadowChoreographer.setPaused(paused)
         }
@@ -379,7 +381,8 @@ class ServerManagementViewTests {
             view.layout(0, 0, 1080, 2400)
             pump()
             openMenu()
-            assertTrue(nodes().any { it.config.getOrNull(SemanticsProperties.Text)?.any { text -> text.text == "Rename Server…" } == true })
+            val labels = nodes().flatMap { it.config.getOrNull(SemanticsProperties.Text).orEmpty().map { text -> text.text } }
+            assertTrue("Server menu labels: $labels", "Rename Server…" in labels)
             click("Add Server")
             assertEquals(1, added)
             openMenu()
