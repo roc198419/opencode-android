@@ -229,4 +229,24 @@
     <string name="settings_pairing_point_camera">Наведите камеру на QR-код</string>
     <string name="settings_pairing_paste_link">Вставить ссылку сопряжения</string>
     <string name="settings_pairing_computer_hint">На компьютере откройте настройки OpenCode → Сопряжение или выполните %1$s в терминале.</string>
+    <string name="settings_update_title">Обновления приложений</string>
+    <string name="settings_update_current_version">Текущая версия: %1$s</string>
+    <string name="settings_update_checking">Проверка обновлений…</string>
+    <string name="settings_update_current">Вы используете последнюю версию.</string>
+    <string name="settings_update_available">Доступна версия %1$s (%2$d МБ).</string>
+    <string name="settings_update_downloading">Загрузка и проверка обновления…</string>
+    <string name="settings_update_ready">Обновление проверено и готово к установке.</string>
+    <string name="settings_update_permission">Разрешите этому приложению устанавливать обновления в настройках Android, а затем вернитесь сюда.</string>
+    <string name="settings_update_installing">Подтвердите обновление в Android. Вы можете повторить попытку, если отмените подписку.</string>
+    <string name="settings_update_unsupported">Обновления доступны в личной сборке выпуска GitHub.</string>
+    <string name="settings_update_verification_failed">Не удалось проверить обновление. Загрузите его еще раз, чтобы повторить попытку.</string>
+    <string name="settings_update_download_failed">Не удалось загрузить обновление. Проверьте подключение и повторите попытку.</string>
+    <string name="settings_update_install_failed">Не удалось открыть установщик. Попробуйте еще раз и разрешите установку из этого приложения.</string>
+    <string name="settings_update_check_failed">Не удалось проверить наличие обновлений. Проверьте подключение и повторите попытку.</string>
+    <string name="settings_update_progress">%1$d%% скачано</string>
+    <string name="settings_update_automatic">Автоматическая проверка обновлений</string>
+    <string name="settings_update_automatic_detail">Проверяется, когда вы используете приложение, не чаще одного раза в 12 часов. Загрузка и установка требуют вашего подтверждения.</string>
+    <string name="settings_update_download">Скачать обновление</string>
+    <string name="settings_update_install">Установить обновление</string>
+    <string name="settings_update_check">Проверьте еще раз</string>
 </resources>

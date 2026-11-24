@@ -229,4 +229,24 @@
     <string name="settings_pairing_point_camera">Namiřte fotoaparát na QR kód</string>
     <string name="settings_pairing_paste_link">Vložit párovací odkaz</string>
     <string name="settings_pairing_computer_hint">Na počítači otevřete v OpenCode Nastavení → Párování nebo v terminálu spusťte %1$s.</string>
+    <string name="settings_update_title">Aktualizace aplikací</string>
+    <string name="settings_update_current_version">Aktuální verze: %1$s</string>
+    <string name="settings_update_checking">Kontrola aktualizací…</string>
+    <string name="settings_update_current">Používáte nejnovější verzi.</string>
+    <string name="settings_update_available">Verze %1$s je k dispozici (%2$d MB).</string>
+    <string name="settings_update_downloading">Stahování a ověřování aktualizace…</string>
+    <string name="settings_update_ready">Aktualizace je ověřena a připravena k instalaci.</string>
+    <string name="settings_update_permission">Povolte této aplikaci instalovat aktualizace v nastavení systému Android a poté se vraťte sem.</string>
+    <string name="settings_update_installing">Potvrďte aktualizaci v systému Android. Pokud zrušíte, můžete to zkusit znovu.</string>
+    <string name="settings_update_unsupported">Aktualizace jsou k dispozici v osobním sestavení vydání GitHubu.</string>
+    <string name="settings_update_verification_failed">Aktualizaci se nepodařilo ověřit. Stáhněte si jej znovu a zkuste to znovu.</string>
+    <string name="settings_update_download_failed">Aktualizaci nelze stáhnout. Zkontrolujte připojení a zkuste to znovu.</string>
+    <string name="settings_update_install_failed">Instalátor se nepodařilo otevřít. Zkuste to znovu a povolte instalaci z této aplikace.</string>
+    <string name="settings_update_check_failed">Aktualizace se nepodařilo zkontrolovat. Zkontrolujte připojení a zkuste to znovu.</string>
+    <string name="settings_update_progress">%1$d%% staženo</string>
+    <string name="settings_update_automatic">Automaticky vyhledávat aktualizace</string>
+    <string name="settings_update_automatic_detail">Kontroluje, kdy aplikaci používáte, maximálně jednou za 12 hodin. Stažení a instalace vyžadují vaše potvrzení.</string>
+    <string name="settings_update_download">Stáhnout aktualizaci</string>
+    <string name="settings_update_install">Nainstalujte aktualizaci</string>
+    <string name="settings_update_check">Zkontrolujte znovu</string>
 </resources>

@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Насочете камерата към QR кода</string>
     <string name="settings_pairing_paste_link">Поставяне на връзка за сдвояване</string>
     <string name="settings_pairing_computer_hint">На компютъра отворете Настройки → Сдвояване в OpenCode или изпълнете %1$s в терминал.</string>
+    <string name="settings_update_title">Актуализации на приложения</string>
+    <string name="settings_update_current_version">Текуща версия: %1$s</string>
+    <string name="settings_update_checking">Проверка за актуализации...</string>
+    <string name="settings_update_current">Използвате най-новата версия.</string>
+    <string name="settings_update_available">Версия %1$s е налична (%2$d MB).</string>
+    <string name="settings_update_downloading">Актуализацията се изтегля и проверява...</string>
+    <string name="settings_update_ready">Актуализацията е проверена и готова за инсталиране.</string>
+    <string name="settings_update_permission">Разрешете на това приложение да инсталира актуализации в настройките на Android, след което се върнете тук.</string>
+    <string name="settings_update_installing">Потвърдете актуализацията в Android. Можете да опитате отново, ако анулирате.</string>
+    <string name="settings_update_unsupported">Актуализациите са налични в личната версия на GitHub.</string>
+    <string name="settings_update_verification_failed">Актуализацията не можа да бъде проверена. Изтеглете го отново, за да опитате отново.</string>
+    <string name="settings_update_download_failed">Актуализацията не можа да бъде изтеглена. Проверете връзката си и опитайте отново.</string>
+    <string name="settings_update_install_failed">Инсталационната програма не можа да се отвори. Опитайте отново и разрешете инсталирането от това приложение.</string>
+    <string name="settings_update_check_failed">Не можах да проверя за актуализации. Проверете връзката си и опитайте отново.</string>
+    <string name="settings_update_progress">%1$d%% изтеглено</string>
+    <string name="settings_update_automatic">Автоматична проверка за актуализации</string>
+    <string name="settings_update_automatic_detail">Проверява, когато използвате приложението, най-много веднъж на всеки 12 часа. Изтеглянията и инсталирането изискват вашето потвърждение.</string>
+    <string name="settings_update_download">Изтеглете актуализация</string>
+    <string name="settings_update_install">Инсталиране на актуализация</string>
+    <string name="settings_update_check">Проверете отново</string>
 </resources>

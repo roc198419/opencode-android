@@ -167,6 +167,7 @@ class SettingsFeature : Reducer<SettingsFeature.State, SettingsFeature.Action> {
 
     /** What Settings asks of Home. */
     sealed interface SettingsDelegate {
+        data object CheckAppUpdates : SettingsDelegate
         /** Back at the root, or the swipe that closes Settings. */
         data object Close : SettingsDelegate
         data class SwitchServer(val server: OpenCodeServer) : SettingsDelegate

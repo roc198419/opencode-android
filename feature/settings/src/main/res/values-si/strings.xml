@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">කැමරාව QR කේතය වෙත යොමු කරන්න</string>
     <string name="settings_pairing_paste_link">යුගල කිරීමේ සබැඳිය අලවන්න</string>
     <string name="settings_pairing_computer_hint">ඔබේ පරිගණකයේ OpenCode හි සැකසීම් → යුගල කිරීම විවෘත කරන්න, නැතහොත් පර්යන්තයක %1$s ධාවනය කරන්න.</string>
+    <string name="settings_update_title">යෙදුම් යාවත්කාලීන</string>
+    <string name="settings_update_current_version">වත්මන් අනුවාදය: %1$s</string>
+    <string name="settings_update_checking">යාවත්කාලීන සඳහා පරීක්ෂා කරමින්...</string>
+    <string name="settings_update_current">ඔබ නවතම අනුවාදය භාවිතා කරයි.</string>
+    <string name="settings_update_available">%1$s අනුවාදය පවතී (%2$d MB).</string>
+    <string name="settings_update_downloading">යාවත්කාලීනය බාගත කර සත්‍යාපනය කරමින්...</string>
+    <string name="settings_update_ready">යාවත්කාලීනය සත්‍යාපනය කර ස්ථාපනය කිරීමට සූදානම්ය.</string>
+    <string name="settings_update_permission">මෙම යෙදුමට Android සැකසීම් තුළ යාවත්කාලීන ස්ථාපනය කිරීමට ඉඩ දෙන්න, ඉන්පසු මෙහි ආපසු.</string>
+    <string name="settings_update_installing">Android හි යාවත්කාලීන කිරීම තහවුරු කරන්න. ඔබ අවලංගු කළහොත් ඔබට නැවත උත්සාහ කළ හැක.</string>
+    <string name="settings_update_unsupported">පුද්ගලික GitHub නිකුතුවේ යාවත්කාලීන ලබා ගත හැකිය.</string>
+    <string name="settings_update_verification_failed">යාවත්කාලීනය සත්‍යාපනය කළ නොහැකි විය. නැවත උත්සාහ කිරීමට එය නැවත බාගන්න.</string>
+    <string name="settings_update_download_failed">යාවත්කාලීනය බාගැනීමට නොහැකි විය. ඔබගේ සම්බන්ධතාවය පරීක්ෂා කර නැවත උත්සාහ කරන්න.</string>
+    <string name="settings_update_install_failed">ස්ථාපකය විවෘත කිරීමට නොහැකි විය. නැවත උත්සාහ කර මෙම යෙදුමෙන් ස්ථාපනය කිරීමට ඉඩ දෙන්න.</string>
+    <string name="settings_update_check_failed">යාවත්කාලීන සඳහා පරීක්ෂා කළ නොහැකි විය. ඔබගේ සම්බන්ධතාවය පරීක්ෂා කර නැවත උත්සාහ කරන්න.</string>
+    <string name="settings_update_progress">%1$d%% බාගන්නා ලදී</string>
+    <string name="settings_update_automatic">යාවත්කාලීන සඳහා ස්වයංක්‍රීයව පරීක්ෂා කරන්න</string>
+    <string name="settings_update_automatic_detail">ඔබ යෙදුම භාවිතා කරන විට, උපරිම වශයෙන් සෑම පැය 12කට වරක් පරීක්ෂා කරයි. බාගැනීම් සහ ස්ථාපනය සඳහා ඔබගේ තහවුරු කිරීම අවශ්‍ය වේ.</string>
+    <string name="settings_update_download">යාවත්කාලීන බාගත කරන්න</string>
+    <string name="settings_update_install">යාවත්කාලීන ස්ථාපනය කරන්න</string>
+    <string name="settings_update_check">නැවත පරීක්ෂා කරන්න</string>
 </resources>

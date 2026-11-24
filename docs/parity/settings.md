@@ -285,3 +285,8 @@ left to that module's port ("skipped"); "dropped" tests can't exist on Android.
 Production bugs the ported tests found: none (every ported test passed against the existing port).
 
 Total: 101 settings tests, all passing. Robolectric (test-only, `isIncludeAndroidResources`) runs only `WhatsNewDotSymbolTests`.
+
+
+## Personal GitHub updates
+
+Android-only: the Settings root exposes App Updates next to What’s New. `AppUpdateView.kt` presents the app-scoped updater with the current/available version, automatic-check switch, download progress, cancellation, verification errors and installation retry. The dialog uses the existing theme, scrolls under large fonts and keeps 48 dp action targets. Settings delegates through Home to the app so checks and downloads survive navigation. Native view coverage in `ServerSwitchingTests.kt` exercises download, cancel and install at normal and 200% font scaling.

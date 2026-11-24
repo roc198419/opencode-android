@@ -226,4 +226,24 @@
     <string name="settings_pairing_point_camera">Apunta la cámara al código QR</string>
     <string name="settings_pairing_paste_link">Pegar enlace de emparejamiento</string>
     <string name="settings_pairing_computer_hint">En tu ordenador, abre Ajustes → Emparejamiento en OpenCode o ejecuta %1$s en un terminal.</string>
+    <string name="settings_update_title">Actualizaciones de aplicaciones</string>
+    <string name="settings_update_current_version">Versión actual: %1$s</string>
+    <string name="settings_update_checking">Buscando actualizaciones...</string>
+    <string name="settings_update_current">Estás usando la última versión.</string>
+    <string name="settings_update_available">La versión %1$s está disponible (%2$d MB).</string>
+    <string name="settings_update_downloading">Descargando y verificando la actualización…</string>
+    <string name="settings_update_ready">La actualización está verificada y lista para instalarse.</string>
+    <string name="settings_update_permission">Permita que esta aplicación instale actualizaciones en la configuración de Android y luego regrese aquí.</string>
+    <string name="settings_update_installing">Confirma la actualización en Android. Puedes volver a intentarlo si cancelas.</string>
+    <string name="settings_update_unsupported">Las actualizaciones están disponibles en la versión de lanzamiento personal de GitHub.</string>
+    <string name="settings_update_verification_failed">No se pudo verificar la actualización. Descárgalo nuevamente para volver a intentarlo.</string>
+    <string name="settings_update_download_failed">No se pudo descargar la actualización. Comprueba tu conexión y vuelve a intentarlo.</string>
+    <string name="settings_update_install_failed">No se pudo abrir el instalador. Inténtalo de nuevo y permite la instalación desde esta aplicación.</string>
+    <string name="settings_update_check_failed">No se pudieron buscar actualizaciones. Comprueba tu conexión y vuelve a intentarlo.</string>
+    <string name="settings_update_progress">%1$d%% descargado</string>
+    <string name="settings_update_automatic">Buscar actualizaciones automáticamente</string>
+    <string name="settings_update_automatic_detail">Comprueba cuando utilizas la aplicación, como máximo una vez cada 12 horas. Las descargas y la instalación requieren su confirmación.</string>
+    <string name="settings_update_download">Descargar actualización</string>
+    <string name="settings_update_install">Instalar actualización</string>
+    <string name="settings_update_check">Comprobar de nuevo</string>
 </resources>

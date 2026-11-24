@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Kameranızı QR koduna doğrultun</string>
     <string name="settings_pairing_paste_link">Eşleştirme bağlantısını yapıştır</string>
     <string name="settings_pairing_computer_hint">Bilgisayarınızda OpenCode\'un Ayarlar → Eşleştirme bölümünü açın veya terminalde %1$s komutunu çalıştırın.</string>
+    <string name="settings_update_title">Uygulama Güncellemeleri</string>
+    <string name="settings_update_current_version">Mevcut Sürüm: %1$s</string>
+    <string name="settings_update_checking">Güncellemeler kontrol ediliyor…</string>
+    <string name="settings_update_current">En son sürümü kullanıyorsunuz.</string>
+    <string name="settings_update_available">%1$s sürümü mevcut (%2$d MB).</string>
+    <string name="settings_update_downloading">Güncelleme indiriliyor ve doğrulanıyor…</string>
+    <string name="settings_update_ready">Güncelleme doğrulandı ve kuruluma hazır.</string>
+    <string name="settings_update_permission">Bu uygulamanın Android ayarlarında güncellemeleri yüklemesine izin verin, ardından buraya geri dönün.</string>
+    <string name="settings_update_installing">Güncellemeyi Android\'de onaylayın. İptal ederseniz tekrar deneyebilirsiniz.</string>
+    <string name="settings_update_unsupported">Güncellemeler kişisel GitHub sürüm yapısında mevcuttur.</string>
+    <string name="settings_update_verification_failed">Güncelleme doğrulanamadı. Tekrar denemek için tekrar indirin.</string>
+    <string name="settings_update_download_failed">Güncelleme indirilemedi. Bağlantınızı kontrol edip tekrar deneyin.</string>
+    <string name="settings_update_install_failed">Yükleyici açılamadı. Tekrar deneyin ve bu uygulamadan kuruluma izin verin.</string>
+    <string name="settings_update_check_failed">Güncellemeler kontrol edilemedi. Bağlantınızı kontrol edip tekrar deneyin.</string>
+    <string name="settings_update_progress">%1$d%% indirildi</string>
+    <string name="settings_update_automatic">Güncellemeleri Otomatik Olarak Kontrol Et</string>
+    <string name="settings_update_automatic_detail">Uygulamayı ne zaman kullandığınızı kontrol eder, en fazla 12 saatte bir. İndirme ve kurulum onayınızı gerektirir.</string>
+    <string name="settings_update_download">Güncellemeyi İndir</string>
+    <string name="settings_update_install">Güncellemeyi Yükle</string>
+    <string name="settings_update_check">Tekrar Kontrol Et</string>
 </resources>

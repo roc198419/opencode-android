@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Richte die Kamera auf den QR-Code</string>
     <string name="settings_pairing_paste_link">Kopplungslink einfügen</string>
     <string name="settings_pairing_computer_hint">Öffne auf deinem Computer in OpenCode Einstellungen → Kopplung oder führe %1$s in einem Terminal aus.</string>
+    <string name="settings_update_title">App-Updates</string>
+    <string name="settings_update_current_version">Aktuelle Version: %1$s</string>
+    <string name="settings_update_checking">Suche nach Updates…</string>
+    <string name="settings_update_current">Sie verwenden die neueste Version.</string>
+    <string name="settings_update_available">Version %1$s ist verfügbar (%2$d MB).</string>
+    <string name="settings_update_downloading">Das Update wird heruntergeladen und überprüft …</string>
+    <string name="settings_update_ready">Das Update ist überprüft und kann installiert werden.</string>
+    <string name="settings_update_permission">Erlauben Sie dieser App, Updates in den Android-Einstellungen zu installieren, und kehren Sie dann hierher zurück.</string>
+    <string name="settings_update_installing">Bestätigen Sie das Update in Android. Sie können es erneut versuchen, wenn Sie abbrechen.</string>
+    <string name="settings_update_unsupported">Updates sind im persönlichen GitHub-Release-Build verfügbar.</string>
+    <string name="settings_update_verification_failed">Das Update konnte nicht überprüft werden. Laden Sie es erneut herunter, um es erneut zu versuchen.</string>
+    <string name="settings_update_download_failed">Das Update konnte nicht heruntergeladen werden. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.</string>
+    <string name="settings_update_install_failed">Das Installationsprogramm konnte nicht geöffnet werden. Versuchen Sie es erneut und erlauben Sie die Installation über diese App.</string>
+    <string name="settings_update_check_failed">Es konnte nicht nach Updates gesucht werden. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.</string>
+    <string name="settings_update_progress">%1$d%% heruntergeladen</string>
+    <string name="settings_update_automatic">Automatisch nach Updates suchen</string>
+    <string name="settings_update_automatic_detail">Überprüft, wann Sie die App nutzen, höchstens alle 12 Stunden. Downloads und Installation bedürfen Ihrer Bestätigung.</string>
+    <string name="settings_update_download">Laden Sie das Update herunter</string>
+    <string name="settings_update_install">Update installieren</string>
+    <string name="settings_update_check">Überprüfen Sie es erneut</string>
 </resources>

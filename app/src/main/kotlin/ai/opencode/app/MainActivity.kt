@@ -113,6 +113,7 @@ class MainActivity : ComponentActivity() {
                     Lifecycle.Event.ON_START -> store.send(AppFeature.Action.ForegroundChanged(true))
                     // Take what the share sheet left.
                     Lifecycle.Event.ON_RESUME -> {
+                        store.send(AppFeature.Action.Updates(ai.opencode.feature.system.updates.AppUpdateFeature.Action.Resumed))
                         SceneWindows.resumed(root)
                         store.send(AppFeature.Action.PendingSharesRequested)
                         registerPermissionRequesters()

@@ -220,4 +220,24 @@
     <string name="settings_pairing_point_camera">ကင်မရာကို QR ကုဒ်ဆီ ချိန်ပါ</string>
     <string name="settings_pairing_paste_link">တွဲချိတ်လင့်ခ်ကို ကူးထည့်ပါ</string>
     <string name="settings_pairing_computer_hint">ကွန်ပျူတာတွင် OpenCode ၏ ဆက်တင်များ → တွဲချိတ်ခြင်းကို ဖွင့်ပါ၊ သို့မဟုတ် terminal တွင် %1$s ကို လုပ်ဆောင်ပါ။</string>
+    <string name="settings_update_title">အက်ပ်အပ်ဒိတ်များ</string>
+    <string name="settings_update_current_version">လက်ရှိဗားရှင်း- %1$s</string>
+    <string name="settings_update_checking">အပ်ဒိတ်များအတွက် စစ်ဆေးနေသည်...</string>
+    <string name="settings_update_current">သင်သည် နောက်ဆုံးဗားရှင်းကို အသုံးပြုနေပါသည်။</string>
+    <string name="settings_update_available">ဗားရှင်း %1$s ကို ရနိုင်သည် (%2$d MB)။</string>
+    <string name="settings_update_downloading">အပ်ဒိတ်ကို ဒေါင်းလုဒ်လုပ်နေပြီး အတည်ပြုနေသည်...</string>
+    <string name="settings_update_ready">အပ်ဒိတ်ကို အတည်ပြုပြီး ထည့်သွင်းရန် အသင့်ဖြစ်နေပါပြီ။</string>
+    <string name="settings_update_permission">Android ဆက်တင်များတွင် အပ်ဒိတ်များ ထည့်သွင်းရန် ဤအက်ပ်အား ခွင့်ပြုပါ၊ ထို့နောက် ဤနေရာတွင် ပြန်လာပါ။</string>
+    <string name="settings_update_installing">Android တွင် အပ်ဒိတ်ကို အတည်ပြုပါ။ သင်ပယ်ဖျက်ပါက ထပ်မံကြိုးစားနိုင်ပါသည်။</string>
+    <string name="settings_update_unsupported">အပ်ဒိတ်များကို ကိုယ်ပိုင် GitHub ထုတ်ဝေမှု တည်ဆောက်မှုတွင် ရနိုင်ပါသည်။</string>
+    <string name="settings_update_verification_failed">အပ်ဒိတ်ကို အတည်မပြုနိုင်ပါ။ ထပ်မံကြိုးစားရန် ၎င်းကို ထပ်မံဒေါင်းလုဒ်လုပ်ပါ။</string>
+    <string name="settings_update_download_failed">အပ်ဒိတ်ကို ဒေါင်းလုဒ်လုပ်၍မရပါ။ သင့်ချိတ်ဆက်မှုကို စစ်ဆေးပြီး ထပ်စမ်းကြည့်ပါ။</string>
+    <string name="settings_update_install_failed">တပ်ဆင်သူကို ဖွင့်၍မရပါ။ ထပ်မံကြိုးစားပြီး ဤအက်ပ်မှ ထည့်သွင်းမှုကို ခွင့်ပြုပါ။</string>
+    <string name="settings_update_check_failed">အပ်ဒိတ်များကို စစ်ဆေး၍မရပါ။ သင့်ချိတ်ဆက်မှုကို စစ်ဆေးပြီး ထပ်စမ်းကြည့်ပါ။</string>
+    <string name="settings_update_progress">%1$d%% ဒေါင်းလုဒ်လုပ်ထားသည်။</string>
+    <string name="settings_update_automatic">အပ်ဒိတ်များအတွက် အလိုအလျောက်စစ်ဆေးပါ။</string>
+    <string name="settings_update_automatic_detail">သင်သည် အက်ပ်ကို အသုံးပြုသည့်အခါ အများဆုံး ၁၂ နာရီလျှင်တစ်ကြိမ် စစ်ဆေးသည်။ ဒေါင်းလုဒ်များနှင့် တပ်ဆင်ခြင်းများ သင့်အတည်ပြုချက် လိုအပ်သည်။</string>
+    <string name="settings_update_download">Update ကိုဒေါင်းလုဒ်လုပ်ပါ။</string>
+    <string name="settings_update_install">အပ်ဒိတ်ကို ထည့်သွင်းပါ။</string>
+    <string name="settings_update_check">ထပ်မံစစ်ဆေးပါ။</string>
 </resources>

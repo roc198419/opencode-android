@@ -226,4 +226,24 @@
     <string name="settings_pairing_point_camera">Inquadra il codice QR con la fotocamera</string>
     <string name="settings_pairing_paste_link">Incolla collegamento di associazione</string>
     <string name="settings_pairing_computer_hint">Sul computer, apri Impostazioni → Associazione di OpenCode, oppure esegui %1$s in un terminale.</string>
+    <string name="settings_update_title">Aggiornamenti dell\'app</string>
+    <string name="settings_update_current_version">Versione corrente: %1$s</string>
+    <string name="settings_update_checking">Controllo aggiornamenti…</string>
+    <string name="settings_update_current">Stai utilizzando la versione più recente.</string>
+    <string name="settings_update_available">La versione %1$s è disponibile (%2$d MB).</string>
+    <string name="settings_update_downloading">Download e verifica dell\'aggiornamento…</string>
+    <string name="settings_update_ready">L\'aggiornamento è verificato e pronto per l\'installazione.</string>
+    <string name="settings_update_permission">Consenti a questa app di installare gli aggiornamenti nelle impostazioni Android, quindi torna qui.</string>
+    <string name="settings_update_installing">Conferma l\'aggiornamento su Android. Puoi riprovare se annulli.</string>
+    <string name="settings_update_unsupported">Gli aggiornamenti sono disponibili nella build di rilascio GitHub personale.</string>
+    <string name="settings_update_verification_failed">Impossibile verificare l\'aggiornamento. Scaricalo di nuovo per riprovare.</string>
+    <string name="settings_update_download_failed">Impossibile scaricare l\'aggiornamento. Controlla la connessione e riprova.</string>
+    <string name="settings_update_install_failed">Impossibile aprire il programma di installazione. Riprova e consenti l\'installazione da questa app.</string>
+    <string name="settings_update_check_failed">Impossibile verificare la presenza di aggiornamenti. Controlla la connessione e riprova.</string>
+    <string name="settings_update_progress">%1$d%% scaricato</string>
+    <string name="settings_update_automatic">Controlla automaticamente gli aggiornamenti</string>
+    <string name="settings_update_automatic_detail">Controlla quando usi l\'app, al massimo una volta ogni 12 ore. I download e l\'installazione richiedono la tua conferma.</string>
+    <string name="settings_update_download">Scarica aggiornamento</string>
+    <string name="settings_update_install">Installa aggiornamento</string>
+    <string name="settings_update_check">Controlla di nuovo</string>
 </resources>

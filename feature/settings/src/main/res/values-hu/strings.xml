@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Irányítsa a kamerát a QR-kódra</string>
     <string name="settings_pairing_paste_link">Párosítási link beillesztése</string>
     <string name="settings_pairing_computer_hint">A számítógépen nyissa meg az OpenCode Beállítások → Párosítás menüjét, vagy futtassa a terminálban: %1$s.</string>
+    <string name="settings_update_title">Alkalmazásfrissítések</string>
+    <string name="settings_update_current_version">Jelenlegi verzió: %1$s</string>
+    <string name="settings_update_checking">Frissítések keresése…</string>
+    <string name="settings_update_current">Ön a legújabb verziót használja.</string>
+    <string name="settings_update_available">A %1$s verzió elérhető (%2$d MB).</string>
+    <string name="settings_update_downloading">A frissítés letöltése és ellenőrzése…</string>
+    <string name="settings_update_ready">A frissítés ellenőrzése megtörtént, és készen áll a telepítésre.</string>
+    <string name="settings_update_permission">Engedélyezze ennek az alkalmazásnak a frissítések telepítését az Android beállításai között, majd térjen vissza ide.</string>
+    <string name="settings_update_installing">Erősítse meg a frissítést Androidon. Újrapróbálhatja, ha lemondja.</string>
+    <string name="settings_update_unsupported">A frissítések a személyes GitHub kiadásban érhetők el.</string>
+    <string name="settings_update_verification_failed">Nem sikerült ellenőrizni a frissítést. Töltse le újra az újrapróbálkozáshoz.</string>
+    <string name="settings_update_download_failed">Nem sikerült letölteni a frissítést. Ellenőrizze a kapcsolatot, és próbálja újra.</string>
+    <string name="settings_update_install_failed">Nem sikerült megnyitni a telepítőt. Próbálja újra, és engedélyezze a telepítést ebből az alkalmazásból.</string>
+    <string name="settings_update_check_failed">Nem sikerült ellenőrizni a frissítéseket. Ellenőrizze a kapcsolatot, és próbálja újra.</string>
+    <string name="settings_update_progress">%1$d%% letöltve</string>
+    <string name="settings_update_automatic">Frissítések automatikus keresése</string>
+    <string name="settings_update_automatic_detail">Ellenőrzi, amikor használja az alkalmazást, legfeljebb 12 óránként. A letöltésekhez és a telepítéshez az Ön megerősítése szükséges.</string>
+    <string name="settings_update_download">Frissítés letöltése</string>
+    <string name="settings_update_install">Frissítés telepítése</string>
+    <string name="settings_update_check">Ellenőrizze újra</string>
 </resources>

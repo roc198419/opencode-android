@@ -226,4 +226,24 @@
     <string name="settings_pairing_point_camera">Усмерите камеру ка QR коду</string>
     <string name="settings_pairing_paste_link">Налепи везу за упаривање</string>
     <string name="settings_pairing_computer_hint">На рачунару отворите Подешавања → Упаривање у OpenCode или покрените %1$s у терминалу.</string>
+    <string name="settings_update_title">Ажурирања апликације</string>
+    <string name="settings_update_current_version">Тренутна верзија: %1$s</string>
+    <string name="settings_update_checking">Провера ажурирања…</string>
+    <string name="settings_update_current">Користите најновију верзију.</string>
+    <string name="settings_update_available">Доступна је верзија %1$s (%2$d MB).</string>
+    <string name="settings_update_downloading">Преузимање и провера ажурирања…</string>
+    <string name="settings_update_ready">Ажурирање је проверено и спремно за инсталацију.</string>
+    <string name="settings_update_permission">Дозволите овој апликацији да инсталира ажурирања у подешавањима Android-а, па се вратите овде.</string>
+    <string name="settings_update_installing">Потврдите ажурирање у Android-у. Ако откажете, можете покушати поново.</string>
+    <string name="settings_update_unsupported">Ажурирања су доступна у личном GitHub издању.</string>
+    <string name="settings_update_verification_failed">Није могуће проверити ажурирање. Преузмите га поново.</string>
+    <string name="settings_update_download_failed">Није могуће преузети ажурирање. Проверите везу и покушајте поново.</string>
+    <string name="settings_update_install_failed">Није могуће отворити инсталатор. Покушајте поново и дозволите инсталацију из ове апликације.</string>
+    <string name="settings_update_check_failed">Није могуће проверити доступна ажурирања. Проверите везу и покушајте поново.</string>
+    <string name="settings_update_progress">Преузето %1$d%%</string>
+    <string name="settings_update_automatic">Аутоматска провера ажурирања</string>
+    <string name="settings_update_automatic_detail">Проверава током коришћења апликације, највише једном у 12 сати. Преузимање и инсталација захтевају вашу потврду.</string>
+    <string name="settings_update_download">Преузми ажурирање</string>
+    <string name="settings_update_install">Инсталирај ажурирање</string>
+    <string name="settings_update_check">Провери поново</string>
 </resources>

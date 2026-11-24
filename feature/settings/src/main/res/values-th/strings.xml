@@ -220,4 +220,24 @@
     <string name="settings_pairing_point_camera">หันกล้องไปที่รหัส QR</string>
     <string name="settings_pairing_paste_link">วางลิงก์จับคู่</string>
     <string name="settings_pairing_computer_hint">บนคอมพิวเตอร์ เปิดการตั้งค่า → การจับคู่ใน OpenCode หรือเรียกใช้ %1$s ในเทอร์มินัล</string>
+    <string name="settings_update_title">การอัปเดตแอป</string>
+    <string name="settings_update_current_version">เวอร์ชันปัจจุบัน: %1$s</string>
+    <string name="settings_update_checking">กำลังตรวจสอบการอัปเดต...</string>
+    <string name="settings_update_current">คุณกำลังใช้เวอร์ชันล่าสุด</string>
+    <string name="settings_update_available">เวอร์ชัน %1$s พร้อมใช้งานแล้ว (%2$d MB)</string>
+    <string name="settings_update_downloading">กำลังดาวน์โหลดและตรวจสอบการอัปเดต...</string>
+    <string name="settings_update_ready">การอัปเดตได้รับการตรวจสอบแล้วและพร้อมสำหรับการติดตั้ง</string>
+    <string name="settings_update_permission">อนุญาตให้แอปนี้ติดตั้งอัปเดตในการตั้งค่า Android จากนั้นกลับมาที่นี่</string>
+    <string name="settings_update_installing">ยืนยันการอัปเดตใน Android คุณสามารถลองอีกครั้งหากคุณยกเลิก</string>
+    <string name="settings_update_unsupported">การอัปเดตมีอยู่ในรุ่น GitHub ส่วนตัว</string>
+    <string name="settings_update_verification_failed">ไม่สามารถตรวจสอบการอัปเดตได้ ดาวน์โหลดอีกครั้งเพื่อลองอีกครั้ง</string>
+    <string name="settings_update_download_failed">ไม่สามารถดาวน์โหลดการอัปเดตได้ ตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง</string>
+    <string name="settings_update_install_failed">ไม่สามารถเปิดตัวติดตั้งได้ ลองอีกครั้งและอนุญาตการติดตั้งจากแอปนี้</string>
+    <string name="settings_update_check_failed">ไม่สามารถตรวจสอบการอัปเดตได้ ตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง</string>
+    <string name="settings_update_progress">ดาวน์โหลดแล้ว %1$d%%</string>
+    <string name="settings_update_automatic">ตรวจสอบการอัปเดตโดยอัตโนมัติ</string>
+    <string name="settings_update_automatic_detail">ตรวจสอบเมื่อคุณใช้แอป มากที่สุดหนึ่งครั้งทุกๆ 12 ชั่วโมง การดาวน์โหลดและการติดตั้งจำเป็นต้องได้รับการยืนยันจากคุณ</string>
+    <string name="settings_update_download">ดาวน์โหลดอัปเดต</string>
+    <string name="settings_update_install">ติดตั้งอัปเดต</string>
+    <string name="settings_update_check">ตรวจสอบอีกครั้ง</string>
 </resources>

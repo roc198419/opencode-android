@@ -220,4 +220,24 @@
     <string name="settings_pairing_point_camera">Halakan kamera anda ke kod QR</string>
     <string name="settings_pairing_paste_link">Tampal pautan pemasangan</string>
     <string name="settings_pairing_computer_hint">Pada komputer anda, buka Tetapan → Memasangkan dalam OpenCode, atau jalankan %1$s dalam terminal.</string>
+    <string name="settings_update_title">Kemas Kini Apl</string>
+    <string name="settings_update_current_version">Versi Semasa: %1$s</string>
+    <string name="settings_update_checking">Menyemak kemas kini…</string>
+    <string name="settings_update_current">Anda menggunakan versi terkini.</string>
+    <string name="settings_update_available">Versi %1$s tersedia (%2$d MB).</string>
+    <string name="settings_update_downloading">Memuat turun dan mengesahkan kemas kini…</string>
+    <string name="settings_update_ready">Kemas kini telah disahkan dan sedia untuk dipasang.</string>
+    <string name="settings_update_permission">Benarkan apl ini memasang kemas kini dalam tetapan Android, kemudian kembali ke sini.</string>
+    <string name="settings_update_installing">Sahkan kemas kini dalam Android. Anda boleh mencuba semula jika anda membatalkannya.</string>
+    <string name="settings_update_unsupported">Kemas kini tersedia dalam binaan keluaran GitHub peribadi.</string>
+    <string name="settings_update_verification_failed">Tidak dapat mengesahkan kemas kini. Muat turun sekali lagi untuk mencuba semula.</string>
+    <string name="settings_update_download_failed">Tidak dapat memuat turun kemas kini. Semak sambungan anda dan cuba lagi.</string>
+    <string name="settings_update_install_failed">Tidak dapat membuka pemasang. Cuba lagi dan benarkan pemasangan daripada apl ini.</string>
+    <string name="settings_update_check_failed">Tidak dapat menyemak kemas kini. Semak sambungan anda dan cuba lagi.</string>
+    <string name="settings_update_progress">%1$d%% dimuat turun</string>
+    <string name="settings_update_automatic">Semak Kemas Kini Secara Automatik</string>
+    <string name="settings_update_automatic_detail">Semak apabila anda menggunakan apl, paling banyak sekali setiap 12 jam. Muat turun dan pemasangan memerlukan pengesahan anda.</string>
+    <string name="settings_update_download">Muat Turun Kemas Kini</string>
+    <string name="settings_update_install">Pasang Kemas Kini</string>
+    <string name="settings_update_check">Semak Lagi</string>
 </resources>

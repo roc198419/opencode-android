@@ -226,4 +226,24 @@
     <string name="settings_pairing_point_camera">Apunta la càmera al codi QR</string>
     <string name="settings_pairing_paste_link">Enganxa l\'enllaç d\'aparellament</string>
     <string name="settings_pairing_computer_hint">A l\'ordinador, obre Configuració → Aparellament d\'OpenCode, o executa %1$s en un terminal.</string>
+    <string name="settings_update_title">Actualitzacions d\'aplicacions</string>
+    <string name="settings_update_current_version">Versió actual: %1$s</string>
+    <string name="settings_update_checking">S\'estan buscant actualitzacions...</string>
+    <string name="settings_update_current">Estàs utilitzant la darrera versió.</string>
+    <string name="settings_update_available">La versió %1$s està disponible (%2$d MB).</string>
+    <string name="settings_update_downloading">S\'està baixant i verificant l\'actualització...</string>
+    <string name="settings_update_ready">L\'actualització està verificada i a punt per instal·lar-se.</string>
+    <string name="settings_update_permission">Permet que aquesta aplicació instal·li actualitzacions a la configuració d\'Android i, a continuació, torneu aquí.</string>
+    <string name="settings_update_installing">Confirmeu l\'actualització a Android. Podeu tornar-ho a provar si cancel·leu.</string>
+    <string name="settings_update_unsupported">Les actualitzacions estan disponibles a la versió personal de GitHub.</string>
+    <string name="settings_update_verification_failed">No s\'ha pogut verificar l\'actualització. Baixeu-lo de nou per tornar-ho a provar.</string>
+    <string name="settings_update_download_failed">No s\'ha pogut descarregar l\'actualització. Comprova la teva connexió i torna-ho a provar.</string>
+    <string name="settings_update_install_failed">No s\'ha pogut obrir l\'instal·lador. Torna-ho a provar i permet la instal·lació des d\'aquesta aplicació.</string>
+    <string name="settings_update_check_failed">No s\'han pogut comprovar si hi ha actualitzacions. Comprova la teva connexió i torna-ho a provar.</string>
+    <string name="settings_update_progress">%1$d%% baixat</string>
+    <string name="settings_update_automatic">Comprova automàticament si hi ha actualitzacions</string>
+    <string name="settings_update_automatic_detail">Comprova quan feu servir l\'aplicació, com a màxim una vegada cada 12 hores. Les descàrregues i la instal·lació requereixen la vostra confirmació.</string>
+    <string name="settings_update_download">Descarrega l\'actualització</string>
+    <string name="settings_update_install">Instal·leu l\'actualització</string>
+    <string name="settings_update_check">Comproveu de nou</string>
 </resources>

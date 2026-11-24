@@ -157,6 +157,7 @@ internal fun HomeFeature.reduceSettingsScreen(state: State, action: Presentation
                 else -> Reduced(state)
             }
         is SettingsFeature.Action.Delegate -> when (val delegate = presented.action) {
+            SettingsDelegate.CheckAppUpdates -> Reduced(state, Effect.send(Action.Delegate(DelegateAction.CheckAppUpdates)))
             SettingsDelegate.Close -> Reduced(state.copy(settings = null))
             is SettingsDelegate.SwitchServer -> Reduced(state, Effect.send(Action.Delegate(DelegateAction.ServerSwitchTapped(delegate.server))))
             is SettingsDelegate.RenameServer ->

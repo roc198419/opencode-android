@@ -220,4 +220,24 @@
     <string name="settings_pairing_point_camera">Arahkan kamera ke kode QR</string>
     <string name="settings_pairing_paste_link">Tempel tautan pemasangan</string>
     <string name="settings_pairing_computer_hint">Di komputer Anda, buka Pengaturan → Pemasangan di OpenCode, atau jalankan %1$s di terminal.</string>
+    <string name="settings_update_title">Pembaruan Aplikasi</string>
+    <string name="settings_update_current_version">Versi Saat Ini: %1$s</string>
+    <string name="settings_update_checking">Memeriksa pembaruan…</string>
+    <string name="settings_update_current">Anda menggunakan versi terbaru.</string>
+    <string name="settings_update_available">Versi %1$s tersedia (%2$d MB).</string>
+    <string name="settings_update_downloading">Mengunduh dan memverifikasi pembaruan…</string>
+    <string name="settings_update_ready">Pembaruan telah diverifikasi dan siap dipasang.</string>
+    <string name="settings_update_permission">Izinkan aplikasi ini memasang pembaruan di setelan Android, lalu kembali ke sini.</string>
+    <string name="settings_update_installing">Konfirmasikan pembaruan di Android. Anda dapat mencoba lagi jika membatalkan.</string>
+    <string name="settings_update_unsupported">Pembaruan tersedia di versi rilis GitHub pribadi.</string>
+    <string name="settings_update_verification_failed">Tidak dapat memverifikasi pembaruan. Unduh lagi untuk mencoba lagi.</string>
+    <string name="settings_update_download_failed">Tidak dapat mengunduh pembaruan. Periksa koneksi Anda dan coba lagi.</string>
+    <string name="settings_update_install_failed">Tidak dapat membuka penginstal. Coba lagi dan izinkan pemasangan dari aplikasi ini.</string>
+    <string name="settings_update_check_failed">Tidak dapat memeriksa pembaruan. Periksa koneksi Anda dan coba lagi.</string>
+    <string name="settings_update_progress">%1$d%% diunduh</string>
+    <string name="settings_update_automatic">Periksa Pembaruan Secara Otomatis</string>
+    <string name="settings_update_automatic_detail">Memeriksa kapan Anda menggunakan aplikasi, paling banyak setiap 12 jam sekali. Pengunduhan dan pemasangan memerlukan konfirmasi Anda.</string>
+    <string name="settings_update_download">Unduh Pembaruan</string>
+    <string name="settings_update_install">Instal Pembaruan</string>
+    <string name="settings_update_check">Periksa Lagi</string>
 </resources>

@@ -220,4 +220,24 @@
     <string name="settings_pairing_point_camera">カメラをQRコードに向けてください</string>
     <string name="settings_pairing_paste_link">ペアリングリンクを貼り付け</string>
     <string name="settings_pairing_computer_hint">コンピューターでOpenCodeの設定 → ペアリングを開くか、ターミナルで%1$sを実行してください。</string>
+    <string name="settings_update_title">アプリのアップデート</string>
+    <string name="settings_update_current_version">現在のバージョン: %1$s</string>
+    <string name="settings_update_checking">アップデートをチェック中…</string>
+    <string name="settings_update_current">最新バージョンを使用しています。</string>
+    <string name="settings_update_available">バージョン %1$s が利用可能です (%2$d MB)。</string>
+    <string name="settings_update_downloading">アップデートをダウンロードして確認しています…</string>
+    <string name="settings_update_ready">アップデートが検証され、インストールする準備ができました。</string>
+    <string name="settings_update_permission">Android 設定でこのアプリにアップデートのインストールを許可してから、ここに戻ります。</string>
+    <string name="settings_update_installing">Android でアップデートを確認します。キャンセルしても再試行できます。</string>
+    <string name="settings_update_unsupported">アップデートは個人用 GitHub リリース ビルドで入手できます。</string>
+    <string name="settings_update_verification_failed">アップデートを確認できませんでした。もう一度ダウンロードして再試行してください。</string>
+    <string name="settings_update_download_failed">アップデートをダウンロードできませんでした。接続を確認して、もう一度試してください。</string>
+    <string name="settings_update_install_failed">インストーラーを開けませんでした。もう一度試して、このアプリからのインストールを許可してください。</string>
+    <string name="settings_update_check_failed">更新を確認できませんでした。接続を確認して、もう一度試してください。</string>
+    <string name="settings_update_progress">%1$d%% がダウンロードされました</string>
+    <string name="settings_update_automatic">アップデートを自動的にチェックする</string>
+    <string name="settings_update_automatic_detail">アプリの使用時を、最大 12 時間に 1 回チェックします。ダウンロードとインストールにはあなたの確認が必要です。</string>
+    <string name="settings_update_download">アップデートをダウンロード</string>
+    <string name="settings_update_install">アップデートのインストール</string>
+    <string name="settings_update_check">もう一度確認してください</string>
 </resources>

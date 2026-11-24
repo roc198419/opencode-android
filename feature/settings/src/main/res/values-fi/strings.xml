@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Suuntaa kamera QR-koodiin</string>
     <string name="settings_pairing_paste_link">Liitä pariliitoslinkki</string>
     <string name="settings_pairing_computer_hint">Avaa tietokoneella OpenCode ja valitse Asetukset → Laiteparin muodostus tai suorita %1$s terminaalissa.</string>
+    <string name="settings_update_title">Sovelluspäivitykset</string>
+    <string name="settings_update_current_version">Nykyinen versio: %1$s</string>
+    <string name="settings_update_checking">Tarkistetaan päivityksiä…</string>
+    <string name="settings_update_current">Käytät uusinta versiota.</string>
+    <string name="settings_update_available">Versio %1$s on saatavilla (%2$d Mt).</string>
+    <string name="settings_update_downloading">Ladataan ja tarkistetaan päivitystä…</string>
+    <string name="settings_update_ready">Päivitys on vahvistettu ja valmis asennettavaksi.</string>
+    <string name="settings_update_permission">Anna tämän sovelluksen asentaa päivityksiä Android-asetuksiin ja palaa sitten tänne.</string>
+    <string name="settings_update_installing">Vahvista päivitys Androidissa. Voit yrittää uudelleen, jos peruutat.</string>
+    <string name="settings_update_unsupported">Päivitykset ovat saatavilla henkilökohtaisessa GitHub-julkaisuversiossa.</string>
+    <string name="settings_update_verification_failed">Päivitystä ei voitu vahvistaa. Lataa se uudelleen ja yritä uudelleen.</string>
+    <string name="settings_update_download_failed">Päivitystä ei voitu ladata. Tarkista yhteys ja yritä uudelleen.</string>
+    <string name="settings_update_install_failed">Asennusohjelmaa ei voitu avata. Yritä uudelleen ja salli asennus tästä sovelluksesta.</string>
+    <string name="settings_update_check_failed">Päivityksiä ei voitu tarkistaa. Tarkista yhteys ja yritä uudelleen.</string>
+    <string name="settings_update_progress">%1$d%% ladattu</string>
+    <string name="settings_update_automatic">Tarkista päivitykset automaattisesti</string>
+    <string name="settings_update_automatic_detail">Tarkistaa, kun käytät sovellusta, enintään 12 tunnin välein. Lataukset ja asennus edellyttävät vahvistusta.</string>
+    <string name="settings_update_download">Lataa päivitys</string>
+    <string name="settings_update_install">Asenna päivitys</string>
+    <string name="settings_update_check">Tarkista uudelleen</string>
 </resources>

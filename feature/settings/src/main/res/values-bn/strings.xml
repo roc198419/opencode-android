@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">ক্যামেরা QR কোডের দিকে ধরুন</string>
     <string name="settings_pairing_paste_link">পেয়ারিং লিঙ্ক পেস্ট করুন</string>
     <string name="settings_pairing_computer_hint">কম্পিউটারে OpenCode-এর সেটিংস → পেয়ারিং খুলুন, অথবা টার্মিনালে %1$s চালান।</string>
+    <string name="settings_update_title">অ্যাপ আপডেট</string>
+    <string name="settings_update_current_version">বর্তমান সংস্করণ: %1$s</string>
+    <string name="settings_update_checking">আপডেটের জন্য পরীক্ষা করা হচ্ছে...</string>
+    <string name="settings_update_current">আপনি সর্বশেষ সংস্করণ ব্যবহার করছেন।</string>
+    <string name="settings_update_available">সংস্করণ %1$s উপলব্ধ (%2$d MB)।</string>
+    <string name="settings_update_downloading">আপডেটটি ডাউনলোড এবং যাচাই করা হচ্ছে...</string>
+    <string name="settings_update_ready">আপডেট যাচাই করা হয়েছে এবং ইনস্টল করার জন্য প্রস্তুত।</string>
+    <string name="settings_update_permission">এই অ্যাপটিকে Android সেটিংসে আপডেট ইনস্টল করার অনুমতি দিন, তারপর এখানে ফিরে আসুন।</string>
+    <string name="settings_update_installing">অ্যান্ড্রয়েডে আপডেট নিশ্চিত করুন। বাতিল করলে আপনি আবার চেষ্টা করতে পারেন।</string>
+    <string name="settings_update_unsupported">ব্যক্তিগত GitHub রিলিজ বিল্ডে আপডেটগুলি উপলব্ধ।</string>
+    <string name="settings_update_verification_failed">আপডেট যাচাই করা যায়নি। আবার চেষ্টা করতে আবার ডাউনলোড করুন।</string>
+    <string name="settings_update_download_failed">আপডেট ডাউনলোড করা যায়নি। আপনার সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন.</string>
+    <string name="settings_update_install_failed">ইনস্টলার খুলতে পারেনি। আবার চেষ্টা করুন এবং এই অ্যাপ থেকে ইনস্টলেশনের অনুমতি দিন।</string>
+    <string name="settings_update_check_failed">আপডেটের জন্য চেক করা যায়নি. আপনার সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন.</string>
+    <string name="settings_update_progress">%1$d%% ডাউনলোড হয়েছে</string>
+    <string name="settings_update_automatic">স্বয়ংক্রিয়ভাবে আপডেটের জন্য চেক করুন</string>
+    <string name="settings_update_automatic_detail">আপনি কখন অ্যাপটি ব্যবহার করেন তা পরীক্ষা করে, প্রতি 12 ঘণ্টায় একবার। ডাউনলোড এবং ইনস্টলেশন আপনার নিশ্চিতকরণ প্রয়োজন.</string>
+    <string name="settings_update_download">আপডেট ডাউনলোড করুন</string>
+    <string name="settings_update_install">আপডেট ইনস্টল করুন</string>
+    <string name="settings_update_check">আবার চেক করুন</string>
 </resources>

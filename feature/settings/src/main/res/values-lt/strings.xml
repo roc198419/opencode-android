@@ -229,4 +229,24 @@
     <string name="settings_pairing_point_camera">Nukreipkite kamerą į QR kodą</string>
     <string name="settings_pairing_paste_link">Įklijuoti susiejimo nuorodą</string>
     <string name="settings_pairing_computer_hint">Kompiuteryje atidarykite OpenCode nustatymus → Susiejimas arba terminale paleiskite %1$s.</string>
+    <string name="settings_update_title">Programų atnaujinimai</string>
+    <string name="settings_update_current_version">Dabartinė versija: %1$s</string>
+    <string name="settings_update_checking">Tikrinama, ar yra naujinių…</string>
+    <string name="settings_update_current">Naudojate naujausią versiją.</string>
+    <string name="settings_update_available">Yra %1$s versija (%2$d MB).</string>
+    <string name="settings_update_downloading">Atsisiunčiamas ir tikrinamas naujinimas…</string>
+    <string name="settings_update_ready">Atnaujinimas patvirtintas ir paruoštas įdiegti.</string>
+    <string name="settings_update_permission">Leiskite šiai programai įdiegti naujinimus „Android“ nustatymuose, tada grįžkite čia.</string>
+    <string name="settings_update_installing">Patvirtinkite naujinimą „Android“. Galite bandyti dar kartą, jei atšauksite.</string>
+    <string name="settings_update_unsupported">Atnaujinimai pasiekiami asmeninėje „GitHub“ leidimo versijoje.</string>
+    <string name="settings_update_verification_failed">Nepavyko patvirtinti naujinimo. Atsisiųskite jį dar kartą ir bandykite dar kartą.</string>
+    <string name="settings_update_download_failed">Nepavyko atsisiųsti naujinimo. Patikrinkite ryšį ir bandykite dar kartą.</string>
+    <string name="settings_update_install_failed">Nepavyko atidaryti diegimo programos. Bandykite dar kartą ir leiskite įdiegti iš šios programos.</string>
+    <string name="settings_update_check_failed">Nepavyko patikrinti, ar yra naujinimų. Patikrinkite ryšį ir bandykite dar kartą.</string>
+    <string name="settings_update_progress">Atsisiųsta %1$d%%</string>
+    <string name="settings_update_automatic">Automatiškai tikrinti, ar nėra naujinimų</string>
+    <string name="settings_update_automatic_detail">Tikrina, kai naudojate programą, daugiausiai kartą per 12 valandų. Norint atsisiųsti ir įdiegti, reikalingas jūsų patvirtinimas.</string>
+    <string name="settings_update_download">Atsisiųskite naujinimą</string>
+    <string name="settings_update_install">Įdiekite naujinimą</string>
+    <string name="settings_update_check">Patikrinkite dar kartą</string>
 </resources>

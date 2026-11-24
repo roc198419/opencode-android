@@ -226,4 +226,24 @@
     <string name="settings_pairing_point_camera">Îndreaptă camera spre codul QR</string>
     <string name="settings_pairing_paste_link">Lipește linkul de asociere</string>
     <string name="settings_pairing_computer_hint">Pe computer, deschide Setări → Asociere în OpenCode sau rulează %1$s într-un terminal.</string>
+    <string name="settings_update_title">Actualizări ale aplicației</string>
+    <string name="settings_update_current_version">Versiunea curentă: %1$s</string>
+    <string name="settings_update_checking">Se verifică actualizările...</string>
+    <string name="settings_update_current">Folosești cea mai recentă versiune.</string>
+    <string name="settings_update_available">Versiunea %1$s este disponibilă (%2$d MB).</string>
+    <string name="settings_update_downloading">Se descarcă și se verifică actualizarea...</string>
+    <string name="settings_update_ready">Actualizarea este verificată și gata de instalare.</string>
+    <string name="settings_update_permission">Permiteți acestei aplicații să instaleze actualizări în setările Android, apoi reveniți aici.</string>
+    <string name="settings_update_installing">Confirmați actualizarea în Android. Puteți reîncerca dacă anulați.</string>
+    <string name="settings_update_unsupported">Actualizările sunt disponibile în versiunea personală a versiunii GitHub.</string>
+    <string name="settings_update_verification_failed">Nu s-a putut verifica actualizarea. Descărcați-l din nou pentru a reîncerca.</string>
+    <string name="settings_update_download_failed">Actualizarea nu a putut fi descărcată. Verificați conexiunea și încercați din nou.</string>
+    <string name="settings_update_install_failed">Nu s-a putut deschide programul de instalare. Încercați din nou și permiteți instalarea din această aplicație.</string>
+    <string name="settings_update_check_failed">Nu s-au putut verifica actualizări. Verificați conexiunea și încercați din nou.</string>
+    <string name="settings_update_progress">%1$d%% descărcat</string>
+    <string name="settings_update_automatic">Verificați automat actualizările</string>
+    <string name="settings_update_automatic_detail">Verifică atunci când utilizați aplicația, cel mult o dată la 12 ore. Descărcările și instalarea necesită confirmarea dvs.</string>
+    <string name="settings_update_download">Descărcați actualizarea</string>
+    <string name="settings_update_install">Instalați actualizarea</string>
+    <string name="settings_update_check">Verificați din nou</string>
 </resources>

@@ -226,4 +226,24 @@
     <string name="settings_pairing_point_camera">Pavērs kameru pret QR kodu</string>
     <string name="settings_pairing_paste_link">Ielīmēt savienošanas saiti</string>
     <string name="settings_pairing_computer_hint">Datorā atver OpenCode sadaļu Iestatījumi → Savienošana pārī vai terminālī palaid %1$s.</string>
+    <string name="settings_update_title">Lietotņu atjauninājumi</string>
+    <string name="settings_update_current_version">Pašreizējā versija: %1$s</string>
+    <string name="settings_update_checking">Notiek atjauninājumu pārbaude…</string>
+    <string name="settings_update_current">Jūs izmantojat jaunāko versiju.</string>
+    <string name="settings_update_available">Ir pieejama versija %1$s (%2$d MB).</string>
+    <string name="settings_update_downloading">Notiek atjauninājuma lejupielāde un pārbaude…</string>
+    <string name="settings_update_ready">Atjauninājums ir pārbaudīts un gatavs instalēšanai.</string>
+    <string name="settings_update_permission">Ļaujiet šai lietotnei instalēt atjauninājumus Android iestatījumos, pēc tam atgriezieties šeit.</string>
+    <string name="settings_update_installing">Apstipriniet atjauninājumu operētājsistēmā Android. Ja atceļat, varat mēģināt vēlreiz.</string>
+    <string name="settings_update_unsupported">Atjauninājumi ir pieejami personīgajā GitHub laidiena versijā.</string>
+    <string name="settings_update_verification_failed">Nevarēja pārbaudīt atjauninājumu. Lejupielādējiet to vēlreiz, lai mēģinātu vēlreiz.</string>
+    <string name="settings_update_download_failed">Nevarēja lejupielādēt atjauninājumu. Pārbaudiet savienojumu un mēģiniet vēlreiz.</string>
+    <string name="settings_update_install_failed">Nevarēja atvērt instalētāju. Mēģiniet vēlreiz un atļaujiet instalēšanu no šīs lietotnes.</string>
+    <string name="settings_update_check_failed">Nevarēja pārbaudīt, vai nav atjauninājumu. Pārbaudiet savienojumu un mēģiniet vēlreiz.</string>
+    <string name="settings_update_progress">%1$d%% lejupielādēti</string>
+    <string name="settings_update_automatic">Automātiski pārbaudiet atjauninājumus</string>
+    <string name="settings_update_automatic_detail">Pārbauda, kad izmantojat lietotni, ne vairāk kā reizi 12 stundās. Lejupielādei un instalēšanai ir nepieciešams jūsu apstiprinājums.</string>
+    <string name="settings_update_download">Lejupielādēt atjauninājumu</string>
+    <string name="settings_update_install">Instalējiet atjauninājumu</string>
+    <string name="settings_update_check">Pārbaudiet vēlreiz</string>
 </resources>

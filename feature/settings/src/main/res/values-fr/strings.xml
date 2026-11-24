@@ -226,4 +226,24 @@
     <string name="settings_pairing_point_camera">Pointez la caméra vers le code QR</string>
     <string name="settings_pairing_paste_link">Coller le lien de couplage</string>
     <string name="settings_pairing_computer_hint">Sur votre ordinateur, ouvrez les paramètres d’OpenCode → Couplage, ou exécutez %1$s dans un terminal.</string>
+    <string name="settings_update_title">Mises à jour de l\'application</string>
+    <string name="settings_update_current_version">Version actuelle : %1$s</string>
+    <string name="settings_update_checking">Vérification des mises à jour…</string>
+    <string name="settings_update_current">Vous utilisez la dernière version.</string>
+    <string name="settings_update_available">La version %1$s est disponible (%2$d Mo).</string>
+    <string name="settings_update_downloading">Téléchargement et vérification de la mise à jour…</string>
+    <string name="settings_update_ready">La mise à jour est vérifiée et prête à être installée.</string>
+    <string name="settings_update_permission">Autorisez cette application à installer les mises à jour dans les paramètres Android, puis revenez ici.</string>
+    <string name="settings_update_installing">Confirmez la mise à jour sous Android. Vous pouvez réessayer si vous annulez.</string>
+    <string name="settings_update_unsupported">Les mises à jour sont disponibles dans la version personnelle de GitHub.</string>
+    <string name="settings_update_verification_failed">Impossible de vérifier la mise à jour. Téléchargez-le à nouveau pour réessayer.</string>
+    <string name="settings_update_download_failed">Impossible de télécharger la mise à jour. Vérifiez votre connexion et réessayez.</string>
+    <string name="settings_update_install_failed">Impossible d\'ouvrir le programme d\'installation. Réessayez et autorisez l\'installation à partir de cette application.</string>
+    <string name="settings_update_check_failed">Impossible de vérifier les mises à jour. Vérifiez votre connexion et réessayez.</string>
+    <string name="settings_update_progress">%1$d%% téléchargé</string>
+    <string name="settings_update_automatic">Rechercher automatiquement les mises à jour</string>
+    <string name="settings_update_automatic_detail">Vérifie lorsque vous utilisez l\'application, au maximum une fois toutes les 12 heures. Les téléchargements et l\'installation nécessitent votre confirmation.</string>
+    <string name="settings_update_download">Télécharger la mise à jour</string>
+    <string name="settings_update_install">Installer la mise à jour</string>
+    <string name="settings_update_check">Vérifiez à nouveau</string>
 </resources>

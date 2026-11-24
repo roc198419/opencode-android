@@ -229,4 +229,24 @@
     <string name="settings_pairing_point_camera">Наведіть камеру на QR-код</string>
     <string name="settings_pairing_paste_link">Вставити посилання для сполучення</string>
     <string name="settings_pairing_computer_hint">На комп’ютері відкрийте в OpenCode Налаштування → Сполучення або виконайте %1$s у терміналі.</string>
+    <string name="settings_update_title">Оновлення програми</string>
+    <string name="settings_update_current_version">Поточна версія: %1$s</string>
+    <string name="settings_update_checking">Перевірка оновлень…</string>
+    <string name="settings_update_current">Ви використовуєте останню версію.</string>
+    <string name="settings_update_available">Доступна версія %1$s (%2$d МБ).</string>
+    <string name="settings_update_downloading">Завантаження та перевірка оновлення…</string>
+    <string name="settings_update_ready">Оновлення перевірено та готове до встановлення.</string>
+    <string name="settings_update_permission">Дозвольте цій програмі встановлювати оновлення в налаштуваннях Android, а потім поверніться сюди.</string>
+    <string name="settings_update_installing">Підтвердьте оновлення в Android. Ви можете повторити спробу, якщо скасуєте.</string>
+    <string name="settings_update_unsupported">Оновлення доступні в персональній версії GitHub.</string>
+    <string name="settings_update_verification_failed">Не вдалося перевірити оновлення. Завантажте його знову, щоб повторити спробу.</string>
+    <string name="settings_update_download_failed">Не вдалося завантажити оновлення. Перевірте підключення та повторіть спробу.</string>
+    <string name="settings_update_install_failed">Не вдалося відкрити програму встановлення. Спробуйте ще раз і дозвольте встановлення з цієї програми.</string>
+    <string name="settings_update_check_failed">Не вдалося перевірити наявність оновлень. Перевірте підключення та повторіть спробу.</string>
+    <string name="settings_update_progress">%1$d%% завантажено</string>
+    <string name="settings_update_automatic">Автоматична перевірка оновлень</string>
+    <string name="settings_update_automatic_detail">Перевіряє, коли ви використовуєте програму, щонайбільше раз на 12 годин. Завантаження та встановлення вимагають вашого підтвердження.</string>
+    <string name="settings_update_download">Завантажити оновлення</string>
+    <string name="settings_update_install">Встановіть оновлення</string>
+    <string name="settings_update_check">Перевірте ще раз</string>
 </resources>

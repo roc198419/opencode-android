@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Камераа QR код руу чиглүүлнэ үү</string>
     <string name="settings_pairing_paste_link">Хослуулах холбоосыг буулгах</string>
     <string name="settings_pairing_computer_hint">Компьютер дээрээ OpenCode-ийн Тохиргоо → Хослуулах хэсгийг нээх эсвэл терминалд %1$s ажиллуулна уу.</string>
+    <string name="settings_update_title">Програмын шинэчлэлтүүд</string>
+    <string name="settings_update_current_version">Одоогийн хувилбар: %1$s</string>
+    <string name="settings_update_checking">Шинэчлэлтүүдийг шалгаж байна...</string>
+    <string name="settings_update_current">Та хамгийн сүүлийн хувилбарыг ашиглаж байна.</string>
+    <string name="settings_update_available">%1$s хувилбар боломжтой (%2$d MB).</string>
+    <string name="settings_update_downloading">Шинэчлэлтийг татаж, баталгаажуулж байна...</string>
+    <string name="settings_update_ready">Шинэчлэлт баталгаажсан бөгөөд суулгахад бэлэн байна.</string>
+    <string name="settings_update_permission">Энэ апп-д Android тохиргоонд шинэчлэлт суулгахыг зөвшөөрч, энд буцаж ирнэ үү.</string>
+    <string name="settings_update_installing">Android дээрх шинэчлэлтийг баталгаажуулна уу. Та цуцалбал дахин оролдох боломжтой.</string>
+    <string name="settings_update_unsupported">Хувийн GitHub хувилбарын хувилбарт шинэчлэлтүүдийг авах боломжтой.</string>
+    <string name="settings_update_verification_failed">Шинэчлэлтийг баталгаажуулж чадсангүй. Дахин оролдохын тулд дахин татаж авна уу.</string>
+    <string name="settings_update_download_failed">Шинэчлэлтийг татаж авч чадсангүй. Холболтоо шалгаад дахин оролдоно уу.</string>
+    <string name="settings_update_install_failed">Суулгагчийг нээж чадсангүй. Дахин оролдоод энэ апп-аас суулгахыг зөвшөөрнө үү.</string>
+    <string name="settings_update_check_failed">Шинэчлэлтүүдийг шалгаж чадсангүй. Холболтоо шалгаад дахин оролдоно уу.</string>
+    <string name="settings_update_progress">%1$d%% татагдсан</string>
+    <string name="settings_update_automatic">Шинэчлэлтүүдийг автоматаар шалгана уу</string>
+    <string name="settings_update_automatic_detail">Таныг програмыг ашиглах үед хамгийн ихдээ 12 цаг тутамд шалгадаг. Татаж авах, суулгах нь таны баталгаажуулалтыг шаарддаг.</string>
+    <string name="settings_update_download">Шинэчлэлтийг татаж авах</string>
+    <string name="settings_update_install">Шинэчлэлтийг суулгана уу</string>
+    <string name="settings_update_check">Дахин шалгана уу</string>
 </resources>

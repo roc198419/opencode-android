@@ -226,4 +226,24 @@
     <string name="settings_pairing_point_camera">Aponte a câmera para o código QR</string>
     <string name="settings_pairing_paste_link">Colar link de emparelhamento</string>
     <string name="settings_pairing_computer_hint">No computador, abra Configurações → Emparelhamento no OpenCode ou execute %1$s em um terminal.</string>
+    <string name="settings_update_title">Atualizações de aplicativos</string>
+    <string name="settings_update_current_version">Versão Atual: %1$s</string>
+    <string name="settings_update_checking">Verificando atualizações…</string>
+    <string name="settings_update_current">Você está usando a versão mais recente.</string>
+    <string name="settings_update_available">A versão %1$s está disponível (%2$d MB).</string>
+    <string name="settings_update_downloading">Baixando e verificando a atualização…</string>
+    <string name="settings_update_ready">A atualização foi verificada e pronta para instalação.</string>
+    <string name="settings_update_permission">Permita que este aplicativo instale atualizações nas configurações do Android e retorne aqui.</string>
+    <string name="settings_update_installing">Confirme a atualização no Android. Você pode tentar novamente se cancelar.</string>
+    <string name="settings_update_unsupported">As atualizações estão disponíveis na versão pessoal do GitHub.</string>
+    <string name="settings_update_verification_failed">Não foi possível verificar a atualização. Baixe-o novamente para tentar novamente.</string>
+    <string name="settings_update_download_failed">Não foi possível baixar a atualização. Verifique sua conexão e tente novamente.</string>
+    <string name="settings_update_install_failed">Não foi possível abrir o instalador. Tente novamente e permita a instalação deste aplicativo.</string>
+    <string name="settings_update_check_failed">Não foi possível verificar se há atualizações. Verifique sua conexão e tente novamente.</string>
+    <string name="settings_update_progress">%1$d%% baixado</string>
+    <string name="settings_update_automatic">Verifique automaticamente se há atualizações</string>
+    <string name="settings_update_automatic_detail">Verifica quando você usa o aplicativo, no máximo uma vez a cada 12 horas. Downloads e instalação requerem sua confirmação.</string>
+    <string name="settings_update_download">Baixar atualização</string>
+    <string name="settings_update_install">Instalar atualização</string>
+    <string name="settings_update_check">Verifique novamente</string>
 </resources>

@@ -1,5 +1,10 @@
 package ai.opencode.feature.drawer
 
+import ai.opencode.feature.settings.AppUpdateView
+import ai.opencode.feature.system.updates.AppUpdateChannel
+import ai.opencode.feature.system.updates.AppUpdateFeature
+import ai.opencode.feature.system.updates.AppUpdateRelease
+
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Looper
@@ -65,6 +70,16 @@ class ServerSwitchingTests {
     @get:Rule val isolation = TestIsolationRule()
 
     private val snapshot = OpenCodeHomeSnapshot(projects = emptyList(), sessions = emptyList(), activeSessionIDs = emptySet())
+
+    @Test fun settingsUpdatesEntryForwardsToTheApp() = runTest {
+        val server = OpenCodeServer(url = "https://computer.invalid", username = "", password = "")
+        val state = HomeFeature.State(server, snapshot).copy(settings = ai.opencode.feature.settings.SettingsFeature.State(server = server))
+        val store = TestStore(state, HomeFeature(), this)
+        val delegate = ai.opencode.feature.settings.SettingsFeature.Action.Delegate(ai.opencode.feature.settings.SettingsFeature.SettingsDelegate.CheckAppUpdates)
+        store.send(HomeFeature.Action.SettingsScreen(ai.opencode.core.store.PresentationAction.Presented(delegate)))
+        store.receive(HomeFeature.Action.Delegate(HomeFeature.DelegateAction.CheckAppUpdates))
+        store.finish()
+    }
 
     private fun offlineClient() = OpenCodeClient.testValue.copy(
         homeSnapshot = { throw OpenCodeClientError(message = "Offline") },
@@ -169,6 +184,72 @@ class ServerSwitchingTests {
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class ServerManagementViewTests {
     @get:Rule val isolation = TestIsolationRule()
+
+    @Test fun appUpdateDialogRequiresExplicitDownloadAndInstallActions() {
+        val frameDelay = ShadowChoreographer.getFrameDelay()
+        val paused = ShadowChoreographer.isPaused()
+        ShadowChoreographer.setPaused(true)
+        ShadowChoreographer.setFrameDelay(java.time.Duration.ofMillis(16))
+        val release = AppUpdateRelease(1, "0.1.4", 1006, AppUpdateChannel.packageName, 33, 71000000,
+            "a".repeat(64), AppUpdateChannel.certificate, "${AppUpdateChannel.releases}/v0.1.4/opencode-android-0.1.4.apk")
+        try {
+            for (fontScale in listOf(1f, 2f)) {
+                org.robolectric.RuntimeEnvironment.setFontScale(fontScale)
+                for ((phase, label, expected) in listOf(
+                    Triple(AppUpdateFeature.Phase.Available, "Download Update", AppUpdateFeature.Action.Download),
+                    Triple(AppUpdateFeature.Phase.Downloading, "Cancel", AppUpdateFeature.Action.CancelDownload),
+                    Triple(AppUpdateFeature.Phase.Ready, "Install Update", AppUpdateFeature.Action.Install),
+                )) {
+                    val actions = mutableListOf<AppUpdateFeature.Action>()
+                    val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+                    val store = Store(AppUpdateFeature.State(
+                        presented = true, currentVersion = "0.1.3", phase = phase, release = release,
+                        downloaded = phase == AppUpdateFeature.Phase.Ready, bytes = release.apkSize / 2,
+                    ), Reducer<AppUpdateFeature.State, AppUpdateFeature.Action> { state, action -> actions.add(action); Reduced(state) }, scope = scope)
+                    val controller = Robolectric.buildActivity(ComponentActivity::class.java).setup()
+                    val view = ComposeView(controller.get())
+                    controller.get().setContentView(view)
+                    try {
+                        view.setContent {
+                            OpenCodeAppTheme {
+                                CompositionLocalProvider(LocalDensity provides Density(3f, fontScale)) { AppUpdateView(store) }
+                            }
+                        }
+                        pump()
+                        val button = nodes().first { node -> node.config.getOrNull(SemanticsActions.OnClick) != null && descendants(node).any { child ->
+                            child.config.getOrNull(SemanticsProperties.Text)?.any { it.text == label } == true
+                        } }
+                        assertTrue("Update actions keep 48 dp targets", button.touchBoundsInRoot.height >= 144f)
+                        assertTrue(actions.isEmpty())
+                        System.getProperty("opencode.updateScreenshots")?.let { directory ->
+                            val window = WindowInspector.getGlobalWindowViews().last { candidate ->
+                                root(candidate)?.semanticsOwner?.unmergedRootSemanticsNode?.let(::descendants)?.any { node ->
+                                    node.config.getOrNull(SemanticsProperties.Text)?.any { it.text == "App Updates" } == true
+                                } == true
+                            }
+                            val bitmap = Bitmap.createBitmap(window.width, window.height, Bitmap.Config.ARGB_8888)
+                            window.draw(Canvas(bitmap))
+                            java.io.File(directory, "update-$phase-$fontScale.png").apply { parentFile?.mkdirs() }.outputStream().use {
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                            }
+                            bitmap.recycle()
+                        }
+                        assertTrue(requireNotNull(button.config.getOrNull(SemanticsActions.OnClick)?.action).invoke())
+                        pump()
+                        assertEquals(listOf(expected), actions)
+                    } finally {
+                        view.disposeComposition()
+                        scope.cancel()
+                        controller.pause().stop().destroy()
+                    }
+                }
+            }
+        } finally {
+            org.robolectric.RuntimeEnvironment.setFontScale(1f)
+            ShadowChoreographer.setFrameDelay(frameDelay)
+            ShadowChoreographer.setPaused(paused)
+        }
+    }
 
     @Test fun compactDrawerControlsClearTheBottomInsetAndKeepTheirTouchTargets() {
         val frameDelay = ShadowChoreographer.getFrameDelay()

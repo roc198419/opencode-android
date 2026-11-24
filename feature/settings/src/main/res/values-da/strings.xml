@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Ret kameraet mod QR-koden</string>
     <string name="settings_pairing_paste_link">Indsæt parringslink</string>
     <string name="settings_pairing_computer_hint">Åbn Indstillinger → Parring i OpenCode på din computer, eller kør %1$s i en terminal.</string>
+    <string name="settings_update_title">App-opdateringer</string>
+    <string name="settings_update_current_version">Aktuel version: %1$s</string>
+    <string name="settings_update_checking">Søger efter opdateringer...</string>
+    <string name="settings_update_current">Du bruger den seneste version.</string>
+    <string name="settings_update_available">Version %1$s er tilgængelig (%2$d MB).</string>
+    <string name="settings_update_downloading">Downloader og bekræfter opdateringen...</string>
+    <string name="settings_update_ready">Opdateringen er verificeret og klar til installation.</string>
+    <string name="settings_update_permission">Tillad denne app at installere opdateringer i Android-indstillinger, og vend derefter tilbage hertil.</string>
+    <string name="settings_update_installing">Bekræft opdateringen i Android. Du kan prøve igen, hvis du annullerer.</string>
+    <string name="settings_update_unsupported">Opdateringer er tilgængelige i den personlige GitHub-udgivelsesbuild.</string>
+    <string name="settings_update_verification_failed">Kunne ikke bekræfte opdateringen. Download det igen for at prøve igen.</string>
+    <string name="settings_update_download_failed">Kunne ikke downloade opdateringen. Tjek din forbindelse, og prøv igen.</string>
+    <string name="settings_update_install_failed">Installationsprogrammet kunne ikke åbnes. Prøv igen og tillad installation fra denne app.</string>
+    <string name="settings_update_check_failed">Kunne ikke søge efter opdateringer. Tjek din forbindelse, og prøv igen.</string>
+    <string name="settings_update_progress">%1$d%% downloadet</string>
+    <string name="settings_update_automatic">Søg automatisk efter opdateringer</string>
+    <string name="settings_update_automatic_detail">Tjekker, når du bruger appen, højst én gang hver 12. time. Downloads og installation kræver din bekræftelse.</string>
+    <string name="settings_update_download">Download opdatering</string>
+    <string name="settings_update_install">Installer opdatering</string>
+    <string name="settings_update_check">Tjek igen</string>
 </resources>

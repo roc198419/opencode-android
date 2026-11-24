@@ -107,3 +107,8 @@ compares with the JSON `:server`'s internal `promptBody` writes; the app's `cont
 Production bugs the ported tests found: none.
 
 Total: 119 `:feature:system` tests, all passing (`./gradlew :feature:system:testDebugUnitTest`).
+
+
+## Personal GitHub updates
+
+Android-only: `updates/AppUpdateFeature.kt`, `AppUpdateClient.kt` and `AppUpdateRelease.kt` own the personal stable channel. The app reducer scopes the updater across server switches and Settings dismissal. Foreground checks are throttled to 12 hours and can be disabled; dismissing a version suppresses its automatic prompt. Only the pinned personal package and certificate participate. Stable GitHub assets must match `release.json`; downloads have bounded size, SHA-256, APK package/version/debuggability and signing-certificate checks. A private cache-only FileProvider grants read access to Android's installer after explicit download and install actions. Installation-source permission returns resume installation; cancellation permits retry. No background installation or new iOS counterpart.

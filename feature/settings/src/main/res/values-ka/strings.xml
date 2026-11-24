@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">მიმართეთ კამერა QR კოდისკენ</string>
     <string name="settings_pairing_paste_link">დაწყვილების ბმულის ჩასმა</string>
     <string name="settings_pairing_computer_hint">კომპიუტერზე გახსენით OpenCode-ის პარამეტრები → დაწყვილება, ან ტერმინალში გაუშვით %1$s.</string>
+    <string name="settings_update_title">აპლიკაციის განახლებები</string>
+    <string name="settings_update_current_version">მიმდინარე ვერსია: %1$s</string>
+    <string name="settings_update_checking">მიმდინარეობს განახლებების შემოწმება…</string>
+    <string name="settings_update_current">თქვენ იყენებთ უახლეს ვერსიას.</string>
+    <string name="settings_update_available">ხელმისაწვდომია %1$s ვერსია (%2$d მბაიტი).</string>
+    <string name="settings_update_downloading">მიმდინარეობს განახლების ჩამოტვირთვა და დადასტურება…</string>
+    <string name="settings_update_ready">განახლება დამოწმებულია და მზად არის ინსტალაციისთვის.</string>
+    <string name="settings_update_permission">მიეცით ნება ამ აპს, დააინსტალიროს განახლებები Android-ის პარამეტრებში, შემდეგ დაბრუნდით აქ.</string>
+    <string name="settings_update_installing">დაადასტურეთ განახლება Android-ში. თუ გააუქმებთ, შეგიძლიათ ხელახლა სცადოთ.</string>
+    <string name="settings_update_unsupported">განახლებები ხელმისაწვდომია GitHub-ის პერსონალურ გამოშვებაში.</string>
+    <string name="settings_update_verification_failed">განახლების გადამოწმება ვერ მოხერხდა. ხელახლა ჩამოტვირთეთ ხელახლა საცდელად.</string>
+    <string name="settings_update_download_failed">განახლების ჩამოტვირთვა ვერ მოხერხდა. შეამოწმეთ თქვენი კავშირი და სცადეთ ხელახლა.</string>
+    <string name="settings_update_install_failed">ინსტალერის გახსნა ვერ მოხერხდა. სცადეთ ხელახლა და დაუშვით ინსტალაცია ამ აპიდან.</string>
+    <string name="settings_update_check_failed">განახლებების შემოწმება ვერ მოხერხდა. შეამოწმეთ თქვენი კავშირი და სცადეთ ხელახლა.</string>
+    <string name="settings_update_progress">ჩამოტვირთულია %1$d%%</string>
+    <string name="settings_update_automatic">ავტომატურად შეამოწმეთ განახლებები</string>
+    <string name="settings_update_automatic_detail">ამოწმებს როდის იყენებთ აპს, მაქსიმუმ 12 საათში ერთხელ. ჩამოტვირთვები და ინსტალაცია საჭიროებს თქვენს დადასტურებას.</string>
+    <string name="settings_update_download">ჩამოტვირთეთ განახლება</string>
+    <string name="settings_update_install">დააინსტალირეთ განახლება</string>
+    <string name="settings_update_check">შეამოწმეთ ისევ</string>
 </resources>

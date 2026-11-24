@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">ካሜራዎን ወደ QR ኮዱ ያነጣጥሩ</string>
     <string name="settings_pairing_paste_link">የማጣመሪያ አገናኝ ለጥፍ</string>
     <string name="settings_pairing_computer_hint">በኮምፒውተርዎ ላይ የOpenCode ቅንብሮች → ማጣመር ይክፈቱ፣ ወይም በተርሚናል ውስጥ %1$s ያሂዱ።</string>
+    <string name="settings_update_title">የመተግበሪያ ዝማኔዎች</string>
+    <string name="settings_update_current_version">የአሁኑ ስሪት፡ %1$s</string>
+    <string name="settings_update_checking">ዝማኔዎችን በመፈተሽ ላይ…</string>
+    <string name="settings_update_current">የቅርብ ጊዜውን ስሪት እየተጠቀምክ ነው።</string>
+    <string name="settings_update_available">ስሪት %1$s ይገኛል (%2$d ሜባ)።</string>
+    <string name="settings_update_downloading">ዝመናውን በማውረድ እና በማረጋገጥ ላይ…</string>
+    <string name="settings_update_ready">ዝመናው ተረጋግጧል እና ለመጫን ዝግጁ ነው።</string>
+    <string name="settings_update_permission">ይህ መተግበሪያ በአንድሮይድ ቅንብሮች ውስጥ ዝማኔዎችን እንዲጭን ይፍቀዱለት፣ ከዚያ ወደዚህ ይመለሱ።</string>
+    <string name="settings_update_installing">በአንድሮይድ ውስጥ ማሻሻያውን ያረጋግጡ። ከሰረዙ እንደገና መሞከር ይችላሉ።</string>
+    <string name="settings_update_unsupported">ዝማኔዎች በግላዊ GitHub ልቀት ግንባታ ውስጥ ይገኛሉ።</string>
+    <string name="settings_update_verification_failed">ዝማኔውን ማረጋገጥ አልተቻለም። እንደገና ለመሞከር እንደገና ያውርዱት።</string>
+    <string name="settings_update_download_failed">ዝማኔውን ማውረድ አልተቻለም። ግንኙነትዎን ይፈትሹ እና እንደገና ይሞክሩ።</string>
+    <string name="settings_update_install_failed">ጫኚውን መክፈት አልተቻለም። እንደገና ይሞክሩ እና ከዚህ መተግበሪያ መጫንን ይፍቀዱ።</string>
+    <string name="settings_update_check_failed">ዝማኔዎችን መፈለግ አልተቻለም። ግንኙነትዎን ይፈትሹ እና እንደገና ይሞክሩ።</string>
+    <string name="settings_update_progress">%1$d%% ወርዷል</string>
+    <string name="settings_update_automatic">ዝማኔዎችን በራስ-ሰር ያረጋግጡ</string>
+    <string name="settings_update_automatic_detail">መተግበሪያውን ሲጠቀሙ ይፈትሻል፣ ቢበዛ በየ12 ሰዓቱ አንድ ጊዜ። ማውረዶች እና መጫኑ የእርስዎን ማረጋገጫ ይፈልጋሉ።</string>
+    <string name="settings_update_download">አዘምን አውርድ</string>
+    <string name="settings_update_install">ዝመናን ጫን</string>
+    <string name="settings_update_check">እንደገና ያረጋግጡ</string>
 </resources>

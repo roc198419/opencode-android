@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Drejto kamerën nga kodi QR</string>
     <string name="settings_pairing_paste_link">Ngjit lidhjen e çiftimit</string>
     <string name="settings_pairing_computer_hint">Në kompjuterin tënd, hap Cilësimet → Çiftimi në OpenCode, ose ekzekuto %1$s në një terminal.</string>
+    <string name="settings_update_title">Përditësimet e aplikacioneve</string>
+    <string name="settings_update_current_version">Versioni aktual: %1$s</string>
+    <string name="settings_update_checking">Po kontrollon për përditësime…</string>
+    <string name="settings_update_current">Ju jeni duke përdorur versionin më të fundit.</string>
+    <string name="settings_update_available">Versioni %1$s është i disponueshëm (%2$d MB).</string>
+    <string name="settings_update_downloading">Po shkarkon dhe po verifikon përditësimin…</string>
+    <string name="settings_update_ready">Përditësimi është verifikuar dhe gati për t\'u instaluar.</string>
+    <string name="settings_update_permission">Lejo që ky aplikacion të instalojë përditësime në cilësimet e Android, më pas kthehu këtu.</string>
+    <string name="settings_update_installing">Konfirmo përditësimin në Android. Mund të provosh sërish nëse e anulon.</string>
+    <string name="settings_update_unsupported">Përditësimet janë të disponueshme në versionin personal të lëshimit të GitHub.</string>
+    <string name="settings_update_verification_failed">Përditësimi nuk mund të verifikohej. Shkarkoje sërish për të riprovuar.</string>
+    <string name="settings_update_download_failed">Përditësimi nuk mund të shkarkohej. Kontrollo lidhjen tënde dhe provo sërish.</string>
+    <string name="settings_update_install_failed">Instaluesi nuk mund të hapej. Provo sërish dhe lejo instalimin nga ky aplikacion.</string>
+    <string name="settings_update_check_failed">Nuk mund të kontrollohej për përditësime. Kontrollo lidhjen tënde dhe provo sërish.</string>
+    <string name="settings_update_progress">%1$d%% u shkarkuar</string>
+    <string name="settings_update_automatic">Kontrollo automatikisht për përditësime</string>
+    <string name="settings_update_automatic_detail">Kontrollon kur e përdorni aplikacionin, maksimumi një herë në 12 orë. Shkarkimet dhe instalimi kërkojnë konfirmimin tuaj.</string>
+    <string name="settings_update_download">Shkarko Përditësimin</string>
+    <string name="settings_update_install">Instalo Përditësimin</string>
+    <string name="settings_update_check">Kontrollo Përsëri</string>
 </resources>

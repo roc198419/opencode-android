@@ -320,6 +320,10 @@ private fun SettingsRootPage(store: SettingsStore) {
                 }
             }
             settingsSection(key = "whats-new") {
+                SettingsRow(stringResource(R.string.settings_update_title), "arrow.down.circle", SettingsTint.Blue) {
+                    store.send(SettingsFeature.Action.Delegate(SettingsFeature.SettingsDelegate.CheckAppUpdates))
+                }
+                SettingsDivider(inset = true)
                 SettingsRow(stringResource(R.string.settings_whats_new_title), "sparkles", SettingsTint.Orange, modifier = returnFocus.on(SettingsPage.WhatsNew)) { push(SettingsPage.WhatsNew) }
             }
             settingsSection(

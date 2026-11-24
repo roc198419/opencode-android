@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Տեսախցիկն ուղղեք դեպի QR կոդը</string>
     <string name="settings_pairing_paste_link">Տեղադրել զուգակցման հղումը</string>
     <string name="settings_pairing_computer_hint">Համակարգչում բացեք OpenCode-ի Կարգավորումներ → Զուգակցում բաժինը կամ տերմինալում գործարկեք %1$s։</string>
+    <string name="settings_update_title">Հավելվածի թարմացումներ</string>
+    <string name="settings_update_current_version">Ընթացիկ տարբերակը՝ %1$s</string>
+    <string name="settings_update_checking">Թարմացումների ստուգում…</string>
+    <string name="settings_update_current">Դուք օգտագործում եք վերջին տարբերակը:</string>
+    <string name="settings_update_available">Հասանելի է %1$s տարբերակը (%2$d ՄԲ):</string>
+    <string name="settings_update_downloading">Թարմացումը ներբեռնվում և հաստատվում է…</string>
+    <string name="settings_update_ready">Թարմացումը ստուգված է և պատրաստ է տեղադրման:</string>
+    <string name="settings_update_permission">Թույլ տվեք այս հավելվածին թարմացումներ տեղադրել Android-ի կարգավորումներում, այնուհետև վերադարձեք այստեղ:</string>
+    <string name="settings_update_installing">Հաստատեք թարմացումը Android-ում: Չեղարկելու դեպքում կարող եք նորից փորձել:</string>
+    <string name="settings_update_unsupported">Թարմացումները հասանելի են անձնական GitHub թողարկման նախագծում:</string>
+    <string name="settings_update_verification_failed">Չհաջողվեց հաստատել թարմացումը: Նորից ներբեռնեք այն նորից փորձելու համար:</string>
+    <string name="settings_update_download_failed">Չհաջողվեց ներբեռնել թարմացումը: Ստուգեք ձեր կապը և նորից փորձեք:</string>
+    <string name="settings_update_install_failed">Չհաջողվեց բացել տեղադրիչը: Նորից փորձեք և թույլատրեք տեղադրումը այս հավելվածից:</string>
+    <string name="settings_update_check_failed">Չհաջողվեց ստուգել թարմացումների առկայությունը: Ստուգեք ձեր կապը և նորից փորձեք:</string>
+    <string name="settings_update_progress">Ներբեռնվել է %1$d%%</string>
+    <string name="settings_update_automatic">Ավտոմատ ստուգեք թարմացումների համար</string>
+    <string name="settings_update_automatic_detail">Ստուգում է, թե երբ եք օգտագործում հավելվածը, առավելագույնը 12 ժամը մեկ: Ներբեռնումները և տեղադրումը պահանջում են ձեր հաստատումը:</string>
+    <string name="settings_update_download">Ներբեռնեք թարմացում</string>
+    <string name="settings_update_install">Տեղադրեք թարմացումը</string>
+    <string name="settings_update_check">Կրկին ստուգեք</string>
 </resources>

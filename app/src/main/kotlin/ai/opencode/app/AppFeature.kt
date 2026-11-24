@@ -1,5 +1,7 @@
 package ai.opencode.app
 
+import ai.opencode.feature.system.updates.AppUpdateFeature
+
 import ai.opencode.core.dependencies.PasteboardClient
 import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.haptics.Haptic
@@ -91,6 +93,7 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
         val pasteError: String? = null,
         /** The first-run welcome, with no saved server (Welcome Preview). */
         val welcome: WelcomeFeature.State = WelcomeFeature.State(),
+        val updates: AppUpdateFeature.State = AppUpdateFeature.State(),
         /** The phone's client tools' socket (Share Screen with Agents and the other call tools). */
         val clientTools: ClientToolsFeature.State = ClientToolsFeature.State(),
         /** Its second socket, for a call's delegator session in another directory. */
@@ -237,7 +240,7 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
          */
         val presentsOverApp: Boolean
             get() = isEditingServer || isScanningPairingCode || pendingPairing != null || pairingError != null ||
-                shareError != null || notificationError != null || systemActionError != null
+                shareError != null || notificationError != null || systemActionError != null || updates.presented
 
         /** A call that is connecting or connected keeps the screen on, but only in the foreground. */
         val keepsScreenAwake: Boolean get() = isInForeground && home?.hasLiveCall == true
@@ -499,6 +502,7 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
         data class CopyTextTapped(val text: String) : Action
         data object LocalNetworkSettingsTapped : Action
         data class Home(val action: HomeFeature.Action) : Action
+        data class Updates(val action: AppUpdateFeature.Action) : Action
         data class Welcome(val action: WelcomeFeature.Action) : Action
         data class ClientTools(val action: ClientToolsFeature.Action) : Action
         data class DelegatorClientTools(val action: ClientToolsFeature.Action) : Action
@@ -528,6 +532,20 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
 
     private val welcomeBody: Reducer<State, Action> = combine(
         whatsNewBody,
+        scope(
+            state = { it.updates },
+            setState = { s, updates -> s.copy(updates = updates) },
+            action = {
+                when (it) {
+                    is Action.Updates -> it.action
+                    Action.Task -> AppUpdateFeature.Action.Check(manual = false)
+                    is Action.ForegroundChanged -> if (it.isInForeground) AppUpdateFeature.Action.Check(manual = false) else null
+                    else -> null
+                }
+            },
+            embed = Action::Updates,
+            child = AppUpdateFeature(),
+        ),
         scope(
             state = { it.welcome },
             setState = { s, welcome -> s.copy(welcome = welcome) },
@@ -590,6 +608,7 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
     }
 
     private fun reduceCore(state: State, action: Action): Reduced<State, Action> = when (action) {
+        is Action.Updates -> Reduced(state)
         Action.Task -> {
             migrateSettingsIfNeeded(state.knownServers)
             if (dependency(ExperimentalFeatures).isEnabled(ExperimentalFeature.soundEffects)) dependency(SoundEffectsClient).prepare()
@@ -770,6 +789,7 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
         is HomeFeature.DelegateAction.ServerRemovalConfirmed -> Reduced(state, confirmRemoval(action.server, state))
         HomeFeature.DelegateAction.PairServerRequested -> Reduced(beginScanningPairingCode(state))
         HomeFeature.DelegateAction.AddServerRequested -> Reduced(beginNewServer(state))
+        HomeFeature.DelegateAction.CheckAppUpdates -> Reduced(state, Effect.send(Action.Updates(AppUpdateFeature.Action.Check(manual = true))))
     }
 
     // MARK: Notifications and system actions

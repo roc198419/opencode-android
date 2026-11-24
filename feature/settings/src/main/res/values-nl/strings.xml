@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Richt je camera op de QR-code</string>
     <string name="settings_pairing_paste_link">Koppellink plakken</string>
     <string name="settings_pairing_computer_hint">Open op je computer Instellingen → Koppelen in OpenCode, of voer %1$s uit in een terminal.</string>
+    <string name="settings_update_title">App-updates</string>
+    <string name="settings_update_current_version">Huidige versie: %1$s</string>
+    <string name="settings_update_checking">Controleren op updates…</string>
+    <string name="settings_update_current">U gebruikt de nieuwste versie.</string>
+    <string name="settings_update_available">Versie %1$s is beschikbaar (%2$d MB).</string>
+    <string name="settings_update_downloading">De update downloaden en verifiëren…</string>
+    <string name="settings_update_ready">De update is geverifieerd en klaar om te installeren.</string>
+    <string name="settings_update_permission">Geef deze app toestemming om updates te installeren in de Android-instellingen en kom dan hier terug.</string>
+    <string name="settings_update_installing">Bevestig de update in Android. Als u annuleert, kunt u het opnieuw proberen.</string>
+    <string name="settings_update_unsupported">Updates zijn beschikbaar in de persoonlijke GitHub-releasebuild.</string>
+    <string name="settings_update_verification_failed">Kan de update niet verifiëren. Download het opnieuw om het opnieuw te proberen.</string>
+    <string name="settings_update_download_failed">Kan de update niet downloaden. Controleer uw verbinding en probeer het opnieuw.</string>
+    <string name="settings_update_install_failed">Kan het installatieprogramma niet openen. Probeer het opnieuw en sta de installatie van deze app toe.</string>
+    <string name="settings_update_check_failed">Kan niet controleren op updates. Controleer uw verbinding en probeer het opnieuw.</string>
+    <string name="settings_update_progress">%1$d%% gedownload</string>
+    <string name="settings_update_automatic">Automatisch controleren op updates</string>
+    <string name="settings_update_automatic_detail">Controleert wanneer u de app gebruikt, maximaal één keer per 12 uur. Voor downloads en installatie is uw bevestiging vereist.</string>
+    <string name="settings_update_download">Update downloaden</string>
+    <string name="settings_update_install">Update installeren</string>
+    <string name="settings_update_check">Controleer opnieuw</string>
 </resources>

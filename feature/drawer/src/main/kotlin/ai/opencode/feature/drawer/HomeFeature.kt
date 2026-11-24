@@ -628,6 +628,7 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
 
     /** What Home asks its parent (`AppFeature`) to do. */
     sealed interface DelegateAction {
+        data object CheckAppUpdates : DelegateAction
         /** Connects to another saved server. */
         data class ServerSwitchTapped(val server: OpenCodeServer) : DelegateAction
         /** Renames a saved server in place, without reconnecting (Home also takes the name). */

@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Камераро ба рамзи QR равона кунед</string>
     <string name="settings_pairing_paste_link">Истиноди ҷуфткуниро часбонед</string>
     <string name="settings_pairing_computer_hint">Дар компютер Танзимотҳо → Ҷуфткунӣ-и OpenCode-ро кушоед ё %1$s-ро дар терминал иҷро кунед.</string>
+    <string name="settings_update_title">Навсозии барномаҳо</string>
+    <string name="settings_update_current_version">Версияи ҷорӣ: %1$s</string>
+    <string name="settings_update_checking">Санҷиши навсозиҳо…</string>
+    <string name="settings_update_current">Шумо версияи охиринро истифода мебаред.</string>
+    <string name="settings_update_available">Версияи %1$s дастрас аст (%2$d МБ).</string>
+    <string name="settings_update_downloading">Зеркашӣ ва тасдиқи навсозӣ…</string>
+    <string name="settings_update_ready">Навсозӣ тасдиқ карда шудааст ва барои насб омода аст.</string>
+    <string name="settings_update_permission">Ба ин барнома иҷозат диҳед, ки навсозиҳоро дар танзимоти Android насб кунад ва ба ин ҷо баргардед.</string>
+    <string name="settings_update_installing">Навсозиро дар Android тасдиқ кунед. Агар бекор кунед, шумо метавонед дубора кӯшиш кунед.</string>
+    <string name="settings_update_unsupported">Навсозиҳо дар версияи шахсии GitHub дастрасанд.</string>
+    <string name="settings_update_verification_failed">Навсозиро тасдиқ карда натавонист. Барои аз нав кӯшиш кардан онро бори дигар зеркашӣ кунед.</string>
+    <string name="settings_update_download_failed">Навсозӣ зеркашӣ карда нашуд. Пайвасти худро санҷед ва бори дигар кӯшиш кунед.</string>
+    <string name="settings_update_install_failed">Насбкунанда кушода нашуд. Бори дигар кӯшиш кунед ва ба насби ин барнома иҷозат диҳед.</string>
+    <string name="settings_update_check_failed">Навсозиро тафтиш карда натавонист. Пайвасти худро санҷед ва бори дигар кӯшиш кунед.</string>
+    <string name="settings_update_progress">%1$d%% зеркашӣ карда шуд</string>
+    <string name="settings_update_automatic">Ба таври худкор Навсозиро тафтиш кунед</string>
+    <string name="settings_update_automatic_detail">Ҳангоми истифодаи барнома, на камтар аз як маротиба дар 12 соат тафтиш мекунад. Зеркашӣ ва насб тасдиқи шуморо талаб мекунанд.</string>
+    <string name="settings_update_download">Навсозӣ</string>
+    <string name="settings_update_install">Навсозӣ насб кунед</string>
+    <string name="settings_update_check">Боз санҷед</string>
 </resources>

@@ -1,5 +1,17 @@
 package ai.opencode.feature.system
 
+import ai.opencode.core.dependencies.DateClient
+import ai.opencode.core.sharing.SharedStore
+import ai.opencode.core.sharing.shared
+import ai.opencode.core.store.TestStore
+import ai.opencode.feature.system.updates.AppUpdateChannel
+import ai.opencode.feature.system.updates.AppUpdateClient
+import ai.opencode.feature.system.updates.AppUpdateError
+import ai.opencode.feature.system.updates.AppUpdateFeature
+import ai.opencode.feature.system.updates.AppUpdateRelease
+import ai.opencode.feature.system.updates.AppUpdateSharedKeys
+import ai.opencode.feature.system.updates.InstalledAppUpdate
+
 import ai.opencode.core.log.SystemActionOrigin
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.feature.system.intents.AppActionActivity
@@ -24,6 +36,9 @@ import ai.opencode.server.model.OpenCodeSession
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.produceIn
+import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.resetMain
+import okhttp3.ResponseBody.Companion.toResponseBody
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.TestScope
@@ -553,5 +568,294 @@ class SystemPublisherTests {
         }
         assertEquals(8, jobs.size)
         publishers.cancel()
+    }
+}
+
+
+class AppUpdateTests {
+    @get:Rule val isolation = TestIsolationRule()
+    private val installed = InstalledAppUpdate(AppUpdateChannel.packageName, "0.1.3", 1005, AppUpdateChannel.certificate, false, 37)
+    private val release = AppUpdateRelease(1, "0.1.4", 1006, AppUpdateChannel.packageName, 33, 100,
+        "a".repeat(64), AppUpdateChannel.certificate, "${AppUpdateChannel.releases}/v0.1.4/opencode-android-0.1.4.apk")
+    private val client = AppUpdateClient.testValue.copy(installed = { installed }, check = { release })
+
+    @Test fun updateMetadataRejectsOtherChannelsAndUntrustedDownloads() {
+        release.validate(installed)
+        val invalid = listOf(
+            release.copy(schemaVersion = 2), release.copy(packageName = "another.package"),
+            release.copy(certificateSha256 = "b".repeat(64)), release.copy(versionName = "0.1.4-preview"),
+            release.copy(apkUrl = "https://example.com/update.apk"),
+            release.copy(apkUrl = release.apkUrl.replace("https:", "http:")),
+            release.copy(apkUrl = release.apkUrl + "?redirect=elsewhere"),
+            release.copy(minSdk = 38), release.copy(apkSize = 0),
+            release.copy(apkSize = AppUpdateRelease.MAX_APK_BYTES + 1), release.copy(sha256 = "wrong"),
+            release.copy(versionCode = 0),
+        )
+        invalid.forEach { candidate ->
+            try { candidate.validate(installed); fail("Accepted unsafe metadata: $candidate") }
+            catch (_: ai.opencode.feature.system.updates.AppUpdateException) { }
+        }
+        listOf(installed.copy(debuggable = true), installed.copy(certificate = "wrong"), installed.copy(packageName = "ai.opencode.mobilecode"))
+            .forEach { app ->
+                try { release.validate(app); fail("Accepted a different installation") }
+                catch (_: ai.opencode.feature.system.updates.AppUpdateException) { }
+            }
+    }
+
+    @Test fun stableFeedRequiresMatchingAssetsAndANewerVersionCode() = runTest {
+        val body = kotlinx.serialization.json.Json.encodeToString(release)
+        val listing = """{"tag_name":"v0.1.4","draft":false,"prerelease":false,"assets":[
+            {"name":"release.json","browser_download_url":"${AppUpdateChannel.releases}/v0.1.4/release.json","size":500},
+            {"name":"opencode-android-0.1.4.apk","browser_download_url":"${release.apkUrl}","size":100,"digest":"sha256:${release.sha256}"}]}"""
+        suspend fun read(feed: String, app: InstalledAppUpdate = installed) = ai.opencode.feature.system.updates.latestAppUpdate(app) { url ->
+            if (url.endsWith("/releases/latest")) feed else {
+                assertEquals("${AppUpdateChannel.releases}/v0.1.4/release.json", url)
+                body
+            }
+        }
+        assertEquals(release, read(listing))
+        assertNull(read(listing, installed.copy(versionCode = release.versionCode)))
+        assertNull(read(listing, installed.copy(versionCode = release.versionCode + 1)))
+        val invalid = listOf(
+            listing.replace("\"draft\":false", "\"draft\":true"),
+            listing.replace("\"prerelease\":false", "\"prerelease\":true"),
+            listing.replace("\"tag_name\":\"v0.1.4\"", "\"tag_name\":\"dev-latest\""),
+            listing.replace("/v0.1.4/release.json", "/v0.1.3/release.json"),
+            listing.replace("\"size\":100", "\"size\":99"),
+            listing.replace("sha256:${release.sha256}", "sha256:${"b".repeat(64)}"),
+        )
+        invalid.forEach { feed ->
+            try { read(feed); fail("Accepted a mismatched feed") }
+            catch (_: ai.opencode.feature.system.updates.AppUpdateException) { }
+        }
+    }
+
+    @Test fun dismissingDuringACheckCancelsItsPrompt() = runTest {
+        val store = TestStore(AppUpdateFeature.State(), AppUpdateFeature(), this) {
+            this[SharedStore] = SharedStore.inMemory()
+            this[DateClient] = DateClient.constant(java.time.Instant.ofEpochSecond(100000))
+            this[AppUpdateClient] = client.copy(check = { kotlinx.coroutines.awaitCancellation() })
+        }
+        store.send(AppUpdateFeature.Action.Check(true)) { it.copy(presented = true, currentVersion = "0.1.3", phase = AppUpdateFeature.Phase.Checking, generation = 1) }
+        store.send(AppUpdateFeature.Action.Dismiss) { it.copy(presented = false, phase = AppUpdateFeature.Phase.Idle, generation = 2) }
+        store.send(AppUpdateFeature.Action.Checked(1, release))
+        store.finish()
+    }
+
+    @Test fun automaticChecksAreThrottledButManualChecksBypassTheInterval() = runTest {
+        var calls = 0
+        val store = TestStore(AppUpdateFeature.State(), AppUpdateFeature(), this) {
+            this[SharedStore] = SharedStore.inMemory()
+            this[DateClient] = DateClient.constant(java.time.Instant.ofEpochSecond(100000))
+            this[AppUpdateClient] = client.copy(check = { calls++; null })
+        }
+        store.send(AppUpdateFeature.Action.Check(false)) { it.copy(currentVersion = "0.1.3", phase = AppUpdateFeature.Phase.Checking, generation = 1) }
+        store.receive(AppUpdateFeature.Action.Checked(1, null)) { it.copy(phase = AppUpdateFeature.Phase.Current) }
+        store.send(AppUpdateFeature.Action.Check(false))
+        assertEquals(1, calls)
+        store.send(AppUpdateFeature.Action.Check(true)) { it.copy(presented = true, phase = AppUpdateFeature.Phase.Checking, generation = 2) }
+        store.receive(AppUpdateFeature.Action.Checked(2, null)) { it.copy(phase = AppUpdateFeature.Phase.Current) }
+        assertEquals(2, calls)
+        store.finish()
+    }
+
+    @Test fun disabledAutomaticChecksStillAllowManualUpdates() = runTest {
+        val store = TestStore(AppUpdateFeature.State(), AppUpdateFeature(), this) {
+            this[SharedStore] = SharedStore.inMemory()
+            this[DateClient] = DateClient.constant(java.time.Instant.ofEpochSecond(100000))
+            this[AppUpdateClient] = client
+        }
+        store.send(AppUpdateFeature.Action.AutomaticallyChecksChanged(false)) { it.copy(automaticallyChecks = false) }
+        store.send(AppUpdateFeature.Action.Check(false))
+        store.send(AppUpdateFeature.Action.Check(true)) { it.copy(presented = true, currentVersion = "0.1.3", phase = AppUpdateFeature.Phase.Checking, generation = 1) }
+        store.receive(AppUpdateFeature.Action.Checked(1, release)) { it.copy(phase = AppUpdateFeature.Phase.Available, release = release) }
+        store.finish()
+    }
+
+    @Test fun dismissingAVersionSuppressesAutomaticPromptsButNotManualChecks() = runTest {
+        val store = TestStore(AppUpdateFeature.State(presented = true, release = release, phase = AppUpdateFeature.Phase.Available), AppUpdateFeature(), this) {
+            this[SharedStore] = SharedStore.inMemory()
+            this[DateClient] = DateClient.constant(java.time.Instant.ofEpochSecond(100000))
+            this[AppUpdateClient] = client
+        }
+        store.send(AppUpdateFeature.Action.Dismiss) { it.copy(presented = false) }
+        assertEquals(release.versionCode, store.withDependencies { shared(AppUpdateSharedKeys.dismissedVersion).value })
+        store.send(AppUpdateFeature.Action.Check(false)) { it.copy(currentVersion = "0.1.3", phase = AppUpdateFeature.Phase.Checking, generation = 1, release = null) }
+        store.receive(AppUpdateFeature.Action.Checked(1, release)) { it.copy(phase = AppUpdateFeature.Phase.Available, release = release) }
+        store.finish()
+    }
+
+    @Test fun cancellationRejectsLateDownloadEvents() = runTest {
+        val store = TestStore(AppUpdateFeature.State(presented = true, release = release, phase = AppUpdateFeature.Phase.Available), AppUpdateFeature(), this) {
+            this[AppUpdateClient] = client.copy(download = { _, progress -> progress(25); kotlinx.coroutines.awaitCancellation() })
+        }
+        store.send(AppUpdateFeature.Action.Download) { it.copy(phase = AppUpdateFeature.Phase.Downloading, generation = 1) }
+        store.receive(AppUpdateFeature.Action.Progress(1, 25)) { it.copy(bytes = 25) }
+        store.send(AppUpdateFeature.Action.CancelDownload) { it.copy(phase = AppUpdateFeature.Phase.Available, bytes = 0, generation = 2) }
+        store.send(AppUpdateFeature.Action.Progress(1, 100))
+        store.send(AppUpdateFeature.Action.Downloaded(1))
+        assertFalse(store.state.downloaded)
+        store.finish()
+    }
+
+    @Test fun downloadVerificationFailureNeverEnablesInstallation() = runTest {
+        var installs = 0
+        val store = TestStore(AppUpdateFeature.State(release = release, phase = AppUpdateFeature.Phase.Available), AppUpdateFeature(), this) {
+            this[AppUpdateClient] = client.copy(
+                download = { _, _ -> throw ai.opencode.feature.system.updates.AppUpdateException(AppUpdateError.Verification) },
+                install = { installs++; AppUpdateClient.InstallResult.Opened },
+            )
+        }
+        store.send(AppUpdateFeature.Action.Download) { it.copy(phase = AppUpdateFeature.Phase.Downloading, generation = 1) }
+        store.receive(AppUpdateFeature.Action.Downloaded(1, AppUpdateError.Verification)) { it.copy(phase = AppUpdateFeature.Phase.Failed, error = AppUpdateError.Verification) }
+        store.send(AppUpdateFeature.Action.Install)
+        assertEquals(0, installs)
+        store.finish()
+    }
+
+    @Test fun permissionReturnContinuesInstallationAndCancellationAllowsRetry() = runTest {
+        var attempts = 0
+        val store = TestStore(AppUpdateFeature.State(release = release, downloaded = true, phase = AppUpdateFeature.Phase.Ready), AppUpdateFeature(), this) {
+            this[AppUpdateClient] = client.copy(canInstall = { true }, install = {
+                if (++attempts == 1) AppUpdateClient.InstallResult.PermissionRequired else AppUpdateClient.InstallResult.Opened
+            })
+        }
+        store.send(AppUpdateFeature.Action.Install) { it.copy(phase = AppUpdateFeature.Phase.Installing) }
+        store.receive(AppUpdateFeature.Action.Installed(AppUpdateClient.InstallResult.PermissionRequired)) { it.copy(phase = AppUpdateFeature.Phase.Permission) }
+        store.send(AppUpdateFeature.Action.Resumed)
+        store.receive(AppUpdateFeature.Action.Install) { it.copy(phase = AppUpdateFeature.Phase.Installing) }
+        store.receive(AppUpdateFeature.Action.Installed(AppUpdateClient.InstallResult.Opened))
+        store.send(AppUpdateFeature.Action.Resumed) { it.copy(phase = AppUpdateFeature.Phase.Ready) }
+        assertEquals(2, attempts)
+        store.finish()
+    }
+
+    @Test fun unsupportedBuildsNeverCheckTheNetwork() = runTest {
+        val store = TestStore(AppUpdateFeature.State(), AppUpdateFeature(), this) {
+            this[AppUpdateClient] = client.copy(installed = { installed.copy(debuggable = true) }, check = { fail("Network must not be used"); null })
+        }
+        store.send(AppUpdateFeature.Action.Check(false))
+        store.send(AppUpdateFeature.Action.Check(true)) { it.copy(presented = true, phase = AppUpdateFeature.Phase.Unsupported) }
+        store.finish()
+    }
+}
+
+
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [35])
+@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+class AppUpdateInstallerTests {
+    @get:Rule val isolation = TestIsolationRule()
+
+    private class Fixture {
+        val intents = mutableListOf<Intent>()
+        val base = RuntimeEnvironment.getApplication<android.app.Application>()
+        val context = object : android.content.ContextWrapper(base) {
+            override fun getPackageName() = AppUpdateChannel.packageName
+            override fun startActivity(intent: Intent) { intents.add(intent) }
+        }
+        val pm = org.robolectric.Shadows.shadowOf(base.packageManager)
+        val signing = android.content.pm.SigningInfo().also {
+            org.robolectric.shadow.api.Shadow.extract<org.robolectric.shadows.ShadowSigningInfo>(it).setSignatures(
+                arrayOf(android.content.pm.Signature(java.util.Base64.getDecoder().decode(CERTIFICATE))))
+        }
+        fun info(code: Long, name: String) = android.content.pm.PackageInfo().apply {
+            packageName = AppUpdateChannel.packageName
+            versionName = name
+            setLongVersionCode(code)
+            signingInfo = signing
+            applicationInfo = android.content.pm.ApplicationInfo(base.applicationInfo).apply {
+                packageName = AppUpdateChannel.packageName
+                flags = flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE.inv()
+                minSdkVersion = 33
+            }
+        }
+        val payload = "A stable release fixture".toByteArray()
+        val release = AppUpdateRelease(1, "0.1.4", 1006, AppUpdateChannel.packageName, 33, payload.size.toLong(),
+            java.security.MessageDigest.getInstance("SHA-256").digest(payload).joinToString("") { "%02x".format(it) },
+            AppUpdateChannel.certificate, "${AppUpdateChannel.releases}/v0.1.4/opencode-android-0.1.4.apk")
+        var requests = 0
+        var response = payload
+        val updater = ai.opencode.feature.system.updates.LiveAppUpdater(context, okhttp3.OkHttpClient.Builder().addInterceptor { chain ->
+            requests++
+            okhttp3.Response.Builder().request(chain.request()).protocol(okhttp3.Protocol.HTTP_1_1).code(200).message("OK")
+                .body(response.toResponseBody()).build()
+        }.build())
+        val target = java.io.File(context.cacheDir, "app-updates/${release.versionCode}-${release.sha256.take(16)}.apk")
+        val archive = info(1006, "0.1.4")
+        init {
+            pm.installPackage(info(1005, "0.1.3"))
+            target.parentFile?.mkdirs()
+            target.parentFile?.listFiles()?.forEach { it.delete() }
+            pm.setPackageArchiveInfo(target.path, archive)
+            pm.setPackageArchiveInfo(target.path + ".part", archive)
+            pm.setCanRequestPackageInstalls(false)
+            pm.addOrUpdateProvider(android.content.pm.ProviderInfo().apply {
+                authority = "${AppUpdateChannel.packageName}.updates"
+                name = "ai.opencode.feature.system.updates.AppUpdateFileProvider"
+                packageName = base.packageName
+                applicationInfo = base.applicationInfo
+                metaData = android.os.Bundle().apply {
+                    putInt("android.support.FILE_PROVIDER_PATHS", ai.opencode.feature.system.R.xml.app_update_paths)
+                }
+                grantUriPermissions = true
+            })
+        }
+    }
+
+    @Test fun verifiedApkRequiresPermissionThenGrantsOnlyReadAccessToTheInstaller() = runTest {
+        kotlinx.coroutines.Dispatchers.setMain(kotlinx.coroutines.test.UnconfinedTestDispatcher(testScheduler))
+        try {
+            val f = Fixture()
+            assertTrue(f.updater.installed().supported)
+            f.updater.download(f.release) { }
+            assertTrue(f.target.exists())
+            assertEquals(AppUpdateClient.InstallResult.PermissionRequired, f.updater.install(f.release))
+            assertEquals(android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, f.intents.single().action)
+            assertEquals("package:${AppUpdateChannel.packageName}", f.intents.single().data.toString())
+            f.intents.clear()
+            f.pm.setCanRequestPackageInstalls(true)
+            assertEquals(AppUpdateClient.InstallResult.Opened, f.updater.install(f.release))
+            val intent = f.intents.single()
+            assertEquals(Intent.ACTION_VIEW, intent.action)
+            assertEquals("application/vnd.android.package-archive", intent.type)
+            assertEquals("content", intent.data?.scheme)
+            assertEquals("${AppUpdateChannel.packageName}.updates", intent.data?.authority)
+            assertTrue(intent.flags and Intent.FLAG_GRANT_READ_URI_PERMISSION != 0)
+            assertEquals(0, intent.flags and Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        } finally { kotlinx.coroutines.Dispatchers.resetMain() }
+    }
+
+    @Test fun corruptedCachedApkCannotInstallAndIsDownloadedAgain() = runTest {
+        val f = Fixture()
+        f.updater.download(f.release) { }
+        f.target.writeBytes(ByteArray(f.payload.size))
+        try { f.updater.install(f.release); fail("Installed a corrupted APK") }
+        catch (_: ai.opencode.feature.system.updates.AppUpdateException) { }
+        assertTrue(f.intents.isEmpty())
+        f.updater.download(f.release) { }
+        assertEquals(2, f.requests)
+        assertTrue(f.target.readBytes().contentEquals(f.payload))
+    }
+
+    @Test fun wrongPackageDebugApkOrDifferentCertificateNeverBecomesReady() = runTest {
+        for (invalid in 0..3) {
+            val f = Fixture()
+            when (invalid) {
+                0 -> f.archive.packageName = "another.package"
+                1 -> f.archive.applicationInfo!!.flags = android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE
+                2 -> f.archive.signingInfo = android.content.pm.SigningInfo()
+                3 -> f.response = ByteArray(f.payload.size)
+            }
+            try { f.updater.download(f.release) { }; fail("Accepted invalid archive $invalid") }
+            catch (_: ai.opencode.feature.system.updates.AppUpdateException) { }
+            assertFalse(f.target.exists())
+            assertFalse(java.io.File(f.target.path + ".part").exists())
+            assertTrue(f.intents.isEmpty())
+        }
+    }
+
+    companion object {
+        private const val CERTIFICATE = "MIIE7jCCAtagAwIBAgIJANw3H7kKU4lfMA0GCSqGSIb3DQEBDAUAMCQxIjAgBgNVBAMTGU9wZW5Db2RlIFBlcnNvbmFsIFJlbGVhc2UwIBcNMjYxMTI0MTAyMzU3WhgPMjA1NDA0MTExMDIzNTdaMCQxIjAgBgNVBAMTGU9wZW5Db2RlIFBlcnNvbmFsIFJlbGVhc2UwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYS09ZDOviZZmJmOU1qFtwhQ4HObqJOF53YWuwfoNT0g362NoRJAcyrqze+8zSZCvujNArIO30sXDfWWSlwL3ORNsFoPHb2RKTUncAtg5+pLzvqou298xTbnmbuPvZUYheeTvDotiZk9uHfiOrm8GJofCmEN7TkZPIXTrh8eZmlZs6m7haI0xHDT0WDDDOeAAdEnE+9xxncg3awmCf5T6CN9fBXPb6cko1DBxn4zyhm9UI926EZcNtqi8i+gJ6Ri9AcNGEPzOni9lNBtua3ZG7ytOoI4f90NXU8dwH2F27c83ybzcGmsFI1DWdelLq5CKrAWGUFRrrScdKVmQUGOCWGCalCHVUOAA1MP9/oZHoXrmk+tNzGZG8x7yHXmT1snRYrJLG5rmqlTF+0tulYQy4L/gZ2i8Jva1AttAqzbRPYMdKWo5zCj0GCc9aR9m0JPupPZXmoN8e14aw8mtV9GGe6qbL0IVBlSZ4ajz8jWuFlZArygcxfUSHWnZOZR1eMrDFKi3lUmTeFOBcD3S/jlla/8dJfZxv5n68MSjOjrY6yL+qpO2ZwHKQkCMEraBc9QUQj1uZJVbufM0wgwwPoSqOiRuBEZB8mFe8MFKO6+PGFXpcaSheMuINTayJfMilcKJZgTmQOee4/lrVnEHXh91Ge0KXwWAyg4zuiF+f+j4H5wIDAQABoyEwHzAdBgNVHQ4EFgQU5juzOlrniVpeg4UAlIbkOF5lcQowDQYJKoZIhvcNAQEMBQADggIBAK6m96i+huETIM9bZf+gQE1kCTVz75p5Ge26panKtMtSY+xptglJjGMXgSScTkOGjqBCUex6AembwkacMuz4M8zEiaJK0R+XkVg9mEmawKn4+s8GZIwo+rdMiq6DwshWrCcD36UT0+rmoelyB6hUV7yHHK07svhFGOxVtDKRKlexfQjmm0V1sRkTZYXQSVNKhDAxxHUU/afzhMRHiyr+BcdDgzJ7jdpJAMHqt0ttDuToK+GYxRZw6GgtubVExJgOU4T2859PrqSQS4l/ZtDC7SdfxKVtpfqPKaL6C85b9i8tFDadWHS2dsZB8ybLu08/koQv4T3qfPdk1MlApDuELez0qI4vFjaeB89URuUfCkXgIigQ51JnmZgi+gK14d6wfZjmIvHQld6qfj8GJPZt852vk8JqbjRCWXksB4rOn5M4SHo5BU6yAurImSwImHG5agFqB15xFI9H0orJa9RCndLaQggqvrxXsAFdeZV351ukar094HFQgN9Ad5hpyvIKLDDk6XvRu2kUDy0jRYuOlBVsJDNCtJn82vXm4Nw0hOsknjSGauJ137c92pcu8VIb9tiVPXKMXiPBIz7YY78RAxQBejP7uM15HITsXl0oIryL2znmkI6zfcHsVmwr8FR4863v2A+PRdRwmqZMUwj+jhrI3cYdnDt5NdMo3iLIAQ5L"
     }
 }

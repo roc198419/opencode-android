@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">कैमरा QR कोड की ओर करें</string>
     <string name="settings_pairing_paste_link">पेयरिंग लिंक पेस्ट करें</string>
     <string name="settings_pairing_computer_hint">कंप्यूटर पर OpenCode की सेटिंग्स → पेयरिंग खोलें, या टर्मिनल में %1$s चलाएँ।</string>
+    <string name="settings_update_title">ऐप अपडेट</string>
+    <string name="settings_update_current_version">वर्तमान संस्करण: %1$s</string>
+    <string name="settings_update_checking">अपडेट की जांच की जा रही है...</string>
+    <string name="settings_update_current">आप नवीनतम संस्करण का उपयोग कर रहे हैं.</string>
+    <string name="settings_update_available">संस्करण %1$s उपलब्ध है (%2$d एमबी)।</string>
+    <string name="settings_update_downloading">अपडेट डाउनलोड और सत्यापित किया जा रहा है…</string>
+    <string name="settings_update_ready">अद्यतन सत्यापित है और इंस्टॉल करने के लिए तैयार है।</string>
+    <string name="settings_update_permission">इस ऐप को एंड्रॉइड सेटिंग्स में अपडेट इंस्टॉल करने की अनुमति दें, फिर यहां वापस आएं।</string>
+    <string name="settings_update_installing">एंड्रॉइड में अपडेट की पुष्टि करें। यदि आप रद्द करते हैं तो आप पुनः प्रयास कर सकते हैं।</string>
+    <string name="settings_update_unsupported">अपडेट व्यक्तिगत GitHub रिलीज़ बिल्ड में उपलब्ध हैं।</string>
+    <string name="settings_update_verification_failed">अद्यतन सत्यापित नहीं किया जा सका. पुनः प्रयास करने के लिए इसे दोबारा डाउनलोड करें।</string>
+    <string name="settings_update_download_failed">अद्यतन डाउनलोड नहीं किया जा सका. अपना कनेक्शन जांचें और पुनः प्रयास करें।</string>
+    <string name="settings_update_install_failed">इंस्टॉलर नहीं खुल सका. पुनः प्रयास करें और इस ऐप से इंस्टॉलेशन की अनुमति दें।</string>
+    <string name="settings_update_check_failed">अद्यतनों की जाँच नहीं की जा सकी. अपना कनेक्शन जांचें और पुनः प्रयास करें।</string>
+    <string name="settings_update_progress">%1$d%% डाउनलोड हो गया</string>
+    <string name="settings_update_automatic">अद्यतनों के लिए स्वचालित रूप से जाँच करें</string>
+    <string name="settings_update_automatic_detail">जब आप ऐप का उपयोग करते हैं तो हर 12 घंटे में अधिकतम एक बार जांच करता है। डाउनलोड और इंस्टॉलेशन के लिए आपकी पुष्टि की आवश्यकता होती है।</string>
+    <string name="settings_update_download">अपडेट डाउनलोड करें</string>
+    <string name="settings_update_install">अद्यतन स्थापित करें</string>
+    <string name="settings_update_check">दोबारा जांचें</string>
 </resources>

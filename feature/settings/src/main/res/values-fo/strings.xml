@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Vend myndatólinum móti QR-kotuni</string>
     <string name="settings_pairing_paste_link">Set paringarleinkju inn</string>
     <string name="settings_pairing_computer_hint">Opna innstillingarnar í OpenCode → Paring á telduni, ella koyr %1$s í eini farstøð.</string>
+    <string name="settings_update_title">App dagføringar</string>
+    <string name="settings_update_current_version">Núverandi útgáva: %1$s</string>
+    <string name="settings_update_checking">Kanna fyri dagføringum...</string>
+    <string name="settings_update_current">Tú brúkar nýggjastu útgávuna.</string>
+    <string name="settings_update_available">Útgáva %1$s er tøk (%2$d MB).</string>
+    <string name="settings_update_downloading">Heinta og vátta dagføringina...</string>
+    <string name="settings_update_ready">Dagføringin er váttað og klár at seta upp.</string>
+    <string name="settings_update_permission">Loyv hesi appini at seta upp dagføringar í Android innstillingum, og far so aftur her.</string>
+    <string name="settings_update_installing">Vátta dagføringina í Android. Tú kanst royna aftur, um tú avlýsir.</string>
+    <string name="settings_update_unsupported">Dagføringar eru tøkar í persónligu GitHub útgávubyggingini.</string>
+    <string name="settings_update_verification_failed">Kundi ikki staðfesta dagføringina. Heinta tað aftur fyri at royna aftur.</string>
+    <string name="settings_update_download_failed">Kundi ikki heinta dagføringina. Kanna títt samband og royn aftur.</string>
+    <string name="settings_update_install_failed">Kundi ikki lata innleggjaran upp. Royn aftur og loyv uppseting frá hesi appini.</string>
+    <string name="settings_update_check_failed">Kundi ikki kanna fyri dagføringum. Kanna títt samband og royn aftur.</string>
+    <string name="settings_update_progress">%1$d%% heintað</string>
+    <string name="settings_update_automatic">Kanna sjálvvirkandi fyri dagføringum</string>
+    <string name="settings_update_automatic_detail">Kannar nær tú brúkar appina, í mesta lagi eina ferð 12. hvønn tíma. Niðurtøkur og uppseting krevja tína váttan.</string>
+    <string name="settings_update_download">Heinta dagføring</string>
+    <string name="settings_update_install">Set dagføring upp</string>
+    <string name="settings_update_check">Kanna aftur</string>
 </resources>

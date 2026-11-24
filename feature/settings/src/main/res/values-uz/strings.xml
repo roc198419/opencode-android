@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Kamerani QR kodiga qarating</string>
     <string name="settings_pairing_paste_link">Juftlash havolasini joylashtirish</string>
     <string name="settings_pairing_computer_hint">Kompyuteringizda OpenCode ichida Sozlamalar → Juftlash bo‘limini oching yoki terminalda %1$s buyrug‘ini bajaring.</string>
+    <string name="settings_update_title">Ilova yangilanishlari</string>
+    <string name="settings_update_current_version">Joriy versiya: %1$s</string>
+    <string name="settings_update_checking">Yangilanishlar tekshirilmoqda…</string>
+    <string name="settings_update_current">Siz oxirgi versiyadan foydalanyapsiz.</string>
+    <string name="settings_update_available">%1$s versiyasi mavjud (%2$d MB).</string>
+    <string name="settings_update_downloading">Yangilanish yuklab olinmoqda va tasdiqlanmoqda…</string>
+    <string name="settings_update_ready">Yangilanish tasdiqlangan va o\'rnatishga tayyor.</string>
+    <string name="settings_update_permission">Ushbu ilovaga Android sozlamalarida yangilanishlarni oʻrnatishga ruxsat bering, keyin bu yerga qayting.</string>
+    <string name="settings_update_installing">Android-da yangilanishni tasdiqlang. Bekor qilsangiz, qayta urinib ko\'rishingiz mumkin.</string>
+    <string name="settings_update_unsupported">Yangilanishlar shaxsiy GitHub reliz tuzilmasida mavjud.</string>
+    <string name="settings_update_verification_failed">Yangilanishni tasdiqlab bo‘lmadi. Qayta urinish uchun uni qayta yuklab oling.</string>
+    <string name="settings_update_download_failed">Yangilanishni yuklab bo‘lmadi. Ulanishingizni tekshiring va qaytadan urining.</string>
+    <string name="settings_update_install_failed">Oʻrnatuvchini ochib boʻlmadi. Qayta urinib koʻring va ushbu ilovadan oʻrnatishga ruxsat bering.</string>
+    <string name="settings_update_check_failed">Yangilanishlarni tekshirib bo‘lmadi. Ulanishingizni tekshiring va qaytadan urining.</string>
+    <string name="settings_update_progress">%1$d%% yuklab olindi</string>
+    <string name="settings_update_automatic">Yangilanishlarni avtomatik tekshirish</string>
+    <string name="settings_update_automatic_detail">Ilovadan foydalanganda, ko\'pi bilan 12 soatda bir marta tekshiradi. Yuklab olish va o\'rnatish sizning tasdiqlashingizni talab qiladi.</string>
+    <string name="settings_update_download">Yangilanishni yuklab oling</string>
+    <string name="settings_update_install">Yangilanishni o\'rnating</string>
+    <string name="settings_update_check">Yana tekshiring</string>
 </resources>

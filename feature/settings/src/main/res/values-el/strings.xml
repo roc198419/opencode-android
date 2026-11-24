@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Στρέψτε την κάμερα στον κωδικό QR</string>
     <string name="settings_pairing_paste_link">Επικόλληση συνδέσμου ζευγοποίησης</string>
     <string name="settings_pairing_computer_hint">Στον υπολογιστή σας, ανοίξτε τις Ρυθμίσεις → Ζευγοποίηση του OpenCode ή εκτελέστε %1$s σε ένα τερματικό.</string>
+    <string name="settings_update_title">Ενημερώσεις εφαρμογών</string>
+    <string name="settings_update_current_version">Τρέχουσα έκδοση: %1$s</string>
+    <string name="settings_update_checking">Έλεγχος για ενημερώσεις…</string>
+    <string name="settings_update_current">Χρησιμοποιείτε την πιο πρόσφατη έκδοση.</string>
+    <string name="settings_update_available">Η έκδοση %1$s είναι διαθέσιμη (%2$d MB).</string>
+    <string name="settings_update_downloading">Λήψη και επαλήθευση της ενημέρωσης…</string>
+    <string name="settings_update_ready">Η ενημέρωση έχει επαληθευτεί και είναι έτοιμη για εγκατάσταση.</string>
+    <string name="settings_update_permission">Επιτρέψτε σε αυτήν την εφαρμογή να εγκαθιστά ενημερώσεις στις ρυθμίσεις Android και, στη συνέχεια, επιστρέψτε εδώ.</string>
+    <string name="settings_update_installing">Επιβεβαιώστε την ενημέρωση στο Android. Μπορείτε να δοκιμάσετε ξανά εάν ακυρώσετε.</string>
+    <string name="settings_update_unsupported">Οι ενημερώσεις είναι διαθέσιμες στην προσωπική έκδοση έκδοσης GitHub.</string>
+    <string name="settings_update_verification_failed">Δεν ήταν δυνατή η επαλήθευση της ενημέρωσης. Κατεβάστε το ξανά για να προσπαθήσετε ξανά.</string>
+    <string name="settings_update_download_failed">Δεν ήταν δυνατή η λήψη της ενημέρωσης. Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά.</string>
+    <string name="settings_update_install_failed">Δεν ήταν δυνατό το άνοιγμα του προγράμματος εγκατάστασης. Δοκιμάστε ξανά και επιτρέψτε την εγκατάσταση από αυτήν την εφαρμογή.</string>
+    <string name="settings_update_check_failed">Δεν ήταν δυνατός ο έλεγχος για ενημερώσεις. Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά.</string>
+    <string name="settings_update_progress">Έγινε λήψη %1$d%%.</string>
+    <string name="settings_update_automatic">Αυτόματος έλεγχος για ενημερώσεις</string>
+    <string name="settings_update_automatic_detail">Ελέγχει πότε χρησιμοποιείτε την εφαρμογή, το πολύ μία φορά κάθε 12 ώρες. Οι λήψεις και η εγκατάσταση απαιτούν την επιβεβαίωσή σας.</string>
+    <string name="settings_update_download">Λήψη ενημέρωσης</string>
+    <string name="settings_update_install">Εγκαταστήστε την ενημέρωση</string>
+    <string name="settings_update_check">Ελέγξτε ξανά</string>
 </resources>

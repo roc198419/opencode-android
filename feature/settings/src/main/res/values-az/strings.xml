@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Kameranı QR koda yönəldin</string>
     <string name="settings_pairing_paste_link">Cütləşdirmə linkini yapışdır</string>
     <string name="settings_pairing_computer_hint">Kompüterinizdə OpenCode tətbiqində Tənzimləmələr → Cütləşdirmə bölməsini açın və ya terminalda %1$s əmrini işlədin.</string>
+    <string name="settings_update_title">Proqram Yeniləmələri</string>
+    <string name="settings_update_current_version">Cari Versiya: %1$s</string>
+    <string name="settings_update_checking">Güncəlləmələr yoxlanılır...</string>
+    <string name="settings_update_current">Ən son versiyadan istifadə edirsiniz.</string>
+    <string name="settings_update_available">%1$s versiyası əlçatandır (%2$d MB).</string>
+    <string name="settings_update_downloading">Güncəlləmə endirilir və təsdiqlənir...</string>
+    <string name="settings_update_ready">Yeniləmə təsdiqlənib və quraşdırmaya hazırdır.</string>
+    <string name="settings_update_permission">Bu tətbiqə Android ayarlarında yeniləmələri quraşdırmaq icazəsi verin, sonra bura qayıdın.</string>
+    <string name="settings_update_installing">Android-də yeniləməni təsdiqləyin. Ləğv etsəniz, yenidən cəhd edə bilərsiniz.</string>
+    <string name="settings_update_unsupported">Yeniləmələr şəxsi GitHub buraxılış quruluşunda mövcuddur.</string>
+    <string name="settings_update_verification_failed">Güncəlləməni yoxlamaq mümkün olmadı. Yenidən cəhd etmək üçün onu yenidən endirin.</string>
+    <string name="settings_update_download_failed">Güncəlləməni endirmək mümkün olmadı. Bağlantınızı yoxlayın və yenidən cəhd edin.</string>
+    <string name="settings_update_install_failed">Quraşdırıcını açmaq mümkün olmadı. Yenidən cəhd edin və bu tətbiqdən quraşdırmaya icazə verin.</string>
+    <string name="settings_update_check_failed">Güncəlləmələri yoxlamaq mümkün olmadı. Bağlantınızı yoxlayın və yenidən cəhd edin.</string>
+    <string name="settings_update_progress">%1$d%% endirildi</string>
+    <string name="settings_update_automatic">Yeniləmələri avtomatik yoxlayın</string>
+    <string name="settings_update_automatic_detail">Proqramdan istifadə etdiyiniz zaman, ən çoxu hər 12 saatda bir yoxlayır. Yükləmələr və quraşdırmalar sizin təsdiqinizi tələb edir.</string>
+    <string name="settings_update_download">Yeniləməni yükləyin</string>
+    <string name="settings_update_install">Yeniləməni quraşdırın</string>
+    <string name="settings_update_check">Yenidən yoxlayın</string>
 </resources>

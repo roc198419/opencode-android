@@ -229,4 +229,24 @@
     <string name="settings_pairing_point_camera">Namierte fotoaparát na QR kód</string>
     <string name="settings_pairing_paste_link">Prilepiť odkaz na párovanie</string>
     <string name="settings_pairing_computer_hint">Na počítači otvorte v OpenCode Nastavenia → Párovanie alebo spustite %1$s v termináli.</string>
+    <string name="settings_update_title">Aktualizácie aplikácií</string>
+    <string name="settings_update_current_version">Aktuálna verzia: %1$s</string>
+    <string name="settings_update_checking">Kontrolujú sa aktualizácie…</string>
+    <string name="settings_update_current">Používate najnovšiu verziu.</string>
+    <string name="settings_update_available">K dispozícii je verzia %1$s (%2$d MB).</string>
+    <string name="settings_update_downloading">Sťahuje sa a overuje sa aktualizácia…</string>
+    <string name="settings_update_ready">Aktualizácia je overená a pripravená na inštaláciu.</string>
+    <string name="settings_update_permission">Povoľte tejto aplikácii inštalovať aktualizácie v nastaveniach systému Android a potom sa vráťte sem.</string>
+    <string name="settings_update_installing">Potvrďte aktualizáciu v systéme Android. Ak zrušíte, môžete to skúsiť znova.</string>
+    <string name="settings_update_unsupported">Aktualizácie sú k dispozícii v osobnom vydaní GitHub.</string>
+    <string name="settings_update_verification_failed">Aktualizáciu sa nepodarilo overiť. Stiahnite si ho znova a skúste to znova.</string>
+    <string name="settings_update_download_failed">Aktualizáciu sa nepodarilo stiahnuť. Skontrolujte pripojenie a skúste to znova.</string>
+    <string name="settings_update_install_failed">Nepodarilo sa otvoriť inštalačný program. Skúste to znova a povoľte inštaláciu z tejto aplikácie.</string>
+    <string name="settings_update_check_failed">Nepodarilo sa skontrolovať aktualizácie. Skontrolujte pripojenie a skúste to znova.</string>
+    <string name="settings_update_progress">Stiahnuté: %1$d%%</string>
+    <string name="settings_update_automatic">Automaticky kontrolovať aktualizácie</string>
+    <string name="settings_update_automatic_detail">Kontroluje, kedy aplikáciu používate, maximálne raz za 12 hodín. Sťahovanie a inštalácia vyžadujú vaše potvrdenie.</string>
+    <string name="settings_update_download">Stiahnite si aktualizáciu</string>
+    <string name="settings_update_install">Inštalovať aktualizáciu</string>
+    <string name="settings_update_check">Skontrolujte znova</string>
 </resources>

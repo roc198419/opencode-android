@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Kamerany QR koduna gönükdiriň</string>
     <string name="settings_pairing_paste_link">Jübütleşdiriş baglanyşygyny goý</string>
     <string name="settings_pairing_computer_hint">Kompýuteriňizde OpenCode programmasynyň Sazlamalar → Jübütleşdiriş bölümini açyň ýa-da terminalda %1$s işlediň.</string>
+    <string name="settings_update_title">Programma täzelenmeleri</string>
+    <string name="settings_update_current_version">Häzirki wersiýasy:%1$s</string>
+    <string name="settings_update_checking">Täzelenmeleri barlamak…</string>
+    <string name="settings_update_current">Iň soňky wersiýasyny ulanýarsyňyz.</string>
+    <string name="settings_update_available">%1$s wersiýasy bar (%2$d MB).</string>
+    <string name="settings_update_downloading">Täzelenmäni göçürip almak we barlamak…</string>
+    <string name="settings_update_ready">Täzelenme barlandy we gurmaga taýyn.</string>
+    <string name="settings_update_permission">Bu programma Android sazlamalarynda täzelenmeleri gurmaga rugsat beriň, soňra şu ýere gaýdyň.</string>
+    <string name="settings_update_installing">Täzelenmäni Android-de tassyklaň. Cancelatyrsaňyz gaýtadan synanyşyp bilersiňiz.</string>
+    <string name="settings_update_unsupported">Täzelenmeler şahsy GitHub goýberiş gurluşynda elýeterlidir.</string>
+    <string name="settings_update_verification_failed">Täzelenmäni barlap bolmady Gaýtadan synanyşmak üçin gaýtadan göçürip alyň.</string>
+    <string name="settings_update_download_failed">Täzelenmäni göçürip alyp bolmaýar Baglanyşygyňyzy barlaň we gaýtadan synanyşyň.</string>
+    <string name="settings_update_install_failed">Gurnaýjyny açyp bolmaýar Gaýtadan synap görüň we bu programmadan gurnamaga rugsat beriň.</string>
+    <string name="settings_update_check_failed">Täzelenmeleri barlap bolmady Baglanyşygyňyzy barlaň we gaýtadan synanyşyň.</string>
+    <string name="settings_update_progress">%1$d %% göçürildi</string>
+    <string name="settings_update_automatic">Täzelenmeleri awtomatiki barlaň</string>
+    <string name="settings_update_automatic_detail">Programmany ulananyňyzda, her 12 sagatdan bir gezek barlaň. Downloadüklemeler we gurnama tassyklamaňyzy talap edýär.</string>
+    <string name="settings_update_download">Täzelenmäni göçürip al</string>
+    <string name="settings_update_install">Täzelenmäni guruň</string>
+    <string name="settings_update_check">Againene bir gezek barlaň</string>
 </resources>

@@ -220,4 +220,24 @@
     <string name="settings_pairing_point_camera">តម្រង់កាមេរ៉ាទៅកូដ QR</string>
     <string name="settings_pairing_paste_link">បិទភ្ជាប់តំណផ្គូផ្គង</string>
     <string name="settings_pairing_computer_hint">នៅលើកុំព្យូទ័រ បើកការកំណត់ → កំពុងផ្គូផ្គង របស់ OpenCode ឬដំណើរការ %1$s ក្នុងស្ថានីយ។</string>
+    <string name="settings_update_title">អាប់ដេតកម្មវិធី</string>
+    <string name="settings_update_current_version">កំណែបច្ចុប្បន្ន៖ %1$s</string>
+    <string name="settings_update_checking">កំពុងពិនិត្យមើលបច្ចុប្បន្នភាព...</string>
+    <string name="settings_update_current">អ្នកកំពុងប្រើកំណែចុងក្រោយបំផុត។</string>
+    <string name="settings_update_available">កំណែ %1$s មាន (%2$d MB)។</string>
+    <string name="settings_update_downloading">កំពុងទាញយក និងផ្ទៀងផ្ទាត់ការអាប់ដេត...</string>
+    <string name="settings_update_ready">ការអាប់ដេតត្រូវបានផ្ទៀងផ្ទាត់ និងរួចរាល់ក្នុងការដំឡើង។</string>
+    <string name="settings_update_permission">អនុញ្ញាតឱ្យកម្មវិធីនេះដំឡើងបច្ចុប្បន្នភាពនៅក្នុងការកំណត់ Android បន្ទាប់មកត្រឡប់មកទីនេះ។</string>
+    <string name="settings_update_installing">បញ្ជាក់ការអាប់ដេតនៅក្នុង Android ។ អ្នកអាចព្យាយាមម្តងទៀត ប្រសិនបើអ្នកបោះបង់។</string>
+    <string name="settings_update_unsupported">ការអាប់ដេតមាននៅក្នុងការបង្កើតការចេញផ្សាយ GitHub ផ្ទាល់ខ្លួន។</string>
+    <string name="settings_update_verification_failed">មិនអាចផ្ទៀងផ្ទាត់ការអាប់ដេតបានទេ។ ទាញយកវាម្តងទៀត ដើម្បីព្យាយាមម្តងទៀត។</string>
+    <string name="settings_update_download_failed">មិនអាចទាញយកបច្ចុប្បន្នភាពបានទេ។ ពិនិត្យការតភ្ជាប់របស់អ្នក ហើយព្យាយាមម្តងទៀត។</string>
+    <string name="settings_update_install_failed">មិនអាចបើកកម្មវិធីដំឡើងបានទេ។ ព្យាយាមម្តងទៀត ហើយអនុញ្ញាតការដំឡើងពីកម្មវិធីនេះ។</string>
+    <string name="settings_update_check_failed">មិនអាចពិនិត្យមើលការអាប់ដេតបានទេ។ ពិនិត្យការតភ្ជាប់របស់អ្នក ហើយព្យាយាមម្តងទៀត។</string>
+    <string name="settings_update_progress">បានទាញយក %1$d%%</string>
+    <string name="settings_update_automatic">ពិនិត្យមើលការអាប់ដេតដោយស្វ័យប្រវត្តិ</string>
+    <string name="settings_update_automatic_detail">ពិនិត្យនៅពេលដែលអ្នកប្រើកម្មវិធី យ៉ាងហោចណាស់ម្តងរៀងរាល់ 12 ម៉ោងម្តង។ ការទាញយក និងការដំឡើងទាមទារការបញ្ជាក់របស់អ្នក។</string>
+    <string name="settings_update_download">ទាញយកបច្ចុប្បន្នភាព</string>
+    <string name="settings_update_install">ដំឡើងបច្ចុប្បន្នភាព</string>
+    <string name="settings_update_check">ពិនិត្យម្តងទៀត</string>
 </resources>

@@ -229,4 +229,24 @@
     <string name="settings_pairing_point_camera">Skieruj aparat na kod QR</string>
     <string name="settings_pairing_paste_link">Wklej link parowania</string>
     <string name="settings_pairing_computer_hint">Na komputerze otwórz Ustawienia → Parowanie w OpenCode lub uruchom %1$s w terminalu.</string>
+    <string name="settings_update_title">Aktualizacje aplikacji</string>
+    <string name="settings_update_current_version">Aktualna wersja: %1$s</string>
+    <string name="settings_update_checking">Sprawdzam dostępność aktualizacji…</string>
+    <string name="settings_update_current">Używasz najnowszej wersji.</string>
+    <string name="settings_update_available">Dostępna jest wersja %1$s (%2$d MB).</string>
+    <string name="settings_update_downloading">Pobieram i weryfikuję aktualizację…</string>
+    <string name="settings_update_ready">Aktualizacja jest zweryfikowana i gotowa do instalacji.</string>
+    <string name="settings_update_permission">Zezwól tej aplikacji na instalowanie aktualizacji w ustawieniach Androida, a następnie wróć tutaj.</string>
+    <string name="settings_update_installing">Potwierdź aktualizację w systemie Android. Jeśli anulujesz, możesz spróbować ponownie.</string>
+    <string name="settings_update_unsupported">Aktualizacje są dostępne w osobistej kompilacji wydania GitHub.</string>
+    <string name="settings_update_verification_failed">Nie udało się zweryfikować aktualizacji. Pobierz go ponownie, aby spróbować ponownie.</string>
+    <string name="settings_update_download_failed">Nie udało się pobrać aktualizacji. Sprawdź połączenie i spróbuj ponownie.</string>
+    <string name="settings_update_install_failed">Nie można otworzyć instalatora. Spróbuj ponownie i zezwól na instalację z tej aplikacji.</string>
+    <string name="settings_update_check_failed">Nie udało się sprawdzić dostępności aktualizacji. Sprawdź połączenie i spróbuj ponownie.</string>
+    <string name="settings_update_progress">Pobrano %1$d%%</string>
+    <string name="settings_update_automatic">Automatycznie sprawdzaj dostępność aktualizacji</string>
+    <string name="settings_update_automatic_detail">Sprawdza, kiedy korzystasz z aplikacji, maksymalnie raz na 12 godzin. Pobieranie i instalacja wymagają potwierdzenia.</string>
+    <string name="settings_update_download">Pobierz aktualizację</string>
+    <string name="settings_update_install">Zainstaluj aktualizację</string>
+    <string name="settings_update_check">Sprawdź ponownie</string>
 </resources>

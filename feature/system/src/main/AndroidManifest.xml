@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
     <!-- Ask OpenCode hides other apps' overlays while its Send shows (setHideOverlayWindows). -->
@@ -16,6 +17,13 @@
     </queries>
 
     <application>
+        <provider
+            android:name=".updates.AppUpdateFileProvider"
+            android:authorities="${applicationId}.updates"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/app_update_paths" />
+        </provider>
         <!-- Static shortcuts (New Session), App Actions capabilities and direct-share targets
              attach to the launcher activity, which :app declares. -->
         <activity

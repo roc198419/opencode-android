@@ -229,4 +229,24 @@
     <string name="settings_pairing_point_camera">Usmeri kamero proti kodi QR</string>
     <string name="settings_pairing_paste_link">Prilepi povezavo za seznanjanje</string>
     <string name="settings_pairing_computer_hint">Na računalniku v OpenCode odpri Nastavitve → Seznanjanje ali v terminalu zaženi %1$s.</string>
+    <string name="settings_update_title">Posodobitve aplikacij</string>
+    <string name="settings_update_current_version">Trenutna različica: %1$s</string>
+    <string name="settings_update_checking">Iskanje posodobitev ...</string>
+    <string name="settings_update_current">Uporabljate najnovejšo različico.</string>
+    <string name="settings_update_available">Različica %1$s je na voljo (%2$d MB).</string>
+    <string name="settings_update_downloading">Prenos in preverjanje posodobitve ...</string>
+    <string name="settings_update_ready">Posodobitev je preverjena in pripravljena za namestitev.</string>
+    <string name="settings_update_permission">Dovolite tej aplikaciji, da namesti posodobitve v nastavitvah za Android, nato se vrnite sem.</string>
+    <string name="settings_update_installing">Potrdite posodobitev v sistemu Android. Če prekličete, lahko poskusite znova.</string>
+    <string name="settings_update_unsupported">Posodobitve so na voljo v osebni različici izdaje GitHub.</string>
+    <string name="settings_update_verification_failed">Posodobitve ni bilo mogoče preveriti. Prenesite ga znova, da poskusite znova.</string>
+    <string name="settings_update_download_failed">Posodobitve ni bilo mogoče prenesti. Preverite povezavo in poskusite znova.</string>
+    <string name="settings_update_install_failed">Namestitvenega programa ni bilo mogoče odpreti. Poskusite znova in dovolite namestitev iz te aplikacije.</string>
+    <string name="settings_update_check_failed">Ni bilo mogoče preveriti posodobitev. Preverite povezavo in poskusite znova.</string>
+    <string name="settings_update_progress">%1$d%% preneseno</string>
+    <string name="settings_update_automatic">Samodejno preveri posodobitve</string>
+    <string name="settings_update_automatic_detail">Preverja, ko uporabljate aplikacijo, največ enkrat na 12 ur. Prenosi in namestitev zahtevajo vašo potrditev.</string>
+    <string name="settings_update_download">Prenesi posodobitev</string>
+    <string name="settings_update_install">Namestite posodobitev</string>
+    <string name="settings_update_check">Preverite še enkrat</string>
 </resources>

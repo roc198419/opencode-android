@@ -233,4 +233,24 @@
     <string name="settings_pairing_point_camera">Point your camera at the QR code</string>
     <string name="settings_pairing_paste_link">Paste Pairing Link</string>
     <string name="settings_pairing_computer_hint">On your computer, open OpenCode’s Settings → Pairing, or run %1$s in a terminal.</string>
+    <string name="settings_update_title">App Updates</string>
+    <string name="settings_update_current_version">Current Version: %1$s</string>
+    <string name="settings_update_checking">Checking for updates…</string>
+    <string name="settings_update_current">You’re using the latest version.</string>
+    <string name="settings_update_available">Version %1$s is available (%2$d MB).</string>
+    <string name="settings_update_downloading">Downloading and verifying the update…</string>
+    <string name="settings_update_ready">The update is verified and ready to install.</string>
+    <string name="settings_update_permission">Allow this app to install updates in Android settings, then return here.</string>
+    <string name="settings_update_installing">Confirm the update in Android. You can retry if you cancel.</string>
+    <string name="settings_update_unsupported">Updates are available in the personal GitHub release build.</string>
+    <string name="settings_update_verification_failed">Couldn’t verify the update. Download it again to retry.</string>
+    <string name="settings_update_download_failed">Couldn’t download the update. Check your connection and try again.</string>
+    <string name="settings_update_install_failed">Couldn’t open the installer. Try again and allow installation from this app.</string>
+    <string name="settings_update_check_failed">Couldn’t check for updates. Check your connection and try again.</string>
+    <string name="settings_update_progress">%1$d%% downloaded</string>
+    <string name="settings_update_automatic">Automatically Check for Updates</string>
+    <string name="settings_update_automatic_detail">Checks when you use the app, at most once every 12 hours. Downloads and installation require your confirmation.</string>
+    <string name="settings_update_download">Download Update</string>
+    <string name="settings_update_install">Install Update</string>
+    <string name="settings_update_check">Check Again</string>
 </resources>

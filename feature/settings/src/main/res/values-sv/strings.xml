@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Rikta kameran mot QR-koden</string>
     <string name="settings_pairing_paste_link">Klistra in parkopplingslänk</string>
     <string name="settings_pairing_computer_hint">Öppna Inställningar → Parkoppling i OpenCode på datorn, eller kör %1$s i en terminal.</string>
+    <string name="settings_update_title">Appuppdateringar</string>
+    <string name="settings_update_current_version">Aktuell version: %1$s</string>
+    <string name="settings_update_checking">Söker efter uppdateringar...</string>
+    <string name="settings_update_current">Du använder den senaste versionen.</string>
+    <string name="settings_update_available">Version %1$s är tillgänglig (%2$d MB).</string>
+    <string name="settings_update_downloading">Laddar ner och verifierar uppdateringen...</string>
+    <string name="settings_update_ready">Uppdateringen är verifierad och redo att installeras.</string>
+    <string name="settings_update_permission">Tillåt den här appen att installera uppdateringar i Android-inställningarna och återvänd sedan hit.</string>
+    <string name="settings_update_installing">Bekräfta uppdateringen i Android. Du kan försöka igen om du avbryter.</string>
+    <string name="settings_update_unsupported">Uppdateringar är tillgängliga i den personliga GitHub-versionen.</string>
+    <string name="settings_update_verification_failed">Det gick inte att verifiera uppdateringen. Ladda ner den igen för att försöka igen.</string>
+    <string name="settings_update_download_failed">Det gick inte att ladda ner uppdateringen. Kontrollera din anslutning och försök igen.</string>
+    <string name="settings_update_install_failed">Det gick inte att öppna installationsprogrammet. Försök igen och tillåt installation från den här appen.</string>
+    <string name="settings_update_check_failed">Det gick inte att söka efter uppdateringar. Kontrollera din anslutning och försök igen.</string>
+    <string name="settings_update_progress">%1$d%% har laddats ned</string>
+    <string name="settings_update_automatic">Sök automatiskt efter uppdateringar</string>
+    <string name="settings_update_automatic_detail">Kontrollerar när du använder appen, högst en gång var 12:e timme. Nedladdningar och installation kräver din bekräftelse.</string>
+    <string name="settings_update_download">Ladda ner uppdatering</string>
+    <string name="settings_update_install">Installera uppdatering</string>
+    <string name="settings_update_check">Kontrollera igen</string>
 </resources>

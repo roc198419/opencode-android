@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">क्यामेरा QR कोडतिर फर्काउनुहोस्</string>
     <string name="settings_pairing_paste_link">जोड्ने लिङ्क टाँस्नुहोस्</string>
     <string name="settings_pairing_computer_hint">कम्प्युटरमा OpenCode को सेटिङहरू → जोड्दै खोल्नुहोस्, वा टर्मिनलमा %1$s चलाउनुहोस्।</string>
+    <string name="settings_update_title">एप अपडेटहरू</string>
+    <string name="settings_update_current_version">हालको संस्करण: %1$s</string>
+    <string name="settings_update_checking">अद्यावधिकहरूको लागि जाँच गर्दै...</string>
+    <string name="settings_update_current">तपाईं नवीनतम संस्करण प्रयोग गर्दै हुनुहुन्छ।</string>
+    <string name="settings_update_available">संस्करण %1$s उपलब्ध छ (%2$d MB)।</string>
+    <string name="settings_update_downloading">अपडेट डाउनलोड र प्रमाणीकरण गर्दै...</string>
+    <string name="settings_update_ready">अद्यावधिक प्रमाणित छ र स्थापना गर्न तयार छ।</string>
+    <string name="settings_update_permission">यस एपलाई एन्ड्रोइड सेटिङहरूमा अद्यावधिकहरू स्थापना गर्न अनुमति दिनुहोस्, त्यसपछि यहाँ फर्कनुहोस्।</string>
+    <string name="settings_update_installing">एन्ड्रोइडमा अद्यावधिक पुष्टि गर्नुहोस्। तपाईंले रद्द गर्नुभयो भने पुन: प्रयास गर्न सक्नुहुन्छ।</string>
+    <string name="settings_update_unsupported">अद्यावधिकहरू व्यक्तिगत GitHub रिलीज निर्माणमा उपलब्ध छन्।</string>
+    <string name="settings_update_verification_failed">अद्यावधिक प्रमाणित गर्न सकिएन। पुन: प्रयास गर्न यसलाई डाउनलोड गर्नुहोस्।</string>
+    <string name="settings_update_download_failed">अद्यावधिक डाउनलोड गर्न सकिएन। आफ्नो जडान जाँच गर्नुहोस् र फेरि प्रयास गर्नुहोस्।</string>
+    <string name="settings_update_install_failed">स्थापनाकर्ता खोल्न सकिएन। फेरि प्रयास गर्नुहोस् र यो एपबाट स्थापनालाई अनुमति दिनुहोस्।</string>
+    <string name="settings_update_check_failed">अद्यावधिकहरूको लागि जाँच गर्न सकिएन। आफ्नो जडान जाँच गर्नुहोस् र फेरि प्रयास गर्नुहोस्।</string>
+    <string name="settings_update_progress">%1$d%% डाउनलोड गरियो</string>
+    <string name="settings_update_automatic">अद्यावधिकहरूको लागि स्वचालित रूपमा जाँच गर्नुहोस्</string>
+    <string name="settings_update_automatic_detail">तपाईंले एप प्रयोग गर्दा जाँच गर्छ, हरेक १२ घण्टामा एक पटक। डाउनलोड र स्थापना तपाईंको पुष्टिकरण आवश्यक छ।</string>
+    <string name="settings_update_download">अपडेट डाउनलोड गर्नुहोस्</string>
+    <string name="settings_update_install">अपडेट स्थापना गर्नुहोस्</string>
+    <string name="settings_update_check">फेरि जाँच गर्नुहोस्</string>
 </resources>

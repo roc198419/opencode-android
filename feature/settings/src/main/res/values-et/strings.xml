@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Suuna kaamera QR-koodile</string>
     <string name="settings_pairing_paste_link">Kleebi sidumislink</string>
     <string name="settings_pairing_computer_hint">Ava arvutis OpenCode’i Seaded → Sidumine või käivita terminalis %1$s.</string>
+    <string name="settings_update_title">Rakenduste värskendused</string>
+    <string name="settings_update_current_version">Praegune versioon: %1$s</string>
+    <string name="settings_update_checking">Värskenduste otsimine…</string>
+    <string name="settings_update_current">Kasutate uusimat versiooni.</string>
+    <string name="settings_update_available">Saadaval on versioon %1$s (%2$d MB).</string>
+    <string name="settings_update_downloading">Värskenduse allalaadimine ja kinnitamine…</string>
+    <string name="settings_update_ready">Värskendus on kinnitatud ja installimiseks valmis.</string>
+    <string name="settings_update_permission">Lubage sellel rakendusel Androidi seadetes värskendusi installida ja naaske siis siia.</string>
+    <string name="settings_update_installing">Kinnitage värskendus Androidis. Kui tühistate, võite uuesti proovida.</string>
+    <string name="settings_update_unsupported">Värskendused on saadaval isiklikus GitHubi versioonis.</string>
+    <string name="settings_update_verification_failed">Värskendust ei saanud kinnitada. Uuesti proovimiseks laadige see uuesti alla.</string>
+    <string name="settings_update_download_failed">Värskendust ei saanud alla laadida. Kontrollige ühendust ja proovige uuesti.</string>
+    <string name="settings_update_install_failed">Installerit ei saanud avada. Proovige uuesti ja lubage installimine sellest rakendusest.</string>
+    <string name="settings_update_check_failed">Värskendusi ei saanud kontrollida. Kontrollige ühendust ja proovige uuesti.</string>
+    <string name="settings_update_progress">%1$d%% alla laaditud</string>
+    <string name="settings_update_automatic">Otsige automaatselt värskendusi</string>
+    <string name="settings_update_automatic_detail">Kontrollib, kui kasutate rakendust, kõige rohkem kord iga 12 tunni järel. Allalaadimine ja installimine nõuavad teie kinnitust.</string>
+    <string name="settings_update_download">Laadige alla värskendus</string>
+    <string name="settings_update_install">Installige värskendus</string>
+    <string name="settings_update_check">Kontrollige uuesti</string>
 </resources>

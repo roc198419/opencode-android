@@ -1,5 +1,8 @@
 package ai.opencode.app
 
+import ai.opencode.feature.settings.AppUpdateView
+import ai.opencode.feature.system.updates.AppUpdateFeature
+
 import ai.opencode.core.R as CoreR
 import ai.opencode.core.ui.OpenCodeErrorText
 import ai.opencode.core.ui.OpenCodeShape
@@ -201,6 +204,9 @@ fun AppView(store: StoreOf<AppFeature.State, AppFeature.Action>) {
             if (isEditingServer) ServerFormSheet(store)
             if (isScanning) PairingScannerPresenter(store)
             AppAlerts(store)
+            AppUpdateView(store.rememberScope<AppFeature.State, AppFeature.Action, AppUpdateFeature.State, AppUpdateFeature.Action>(
+                state = { it.updates }, action = AppFeature.Action::Updates,
+            ))
         }
         }
     }

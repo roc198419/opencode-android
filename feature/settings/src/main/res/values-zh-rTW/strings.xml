@@ -220,4 +220,24 @@
     <string name="settings_pairing_point_camera">將相機對準 QR 碼</string>
     <string name="settings_pairing_paste_link">貼上配對連結</string>
     <string name="settings_pairing_computer_hint">在電腦上開啟 OpenCode 的「設定 → 配對」，或在終端機執行 %1$s。</string>
+    <string name="settings_update_title">應用程式更新</string>
+    <string name="settings_update_current_version">目前版本：%1$s</string>
+    <string name="settings_update_checking">正在檢查更新…</string>
+    <string name="settings_update_current">目前已是最新版本。</string>
+    <string name="settings_update_available">有新版本 %1$s（%2$d MB）。</string>
+    <string name="settings_update_downloading">正在下載並驗證更新…</string>
+    <string name="settings_update_ready">更新已通過驗證，可以安裝。</string>
+    <string name="settings_update_permission">請在 Android 設定中允許此應用程式安裝更新，然後返回。</string>
+    <string name="settings_update_installing">請在 Android 中確認安裝更新。取消後可以重試。</string>
+    <string name="settings_update_unsupported">此更新管道僅適用於個人 GitHub 正式版。</string>
+    <string name="settings_update_verification_failed">無法驗證更新，請重新下載後再試。</string>
+    <string name="settings_update_download_failed">無法下載更新，請檢查網路後再試。</string>
+    <string name="settings_update_install_failed">無法開啟安裝程式，請允許此應用程式安裝更新後再試。</string>
+    <string name="settings_update_check_failed">無法檢查更新，請檢查網路後再試。</string>
+    <string name="settings_update_progress">已下載 %1$d%%</string>
+    <string name="settings_update_automatic">自動檢查更新</string>
+    <string name="settings_update_automatic_detail">使用應用程式時檢查更新，每 12 小時最多檢查一次。下載和安裝前都會徵求你的確認。</string>
+    <string name="settings_update_download">下載更新</string>
+    <string name="settings_update_install">安裝更新</string>
+    <string name="settings_update_check">重新檢查</string>
 </resources>

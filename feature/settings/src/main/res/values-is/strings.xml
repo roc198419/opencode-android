@@ -223,4 +223,24 @@
     <string name="settings_pairing_point_camera">Beindu myndavélinni að QR kóðanum</string>
     <string name="settings_pairing_paste_link">Líma pörunartengil</string>
     <string name="settings_pairing_computer_hint">Opnaðu Stillingar → Pörun í OpenCode á tölvunni þinni eða keyrðu %1$s í skel.</string>
+    <string name="settings_update_title">App uppfærslur</string>
+    <string name="settings_update_current_version">Núverandi útgáfa: %1$s</string>
+    <string name="settings_update_checking">Leitar að uppfærslum...</string>
+    <string name="settings_update_current">Þú ert að nota nýjustu útgáfuna.</string>
+    <string name="settings_update_available">Útgáfa %1$s er tiltæk (%2$d MB).</string>
+    <string name="settings_update_downloading">Hleður niður og staðfestir uppfærsluna...</string>
+    <string name="settings_update_ready">Uppfærslan er staðfest og tilbúin til uppsetningar.</string>
+    <string name="settings_update_permission">Leyfðu þessu forriti að setja upp uppfærslur í Android stillingum og farðu svo aftur hingað.</string>
+    <string name="settings_update_installing">Staðfestu uppfærsluna í Android. Þú getur reynt aftur ef þú hættir við.</string>
+    <string name="settings_update_unsupported">Uppfærslur eru fáanlegar í persónulegu GitHub útgáfunni.</string>
+    <string name="settings_update_verification_failed">Ekki tókst að staðfesta uppfærsluna. Sæktu það aftur til að reyna aftur.</string>
+    <string name="settings_update_download_failed">Ekki tókst að hlaða niður uppfærslunni. Athugaðu tenginguna þína og reyndu aftur.</string>
+    <string name="settings_update_install_failed">Gat ekki opnað uppsetningarforritið. Reyndu aftur og leyfðu uppsetningu frá þessu forriti.</string>
+    <string name="settings_update_check_failed">Gat ekki leitað að uppfærslum. Athugaðu tenginguna þína og reyndu aftur.</string>
+    <string name="settings_update_progress">%1$d%% sótt</string>
+    <string name="settings_update_automatic">Leitaðu sjálfkrafa að uppfærslum</string>
+    <string name="settings_update_automatic_detail">Athugar þegar þú notar appið, í mesta lagi einu sinni á 12 klukkustunda fresti. Niðurhal og uppsetning krefjast staðfestingar þinnar.</string>
+    <string name="settings_update_download">Sækja uppfærslu</string>
+    <string name="settings_update_install">Settu upp uppfærslu</string>
+    <string name="settings_update_check">Athugaðu aftur</string>
 </resources>

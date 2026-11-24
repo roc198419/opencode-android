@@ -220,4 +220,24 @@
     <string name="settings_pairing_point_camera">ເລັງກ້ອງໄປທີ່ QR code</string>
     <string name="settings_pairing_paste_link">ວາງລິ້ງຈັບຄູ່</string>
     <string name="settings_pairing_computer_hint">ໃນຄອມພິວເຕີ ເປີດການຕັ້ງຄ່າຂອງ OpenCode → ການຈັບຄູ່ ຫຼື ແລ່ນ %1$s ໃນສະຖານີ.</string>
+    <string name="settings_update_title">ອັບເດດແອັບ</string>
+    <string name="settings_update_current_version">ເວີຊັນປັດຈຸບັນ: %1$s</string>
+    <string name="settings_update_checking">ກຳລັງກວດສອບການອັບເດດ...</string>
+    <string name="settings_update_current">ທ່ານກຳລັງໃຊ້ເວີຊັນຫຼ້າສຸດ.</string>
+    <string name="settings_update_available">ເວີຊັ່ນ %1$s ສາມາດໃຊ້ໄດ້ (%2$d MB).</string>
+    <string name="settings_update_downloading">ກຳລັງດາວໂຫຼດ ແລະກວດສອບການອັບເດດ...</string>
+    <string name="settings_update_ready">ການອັບເດດໄດ້ຖືກກວດສອບ ແລະພ້ອມທີ່ຈະຕິດຕັ້ງແລ້ວ.</string>
+    <string name="settings_update_permission">ອະນຸຍາດໃຫ້ແອັບຯນີ້ຕິດຕັ້ງການອັບເດດໃນການຕັ້ງຄ່າ Android, ຈາກນັ້ນກັບຄືນມາບ່ອນນີ້.</string>
+    <string name="settings_update_installing">ຢືນຢັນການອັບເດດໃນ Android. ທ່ານສາມາດລອງໃໝ່ໄດ້ຖ້າທ່ານຍົກເລີກ.</string>
+    <string name="settings_update_unsupported">ການອັບເດດແມ່ນມີຢູ່ໃນການສ້າງການປ່ອຍ GitHub ສ່ວນຕົວ.</string>
+    <string name="settings_update_verification_failed">ບໍ່ສາມາດກວດສອບການອັບເດດໄດ້. ດາວໂຫຼດມັນອີກຄັ້ງເພື່ອລອງໃໝ່.</string>
+    <string name="settings_update_download_failed">ບໍ່ສາມາດດາວໂຫຼດການອັບເດດໄດ້. ກວດເບິ່ງການເຊື່ອມຕໍ່ຂອງທ່ານແລ້ວລອງໃໝ່ອີກຄັ້ງ.</string>
+    <string name="settings_update_install_failed">ບໍ່ສາມາດເປີດຕົວຕິດຕັ້ງໄດ້. ລອງໃໝ່ອີກຄັ້ງ ແລະອະນຸຍາດໃຫ້ຕິດຕັ້ງຈາກແອັບຯນີ້.</string>
+    <string name="settings_update_check_failed">ບໍ່ສາມາດກວດສອບການອັບເດດໄດ້. ກວດເບິ່ງການເຊື່ອມຕໍ່ຂອງທ່ານແລ້ວລອງໃໝ່ອີກຄັ້ງ.</string>
+    <string name="settings_update_progress">ດາວໂຫຼດ %1$d%% ແລ້ວ</string>
+    <string name="settings_update_automatic">ກວດສອບການອັບເດດໂດຍອັດຕະໂນມັດ</string>
+    <string name="settings_update_automatic_detail">ກວດເບິ່ງເວລາທີ່ທ່ານໃຊ້ແອັບ, ຢ່າງໜ້ອຍໜຶ່ງຄັ້ງໃນທຸກໆ 12 ຊົ່ວໂມງ. ການດາວໂຫຼດ ແລະການຕິດຕັ້ງຕ້ອງການການຢືນຢັນຂອງທ່ານ.</string>
+    <string name="settings_update_download">ດາວໂຫລດອັບເດດ</string>
+    <string name="settings_update_install">ຕິດຕັ້ງອັບເດດ</string>
+    <string name="settings_update_check">ກວດເບິ່ງອີກຄັ້ງ</string>
 </resources>

@@ -220,4 +220,24 @@
     <string name="settings_pairing_point_camera">Hướng camera vào mã QR</string>
     <string name="settings_pairing_paste_link">Dán liên kết ghép cặp</string>
     <string name="settings_pairing_computer_hint">Trên máy tính, mở Cài đặt → Ghép cặp trong OpenCode, hoặc chạy %1$s trong terminal.</string>
+    <string name="settings_update_title">Cập nhật ứng dụng</string>
+    <string name="settings_update_current_version">Phiên bản hiện tại: %1$s</string>
+    <string name="settings_update_checking">Đang kiểm tra cập nhật…</string>
+    <string name="settings_update_current">Bạn đang sử dụng phiên bản mới nhất.</string>
+    <string name="settings_update_available">Đã có phiên bản %1$s (%2$d MB).</string>
+    <string name="settings_update_downloading">Đang tải xuống và xác minh bản cập nhật…</string>
+    <string name="settings_update_ready">Bản cập nhật đã được xác minh và sẵn sàng để cài đặt.</string>
+    <string name="settings_update_permission">Cho phép ứng dụng này cài đặt bản cập nhật trong cài đặt Android, sau đó quay lại đây.</string>
+    <string name="settings_update_installing">Xác nhận cập nhật trong Android. Bạn có thể thử lại nếu bạn hủy.</string>
+    <string name="settings_update_unsupported">Các bản cập nhật có sẵn trong bản phát hành GitHub cá nhân.</string>
+    <string name="settings_update_verification_failed">Không thể xác minh bản cập nhật. Hãy tải lại để thử lại.</string>
+    <string name="settings_update_download_failed">Không thể tải xuống bản cập nhật. Hãy kiểm tra kết nối của bạn và thử lại.</string>
+    <string name="settings_update_install_failed">Không thể mở trình cài đặt. Hãy thử lại và cho phép cài đặt từ ứng dụng này.</string>
+    <string name="settings_update_check_failed">Không thể kiểm tra cập nhật. Hãy kiểm tra kết nối của bạn và thử lại.</string>
+    <string name="settings_update_progress">%1$d%% đã tải xuống</string>
+    <string name="settings_update_automatic">Tự động kiểm tra cập nhật</string>
+    <string name="settings_update_automatic_detail">Kiểm tra khi bạn sử dụng ứng dụng, tối đa 12 giờ một lần. Tải xuống và cài đặt yêu cầu xác nhận của bạn.</string>
+    <string name="settings_update_download">Tải xuống bản cập nhật</string>
+    <string name="settings_update_install">Cài đặt bản cập nhật</string>
+    <string name="settings_update_check">Kiểm tra lại</string>
 </resources>

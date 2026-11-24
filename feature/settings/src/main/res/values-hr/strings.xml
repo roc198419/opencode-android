@@ -226,4 +226,24 @@
     <string name="settings_pairing_point_camera">Usmjerite kameru prema QR kodu</string>
     <string name="settings_pairing_paste_link">Zalijepi vezu za uparivanje</string>
     <string name="settings_pairing_computer_hint">Na računalu otvorite OpenCode → Postavke → Uparivanje ili pokrenite %1$s u terminalu.</string>
+    <string name="settings_update_title">Ažuriranja aplikacije</string>
+    <string name="settings_update_current_version">Trenutna verzija: %1$s</string>
+    <string name="settings_update_checking">Provjera ažuriranja…</string>
+    <string name="settings_update_current">Koristite najnoviju verziju.</string>
+    <string name="settings_update_available">Dostupna je verzija %1$s (%2$d MB).</string>
+    <string name="settings_update_downloading">Preuzimanje i provjera ažuriranja...</string>
+    <string name="settings_update_ready">Ažuriranje je provjereno i spremno za instalaciju.</string>
+    <string name="settings_update_permission">Dopustite ovoj aplikaciji da instalira ažuriranja u postavkama Androida, a zatim se vratite ovamo.</string>
+    <string name="settings_update_installing">Potvrdite ažuriranje u Androidu. Možete pokušati ponovno ako odustanete.</string>
+    <string name="settings_update_unsupported">Ažuriranja su dostupna u osobnoj GitHub verziji izdanja.</string>
+    <string name="settings_update_verification_failed">Nije moguće potvrditi ažuriranje. Preuzmite ga ponovno za ponovni pokušaj.</string>
+    <string name="settings_update_download_failed">Nije moguće preuzeti ažuriranje. Provjerite vezu i pokušajte ponovno.</string>
+    <string name="settings_update_install_failed">Nije moguće otvoriti instalacijski program. Pokušajte ponovno i dopustite instalaciju iz ove aplikacije.</string>
+    <string name="settings_update_check_failed">Nije moguće provjeriti ima li ažuriranja. Provjerite vezu i pokušajte ponovno.</string>
+    <string name="settings_update_progress">%1$d%% preuzeto</string>
+    <string name="settings_update_automatic">Automatski provjeri ima li ažuriranja</string>
+    <string name="settings_update_automatic_detail">Provjerava kada koristite aplikaciju, najviše jednom svakih 12 sati. Preuzimanje i instalacija zahtijevaju vašu potvrdu.</string>
+    <string name="settings_update_download">Preuzmi ažuriranje</string>
+    <string name="settings_update_install">Instalirajte ažuriranje</string>
+    <string name="settings_update_check">Provjerite ponovno</string>
 </resources>
