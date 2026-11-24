@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       bump:
-        description: Version bump (first release is v0.1.0)
+        description: Version bump
         type: choice
         options: [patch, minor, major]
         default: patch
@@ -17,30 +17,28 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publish:
-    if: github.repository != 'anomalyco/opencode-android'
+  plan:
+    if: github.repository == 'roc198419/opencode-android'
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 5
     permissions:
       actions: read
-      contents: write
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      code: ${{ steps.version.outputs.code }}
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
       BUMP: ${{ inputs.bump }}
     steps:
       - name: Verify the source and successful CI build
-        id: source
         shell: bash
         run: |
           set -euo pipefail
           [ "$GITHUB_REF" = refs/heads/dev ] || { echo '::error::Publish from dev only'; exit 1; }
-          run=$(gh run list --workflow ci.yml --branch dev --event push --commit "$GITHUB_SHA" --status success --limit 1 --json databaseId,number)
-          id=$(jq -r '.[0].databaseId // empty' <<< "$run")
-          [ -n "$id" ] || { echo '::error::CI has not passed for this dev commit'; exit 1; }
-          echo "run_id=$id" >> "$GITHUB_OUTPUT"
-          echo "run_number=$(jq -r '.[0].number' <<< "$run")" >> "$GITHUB_OUTPUT"
-          echo "short=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          run=$(gh run list --workflow ci.yml --branch dev --event push --commit "$GITHUB_SHA" --status success --limit 1 --json databaseId)
+          [ -n "$(jq -r '.[0].databaseId // empty' <<< "$run")" ] || { echo '::error::CI has not passed for this dev commit'; exit 1; }
 
       - name: Choose the next release version
         id: version
@@ -64,24 +62,146 @@ jobs:
             version="$major.$minor.$patch"
           fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "code=$((1000 + GITHUB_RUN_NUMBER))" >> "$GITHUB_OUTPUT"
 
-      - name: Download the verified CI artifact and publish
-        shell: bash
+  build:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    outputs:
+      artifact: ${{ steps.upload.outputs.artifact-id }}
+      digest: ${{ steps.upload.outputs.artifact-digest }}
+    env:
+      OC_APPLICATION_ID: ai.opencode.rocmobilecode
+      OC_VERSION_NAME: ${{ needs.plan.outputs.version }}
+      OC_VERSION_CODE: ${{ needs.plan.outputs.code }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4.9.1
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
+        with:
+          packages: platform-tools
+
+      - name: Install the SDK platform and build tools
+        run: yes | sdkmanager "platforms;android-37.1" "build-tools;37.0.0" > /dev/null
+
+      - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
+        with:
+          cache-read-only: true
+
+      - name: Prefer Google's Maven Central mirror
+        run: install -Dm644 .github/gradle/maven-mirror.init.gradle.kts "${GRADLE_USER_HOME:-$HOME/.gradle}/init.d/maven-mirror.init.gradle.kts"
+
+      - name: Build the unsigned Release APK
+        run: |
+          ./gradlew :app:assembleRelease --max-workers=1
+          mkdir -p "$RUNNER_TEMP/release"
+          cp app/build/outputs/apk/release/app-release-unsigned.apk "$RUNNER_TEMP/release/"
+          cp app/build/outputs/mapping/release/mapping.txt "$RUNNER_TEMP/release/"
+
+      - id: upload
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: unsigned-release
+          path: ${{ runner.temp }}/release/
+          retention-days: 30
+
+  publish:
+    needs: [plan, build]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      actions: read
+      contents: write
+    env:
+      GH_REPO: ${{ github.repository }}
+      VERSION: ${{ needs.plan.outputs.version }}
+      VERSION_CODE: ${{ needs.plan.outputs.code }}
+      APP_ID: ai.opencode.rocmobilecode
+      EXPECTED_CERT: ${{ vars.APK_RELEASE_CERT_SHA256 }}
+    steps:
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4.9.1
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
+        with:
+          packages: platform-tools
+
+      - name: Install signing tools
+        run: yes | sdkmanager "build-tools;37.0.0" > /dev/null
+
+      - name: Download and verify the unsigned build
         env:
-          RUN_ID: ${{ steps.source.outputs.run_id }}
-          RUN_NUMBER: ${{ steps.source.outputs.run_number }}
-          SHORT: ${{ steps.source.outputs.short }}
-          VERSION: ${{ steps.version.outputs.version }}
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ needs.build.outputs.artifact }}
+          EXPECTED_DIGEST: ${{ needs.build.outputs.digest }}
+        shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/github-apk"
-          cd "$RUNNER_TEMP/github-apk"
-          gh run download "$RUN_ID" --name "opencode-android-$SHORT" --dir .
-          mv "opencode-android-$SHORT.apk" "opencode-android-$VERSION.apk"
-          sha256sum "opencode-android-$VERSION.apk" > SHA256SUMS
-          printf 'Preview APK built by GitHub Actions from `%s` (version `0.1.0-%s`, code `%s`).\n\nThis is a fork preview for sideloading; it installs alongside the Google Play app.\n' \
-            "$GITHUB_SHA" "$SHORT" "$RUN_NUMBER" > notes.md
-          gh release create "v$VERSION" "opencode-android-$VERSION.apk" SHA256SUMS \
-            --target "$GITHUB_SHA" --title "OpenCode Android $VERSION (Preview)" \
-            --notes-file notes.md --prerelease
-          echo "Published v$VERSION from $GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
+          archive="$RUNNER_TEMP/unsigned-release.zip"
+          gh api "repos/$GH_REPO/actions/artifacts/$ARTIFACT_ID/zip" > "$archive"
+          printf '%s  %s\n' "${EXPECTED_DIGEST#sha256:}" "$archive" | sha256sum --check --status
+          mkdir -p "$RUNNER_TEMP/release"
+          unzip -p "$archive" app-release-unsigned.apk > "$RUNNER_TEMP/release/app-release-unsigned.apk"
+          unzip -p "$archive" mapping.txt > "$RUNNER_TEMP/release/mapping.txt"
+          badging=$("$ANDROID_HOME/build-tools/37.0.0/aapt" dump badging "$RUNNER_TEMP/release/app-release-unsigned.apk")
+          grep -F "package: name='$APP_ID' versionCode='$VERSION_CODE' versionName='$VERSION'" <<< "$badging"
+          if grep -q '^application-debuggable' <<< "$badging"; then
+            echo '::error::Refusing to publish a debuggable APK'; exit 1
+          fi
+
+      - name: Sign and verify the Release APK
+        env:
+          KEYSTORE_BASE64: ${{ secrets.APK_RELEASE_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.APK_RELEASE_STORE_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          key="$RUNNER_TEMP/opencode-release.p12"
+          trap 'rm -f "$key"' EXIT
+          [ -n "$KEYSTORE_BASE64" ] && [ -n "$KEYSTORE_PASSWORD" ] && [ -n "$EXPECTED_CERT" ]
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$key"
+          tools="$ANDROID_HOME/build-tools/37.0.0"
+          apk="$RUNNER_TEMP/release/opencode-android-$VERSION.apk"
+          "$tools/apksigner" sign --ks "$key" --ks-key-alias opencode-release \
+            --ks-pass env:KEYSTORE_PASSWORD --key-pass env:KEYSTORE_PASSWORD \
+            --out "$apk" "$RUNNER_TEMP/release/app-release-unsigned.apk"
+          verification=$("$tools/apksigner" verify --verbose --print-certs "$apk")
+          printf '%s\n' "$verification"
+          actual=$(sed -n 's/^Signer #1 certificate SHA-256 digest: //p' <<< "$verification")
+          [ "$actual" = "$EXPECTED_CERT" ] || { echo '::error::Unexpected APK signing certificate'; exit 1; }
+          "$tools/zipalign" -c -P 16 4 "$apk"
+
+      - name: Publish the stable GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/release"
+          apk="opencode-android-$VERSION.apk"
+          sha=$(sha256sum "$apk" | cut -d' ' -f1)
+          size=$(stat -c '%s' "$apk")
+          badging=$("$ANDROID_HOME/build-tools/37.0.0/aapt" dump badging "$apk")
+          min_sdk=$(sed -n "s/^sdkVersion:'\([0-9]*\)'/\1/p" <<< "$badging")
+          jq -n --arg version "$VERSION" --argjson code "$VERSION_CODE" --arg package "$APP_ID" \
+            --argjson minSdk "$min_sdk" --argjson size "$size" --arg sha "$sha" \
+            --arg cert "$EXPECTED_CERT" --arg commit "$GITHUB_SHA" \
+            --arg url "https://github.com/$GH_REPO/releases/download/v$VERSION/$apk" \
+            '{schemaVersion:1,versionName:$version,versionCode:$code,packageName:$package,minSdk:$minSdk,apkSize:$size,sha256:$sha,certificateSha256:$cert,commit:$commit,apkUrl:$url}' > release.json
+          sha256sum "$apk" release.json mapping.txt > SHA256SUMS
+          printf 'Release build `%s` (%s), package `%s`, from `%s`.\n\nSigned with the permanent personal release key. APK SHA-256: `%s`.\n\nThis app has a different package name from the old debug previews and can coexist with them. Its phone-local configuration starts separately. Future releases on this channel use the same signing identity for in-place updates.\n' \
+            "$VERSION" "$VERSION_CODE" "$APP_ID" "$GITHUB_SHA" "$sha" > notes.md
+          gh release create "v$VERSION" "$apk" release.json SHA256SUMS mapping.txt \
+            --target "$GITHUB_SHA" --title "OpenCode Android $VERSION" --notes-file notes.md --latest
+          echo "Published v$VERSION ($VERSION_CODE), $APP_ID, certificate $EXPECTED_CERT" >> "$GITHUB_STEP_SUMMARY"

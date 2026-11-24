@@ -1,6 +1,7 @@
 # Checks every pull request and push to dev with scripts/check.sh (translations, assemble, lint,
 # unit tests). Nothing here holds a secret or an OIDC token. A push to dev also publishes the
-# debug APK as the rolling `dev-latest` pre-release for sideloading. Releases are release.yml.
+# debug APK as the rolling `dev-latest` pre-release on upstream. This fork publishes signed
+# Release APKs through github-apk.yml; Google Play releases use release.yml.
 name: CI
 
 on:
@@ -54,9 +55,11 @@ jobs:
         run: scripts/check.sh
 
       - name: Name the APK
+        if: github.repository == 'anomalyco/opencode-android'
         run: cp app/build/outputs/apk/debug/app-debug.apk "opencode-android-${OC_VERSION_SUFFIX}.apk"
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: github.repository == 'anomalyco/opencode-android'
         with:
           name: opencode-android-${{ env.OC_VERSION_SUFFIX }}
           path: opencode-android-${{ env.OC_VERSION_SUFFIX }}.apk
@@ -73,7 +76,7 @@ jobs:
 
   dev-latest:
     needs: check
-    if: github.ref == 'refs/heads/dev' && github.event_name == 'push'
+    if: github.repository == 'anomalyco/opencode-android' && github.ref == 'refs/heads/dev' && github.event_name == 'push'
     runs-on: ubuntu-24.04
     permissions:
       contents: write

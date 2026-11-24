@@ -93,14 +93,27 @@ It reads `opencode-android/release/*` from AWS Secrets Manager, step by step
   sent for review on 2026-11-08.
 
 
-## Fork GitHub APK releases
+## Personal GitHub APK releases
 
-Forks use GitHub-hosted Ubuntu runners for CI. To publish a sideloadable preview APK from a fork, squash-merge the feature PR into `dev`, wait for its push CI to pass, then dispatch:
+This fork publishes non-debuggable, R8-optimized Release APKs as full GitHub releases. Its permanent package name is `ai.opencode.rocmobilecode`. Upstream's application ID and Google Play/AWS release workflow are unchanged. CI still runs the repository's debug checks, but this fork no longer uploads debug APKs or publishes `dev-latest`.
+
+After the push CI on `dev` passes, dispatch:
 
 ```sh
-gh workflow run github-apk.yml --repo OWNER/opencode-android --ref dev -f bump=patch
+gh workflow run github-apk.yml --repo roc198419/opencode-android --ref dev -f bump=patch
 ```
 
-The first tag is `v0.1.0`; later tags increment the latest `vX.Y.Z` according to `bump`. The workflow publishes the successful CI run’s existing debug APK and `SHA256SUMS` as a GitHub pre-release. Its Android version remains the CI-stamped `0.1.0-<sha>` and CI run number. It never builds or executes downloaded artifacts, and needs only the repository’s `GITHUB_TOKEN`. Google Play, AWS credentials and the upstream release workflow are separate.
+The plan chooses the next `vX.Y.Z` tag before the build. `OC_VERSION_NAME` is that semantic version, `OC_VERSION_CODE` is this workflow's run number plus 1000, and `OC_APPLICATION_ID` selects the personal package. Keep this workflow's run-number history; if replacing it, raise the offset above every previously published code.
 
-The workflow refuses a non-`dev` ref, a commit without successful push CI, or a commit that is already released. Review `.github/` changes as required by this repository before merging and dispatching.
+The build job holds no signing secrets and runs `:app:assembleRelease` with the existing heap limits. It uploads the unsigned APK and R8 mapping. The publish job has no repository checkout. It verifies the artifact archive against the build job's SHA-256 output, checks the package/version and rejects debuggable APKs before reading the signing key. It then signs the APK, verifies its signature against the pinned certificate and checks 16 KB ZIP alignment. The full release includes the APK, `mapping.txt`, `SHA256SUMS` and `release.json` (version/code, package, minimum SDK, APK URL/size/hash, signing certificate and source commit). `release.json` supplies metadata for a future updater; the app does not yet check or install updates.
+
+Signing configuration in this repository:
+
+- Actions secrets: `APK_RELEASE_KEYSTORE_BASE64`, `APK_RELEASE_STORE_PASSWORD`.
+- Actions variable: `APK_RELEASE_CERT_SHA256`.
+- PKCS12 alias: `opencode-release`.
+- Public certificate SHA-256: `176a82beabb79af4abcb73765a1fc1c962a6b8bb964b505455874907323b7172`.
+
+The key and password must never be committed, uploaded as build artifacts or regenerated for routine releases. A protected local backup is under `%USERPROFILE%/.codex/signing/opencode-android-release/`: `release.p12`, `password.dpapi` and the public certificate. The password backup is encrypted with Windows DPAPI for the current Windows account; export it into a password manager from that account before migrating machines. Losing both usable copies of the signing identity prevents ordinary in-place upgrades.
+
+The stable app can coexist with the historical `.debug` package. Its phone-local configuration is separate, so pair the computers once in the stable app; removing the old app is optional. Subsequent stable releases keep the same package and signing identity so they can replace the installed stable version without uninstalling it.

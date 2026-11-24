@@ -13,7 +13,7 @@ val appLanguages = listOf(
 android {
     namespace = "ai.opencode.app"
     defaultConfig {
-        applicationId = "ai.opencode.mobilecode"
+        applicationId = providers.environmentVariable("OC_APPLICATION_ID").orElse("ai.opencode.mobilecode").get()
         // CI stamps builds so testers can tell them apart: the version code (each build installs
         // over the last), the release's version (OC_VERSION_NAME) for releases, else the short
         // commit SHA in the name.
@@ -28,6 +28,7 @@ android {
             applicationIdSuffix = ".debug"
         }
         release {
+            isDebuggable = false
             // R8 is what makes Compose fast in release: it strips the debug-only paths, inlines
             // and devirtualises the runtime. Libraries ship their own keep rules;
             // proguard-rules.pro holds workarounds.
