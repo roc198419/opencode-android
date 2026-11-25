@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.node.RootForTest
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
 import kotlinx.coroutines.CoroutineScope
@@ -551,11 +552,11 @@ class ProjectFilesBrowsingTests {
         store.receive(ProjectFilesFeature.Action.Loaded(1, "/project", Result.success(root))) {
             it.copy(loading = false, listings = mapOf("/project" to root))
         }
-        store.send(ProjectFilesFeature.Action.DirectoryTapped("/project/src")) { it.copy(paths = listOf("/project", "/project/src"), loading = true, generation = 2) }
+        store.send(ProjectFilesFeature.Action.DirectoryTapped("/project/src")) { it.copy(history = listOf("/project", "/project/src"), loading = true, generation = 2, autoDescendRemaining = ProjectFilesFeature.MAX_COMPACT_DEPTH) }
         store.receive(ProjectFilesFeature.Action.Loaded(2, "/project/src", Result.success(child))) {
-            it.copy(loading = false, listings = it.listings + ("/project/src" to child))
+            it.copy(loading = false, listings = it.listings + ("/project/src" to child), autoDescendRemaining = 0)
         }
-        store.send(ProjectFilesFeature.Action.Back) { it.copy(paths = listOf("/project"), generation = 3) }
+        store.send(ProjectFilesFeature.Action.Back) { it.copy(history = listOf("/project"), generation = 3) }
         store.send(ProjectFilesFeature.Action.DirectoryTapped("/elsewhere"))
         assertEquals(listOf("/project", "/project/src"), reads.value)
         store.finish()
@@ -626,6 +627,215 @@ class ProjectFilesBrowsingTests {
         store.send(Action.ProjectFiles(PresentationAction.Dismiss)) { it.copy(projectFiles = null) }
         store.finish()
     }
+    private fun chain(): List<OpenCodeProjectFiles> {
+        val folders = listOf("src", "main", "java", "com", "test", "company")
+            .runningFold("/project") { path, part -> "$path/$part" }
+        return folders.mapIndexed { index, path ->
+            OpenCodeProjectFiles(path, if (index < folders.lastIndex) listOf(OpenCodeProjectFile(folders[index + 1], true))
+                else listOf(OpenCodeProjectFile("$path/Company.java", false)))
+        }
+    }
+
+    @Test fun oneTapTraversesASingleDirectoryChainAndCachedRowsStayCompact() = sessionTest { h ->
+        val chain = chain()
+        val cache = chain.associateBy { it.directory }
+        val reads = LockIsolated(listOf<String>())
+        val store = h.store(initial().copy(listings = mapOf("/project" to chain.first())), { ProjectFilesFeature() }) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(listProjectFiles = { _, _, path -> reads.append(path); cache.getValue(path) })
+        }
+        store.send(ProjectFilesFeature.Action.DirectoryTapped("/project/src")) {
+            it.copy(history = listOf("/project", "/project/src"), loading = true, generation = 1, autoDescendRemaining = ProjectFilesFeature.MAX_COMPACT_DEPTH)
+        }
+        for ((index, listing) in chain.drop(1).withIndex()) {
+            store.receive(ProjectFilesFeature.Action.Loaded(index + 1, listing.directory, Result.success(listing))) {
+                val last = index == chain.size - 2
+                it.copy(
+                    history = listOf("/project", if (last) listing.directory else chain[index + 2].directory),
+                    listings = it.listings + (listing.directory to listing),
+                    generation = if (last) it.generation else it.generation + 1,
+                    loading = !last,
+                    autoDescendRemaining = if (last) 0 else ProjectFilesFeature.MAX_COMPACT_DEPTH - index - 1,
+                )
+            }
+        }
+        assertEquals(chain.map { it.directory }, store.state.breadcrumbs)
+        assertEquals(listOf("/project", chain.last().directory), store.state.history)
+        store.send(ProjectFilesFeature.Action.Back) { it.copy(history = listOf("/project"), generation = it.generation + 1) }
+        assertEquals("src/main/java/com/test/company", store.state.entryName(chain.first().entries.single()))
+        store.send(ProjectFilesFeature.Action.DirectoryTapped("/project/src")) {
+            it.copy(history = listOf("/project", chain.last().directory), generation = it.generation + 1)
+        }
+        assertEquals(chain.drop(1).map { it.directory }, reads.value)
+        store.finish()
+    }
+
+    @Test fun breadcrumbsCanOpenAnIntermediateDirectoryWithoutDescendingAgain() = sessionTest { h ->
+        val chain = chain()
+        val leaf = chain.last().directory
+        val middle = "/project/src/main/java"
+        val store = h.store(initial().copy(history = listOf("/project", leaf), listings = chain.associateBy { it.directory }), { ProjectFilesFeature() })
+        store.send(ProjectFilesFeature.Action.BreadcrumbTapped(middle)) {
+            it.copy(history = listOf("/project", leaf, middle), generation = 1)
+        }
+        assertEquals(middle, store.state.path)
+        assertEquals(listOf("/project", "/project/src", "/project/src/main", middle), store.state.breadcrumbs)
+        store.send(ProjectFilesFeature.Action.Back) { it.copy(history = listOf("/project", leaf), generation = 2) }
+        store.send(ProjectFilesFeature.Action.BreadcrumbTapped("/project")) { it.copy(history = listOf("/project", leaf, "/project"), generation = 3) }
+        store.send(ProjectFilesFeature.Action.Back) { it.copy(history = listOf("/project", leaf), generation = 4) }
+        store.send(ProjectFilesFeature.Action.BreadcrumbTapped("/elsewhere"))
+        store.send(ProjectFilesFeature.Action.BreadcrumbTapped("/project/other"))
+        store.finish()
+    }
+
+    @Test fun filesHiddenFilesBranchesAndEmptyFoldersStopCompaction() = sessionTest { h ->
+        val folder = "/project/src"
+        val child = OpenCodeProjectFile("$folder/main", true)
+        for (entries in listOf(
+            emptyList(), listOf(OpenCodeProjectFile("$folder/File.java", false)),
+            listOf(child, OpenCodeProjectFile("$folder/File.java", false)),
+            listOf(child, OpenCodeProjectFile("$folder/.keep", false)),
+            listOf(child, OpenCodeProjectFile("$folder/test", true)),
+            listOf(OpenCodeProjectFile("$folder/.hidden", true)),
+        )) {
+            val store = h.store(initial().copy(listings = mapOf(folder to OpenCodeProjectFiles(folder, entries))), { ProjectFilesFeature() })
+            store.send(ProjectFilesFeature.Action.DirectoryTapped(folder)) { it.copy(history = listOf("/project", folder), generation = 1) }
+            assertEquals("src", store.state.entryName(OpenCodeProjectFile(folder, true)))
+            store.finish()
+        }
+    }
+
+    @Test fun hiddenDirectoryChainsCompactOnlyWhileHiddenFilesAreShown() = sessionTest { h ->
+        val folder = "/project/src"
+        val hidden = "$folder/.hidden"
+        val state = initial().copy(showHidden = true, listings = mapOf(
+            folder to OpenCodeProjectFiles(folder, listOf(OpenCodeProjectFile(hidden, true))),
+            hidden to OpenCodeProjectFiles(hidden, emptyList()),
+        ))
+        assertEquals("src/.hidden", state.entryName(OpenCodeProjectFile(folder, true)))
+        val store = h.store(state, { ProjectFilesFeature() })
+        store.send(ProjectFilesFeature.Action.DirectoryTapped(folder)) { it.copy(history = listOf("/project", hidden), generation = 1) }
+        store.finish()
+    }
+
+    @Test fun automaticDescentStopsAtItsDepthBudget() = sessionTest { h ->
+        val limit = ProjectFilesFeature.MAX_COMPACT_DEPTH
+        val paths = (1..limit).map { count -> "/project/" + List(count) { "next" }.joinToString("/") }
+        val reads = LockIsolated(listOf<String>())
+        val store = h.store(initial(), { ProjectFilesFeature() }) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(listProjectFiles = { _, _, path ->
+                reads.append(path)
+                OpenCodeProjectFiles(path, listOf(OpenCodeProjectFile("$path/next", true)))
+            })
+        }
+        store.send(ProjectFilesFeature.Action.DirectoryTapped(paths.first())) {
+            it.copy(history = listOf("/project", paths.first()), loading = true, generation = 1, autoDescendRemaining = limit)
+        }
+        for ((index, path) in paths.withIndex()) {
+            val listing = OpenCodeProjectFiles(path, listOf(OpenCodeProjectFile("$path/next", true)))
+            store.receive(ProjectFilesFeature.Action.Loaded(index + 1, path, Result.success(listing))) {
+                val last = index == paths.lastIndex
+                it.copy(history = listOf("/project", if (last) path else paths[index + 1]),
+                    listings = it.listings + (path to listing), loading = !last,
+                    generation = if (last) it.generation else it.generation + 1,
+                    autoDescendRemaining = if (last) 0 else limit - index - 1)
+            }
+        }
+        assertEquals(paths, reads.value)
+        assertEquals(List(limit) { "next" }.joinToString("/"), store.state.entryName(OpenCodeProjectFile(paths.first(), true)))
+        store.finish()
+    }
+
+    @Test fun returningDuringDescentCancelsTheNextReadAndIgnoresLateResults() = sessionTest { h ->
+        val chain = chain()
+        val root = chain[0]
+        val first = chain[1]
+        val next = chain[2].directory
+        val cancelled = LockIsolated(false)
+        val store = h.store(initial().copy(listings = mapOf(root.directory to root)), { ProjectFilesFeature() }) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(listProjectFiles = { _, _, path ->
+                if (path == first.directory) first else try { awaitCancellation() } finally { cancelled.setValue(true) }
+            })
+        }
+        store.send(ProjectFilesFeature.Action.DirectoryTapped(first.directory)) {
+            it.copy(history = listOf(root.directory, first.directory), loading = true, generation = 1, autoDescendRemaining = ProjectFilesFeature.MAX_COMPACT_DEPTH)
+        }
+        store.receive(ProjectFilesFeature.Action.Loaded(1, first.directory, Result.success(first))) {
+            it.copy(history = listOf(root.directory, next), listings = it.listings + (first.directory to first), generation = 2, autoDescendRemaining = ProjectFilesFeature.MAX_COMPACT_DEPTH - 1)
+        }
+        store.send(ProjectFilesFeature.Action.Back) { it.copy(history = listOf(root.directory), generation = 3, loading = false, autoDescendRemaining = 0) }
+        store.send(ProjectFilesFeature.Action.Loaded(2, next, Result.success(chain[2])))
+        assertTrue(cancelled.value)
+        store.finish()
+    }
+
+    @Test fun hidingFilesDuringDescentDoesNotContinueInsideAHiddenAncestor() = sessionTest { h ->
+        val folder = "/project/.cache"
+        val listing = OpenCodeProjectFiles(folder, listOf(OpenCodeProjectFile("$folder/src", true)))
+        val store = h.store(initial().copy(history = listOf("/project", folder), showHidden = true, loading = true,
+            generation = 1, autoDescendRemaining = ProjectFilesFeature.MAX_COMPACT_DEPTH), { ProjectFilesFeature() })
+        store.send(ProjectFilesFeature.Action.ToggleHidden) { it.copy(showHidden = false) }
+        store.send(ProjectFilesFeature.Action.Loaded(1, folder, Result.success(listing))) {
+            it.copy(loading = false, listings = mapOf(folder to listing), autoDescendRemaining = 0)
+        }
+        store.finish()
+    }
+
+    @Test fun aFailedChildStopsDescentAndRefreshRetriesThatLocation() = sessionTest { h ->
+        val chain = chain()
+        val first = chain[1]
+        val child = chain[2]
+        val failure = OpenCodeClientError("Unavailable")
+        var attempts = 0
+        val store = h.store(initial().copy(listings = mapOf(first.directory to first)), { ProjectFilesFeature() }) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(listProjectFiles = { _, _, path ->
+                assertEquals(child.directory, path)
+                if (++attempts == 1) throw failure else child
+            })
+        }
+        store.send(ProjectFilesFeature.Action.DirectoryTapped(first.directory)) {
+            it.copy(history = listOf("/project", child.directory), loading = true, generation = 1, autoDescendRemaining = ProjectFilesFeature.MAX_COMPACT_DEPTH - 1)
+        }
+        store.receive(ProjectFilesFeature.Action.Loaded(1, child.directory, Result.failure(failure))) {
+            it.copy(loading = false, error = "Unavailable", autoDescendRemaining = 0)
+        }
+        store.send(ProjectFilesFeature.Action.Refresh) { it.copy(listings = emptyMap(), loading = true, error = null, generation = 2) }
+        store.receive(ProjectFilesFeature.Action.Loaded(2, child.directory, Result.success(child))) {
+            it.copy(listings = mapOf(child.directory to child), loading = false)
+        }
+        store.finish()
+    }
+
+    @Test fun selectingTheCurrentBreadcrumbPinsTheDirectoryBeingLoaded() = sessionTest { h ->
+        val chain = chain()
+        val folder = chain[1].directory
+        val ready = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val store = h.store(initial(), { ProjectFilesFeature() }) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(listProjectFiles = { _, _, _ -> ready.await(); chain[1] })
+        }
+        store.send(ProjectFilesFeature.Action.DirectoryTapped(folder)) {
+            it.copy(history = listOf("/project", folder), loading = true, generation = 1, autoDescendRemaining = ProjectFilesFeature.MAX_COMPACT_DEPTH)
+        }
+        store.send(ProjectFilesFeature.Action.BreadcrumbTapped(folder)) { it.copy(autoDescendRemaining = 0) }
+        ready.complete(Unit)
+        store.receive(ProjectFilesFeature.Action.Loaded(1, folder, Result.success(chain[1]))) {
+            it.copy(loading = false, listings = mapOf(folder to chain[1]))
+        }
+        store.finish()
+    }
+
+    @Test fun malformedChildrenCannotEscapeTheRootOrCreateACycle() = sessionTest { h ->
+        val folder = "/project/src"
+        for (path in listOf("/outside", folder, "$folder/../src", "$folder/deep/child")) {
+            val state = initial().copy(listings = mapOf(folder to OpenCodeProjectFiles(folder, listOf(OpenCodeProjectFile(path, true)))))
+            assertEquals("src", state.entryName(OpenCodeProjectFile(folder, true)))
+            val store = h.store(state, { ProjectFilesFeature() })
+            store.send(ProjectFilesFeature.Action.DirectoryTapped(folder)) { it.copy(history = listOf("/project", folder), generation = 1) }
+            store.finish()
+        }
+        val state = ProjectFilesFeature.State(server, "C:/Project", -1, history = listOf("C:/Project", "c:/project/src/main"))
+        assertEquals(listOf("C:/Project", "c:/project/src", "c:/project/src/main"), state.breadcrumbs)
+    }
+
 }
 
 
@@ -683,6 +893,90 @@ class ProjectFilesViewTests {
             view.disposeComposition()
             scope.coroutineContext[Job]?.cancel()
             controller.pause().stop().destroy()
+        }
+    }
+
+    @Test fun compactRowsAndRealBreadcrumbsKeepTheirNavigationAndTouchTargets() {
+        val frameDelay = org.robolectric.shadows.ShadowChoreographer.getFrameDelay()
+        val paused = org.robolectric.shadows.ShadowChoreographer.isPaused()
+        org.robolectric.shadows.ShadowChoreographer.setPaused(true)
+        org.robolectric.shadows.ShadowChoreographer.setFrameDelay(java.time.Duration.ofMillis(16))
+        val root = "/workspace/sample"
+        val paths = listOf("src", "main", "java", "com", "test", "company").runningFold(root) { path, part -> "$path/$part" }
+        val listings = paths.mapIndexed { index, path ->
+            path to OpenCodeProjectFiles(path, if (index < paths.lastIndex) listOf(OpenCodeProjectFile(paths[index + 1], true))
+                else listOf(OpenCodeProjectFile("$path/Company.java", false)))
+        }.toMap()
+        val compact = "src/main/java/com/test/company"
+        fun pump() = repeat(8) {
+            androidx.compose.runtime.snapshots.Snapshot.sendApplyNotifications()
+            org.robolectric.Shadows.shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(50))
+        }
+        fun descendants(node: SemanticsNode): List<SemanticsNode> = listOf(node) + node.children.flatMap(::descendants)
+        try {
+            for (fontScale in listOf(1f, 2f)) for (deep in listOf(false, true)) {
+                val actions = mutableListOf<ProjectFilesFeature.Action>()
+                val browser = ProjectFilesFeature.State(SessionTestSupport.testServer, root, -1,
+                    history = if (deep) listOf(root, paths.last()) else listOf(root), listings = listings)
+                val state = SessionFeature.State.session(SessionTestSupport.testServer, SessionTestSupport.testSession(directory = root)).copy(projectFiles = browser)
+                val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+                val reducer: Reducer<SessionFeature.State, Action> = ai.opencode.core.store.scope(
+                    state = { it.projectFiles!! }, setState = { current, files -> current.copy(projectFiles = files) },
+                    action = { (it as? Action.ProjectFiles)?.action?.let { presented -> (presented as? PresentationAction.Presented)?.action } },
+                    embed = { Action.ProjectFiles(PresentationAction.Presented(it)) }, child = ProjectFilesFeature(),
+                )
+                val store = Store(state, Reducer<SessionFeature.State, Action> { current, action ->
+                    (action as? Action.ProjectFiles)?.action?.let { (it as? PresentationAction.Presented)?.action }?.let(actions::add)
+                    reducer.reduce(current, action)
+                }, scope = scope)
+                val controller = Robolectric.buildActivity(ComponentActivity::class.java).setup()
+                val view = ComposeView(controller.get())
+                controller.get().setContentView(view)
+                try {
+                    view.setContent {
+                        OpenCodeAppTheme {
+                            androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalDensity provides androidx.compose.ui.unit.Density(3f, fontScale)) {
+                                ProjectFilesPage(store)
+                            }
+                        }
+                    }
+                    pump()
+                    view.measure(View.MeasureSpec.makeMeasureSpec(1080, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(2400, View.MeasureSpec.EXACTLY))
+                    view.layout(0, 0, 1080, 2400)
+                    pump()
+                    val nodes = descendants(requireNotNull(findRoot(view)).semanticsOwner.unmergedRootSemanticsNode)
+                    val label = if (deep) "test" else compact
+                    val row = nodes.firstOrNull { it.config.getOrNull(SemanticsActions.OnClick) != null && label in text(it) }
+                        ?: error("Missing $label (deep=$deep, font=$fontScale): ${nodes.flatMap { it.config.getOrNull(SemanticsProperties.Text).orEmpty().map { item -> item.text } }}")
+                    assertTrue("File navigation keeps a 48 dp touch target", row.touchBoundsInRoot.height >= 144f && row.touchBoundsInRoot.width >= 144f)
+                    if (deep) assertTrue(nodes.any { "company" in text(it) })
+                    System.getProperty("opencode.compactFilesScreenshots")?.let { directory ->
+                        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+                        view.draw(Canvas(bitmap))
+                        val file = java.io.File(directory, "project-files-${if (deep) "breadcrumbs" else "compact"}-$fontScale.png")
+                        file.parentFile?.mkdirs()
+                        file.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+                        bitmap.recycle()
+                    }
+                    actions.clear()
+                    assertTrue(requireNotNull(row.config.getOrNull(SemanticsActions.OnClick)?.action).invoke())
+                    pump()
+                    view.measure(View.MeasureSpec.makeMeasureSpec(1080, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(2400, View.MeasureSpec.EXACTLY))
+                    view.layout(0, 0, 1080, 2400)
+                    pump()
+                    assertEquals(listOf(if (deep) ProjectFilesFeature.Action.BreadcrumbTapped("$root/src/main/java/com/test")
+                        else ProjectFilesFeature.Action.DirectoryTapped("$root/src")), actions)
+                    assertEquals(if (deep) "$root/src/main/java/com/test" else paths.last(), store.state.projectFiles!!.path)
+                } finally {
+                    view.disposeComposition()
+                    scope.coroutineContext[Job]?.cancel()
+                    controller.pause().stop().destroy()
+                    pump()
+                }
+            }
+        } finally {
+            org.robolectric.shadows.ShadowChoreographer.setFrameDelay(frameDelay)
+            org.robolectric.shadows.ShadowChoreographer.setPaused(paused)
         }
     }
 

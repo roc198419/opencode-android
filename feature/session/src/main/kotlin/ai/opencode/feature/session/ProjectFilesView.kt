@@ -44,6 +44,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
@@ -72,8 +73,8 @@ fun ProjectFilesPage(store: StoreOf<SessionFeature.State, SessionFeature.Action>
     SideEffect { if (current != null) retained = current }
     val state = current ?: retained ?: return
     fun send(action: ProjectFilesFeature.Action) = store.send(SessionFeature.Action.ProjectFiles(PresentationAction.Presented(action)))
-    fun back() = if (state.query.isNotEmpty() || state.paths.size > 1) send(ProjectFilesFeature.Action.Back) else send(ProjectFilesFeature.Action.Close)
-    BackHandler(enabled = current != null && (state.query.isNotEmpty() || state.paths.size > 1)) { back() }
+    fun back() = if (state.query.isNotEmpty() || state.history.size > 1) send(ProjectFilesFeature.Action.Back) else send(ProjectFilesFeature.Action.Close)
+    BackHandler(enabled = current != null && (state.query.isNotEmpty() || state.history.size > 1)) { back() }
     LaunchedEffect(state.pageID) { send(ProjectFilesFeature.Action.Appeared) }
     val context = LocalContext.current
     val presenter = LocalMediaPresenter.current
@@ -81,6 +82,7 @@ fun ProjectFilesPage(store: StoreOf<SessionFeature.State, SessionFeature.Action>
     val focus = LocalFocusManager.current
     val scrollStates = rememberSaveableStateHolder()
     val folderDescription = stringResource(R.string.session_folder_title)
+    val breadcrumbs = state.breadcrumbs
     Column(modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).safeDrawingPadding().testTag("project-files")) {
         Row(Modifier.fillMaxWidth().padding(horizontal = OpenCodeSpacing.s8), verticalAlignment = Alignment.CenterVertically) {
             OpenCodeIconButton(SFSymbol.ChevronLeft, stringResource(CoreR.string.common_back), { back() }, style = OpenCodeIconButtonStyle.Standard)
@@ -93,11 +95,14 @@ fun ProjectFilesPage(store: StoreOf<SessionFeature.State, SessionFeature.Action>
             )
             OpenCodeIconButton(SFSymbol.ArrowClockwise, stringResource(R.string.session_project_files_refresh), { send(ProjectFilesFeature.Action.Refresh) }, style = OpenCodeIconButtonStyle.Standard)
         }
-        LazyRow(Modifier.fillMaxWidth().testTag("project-files-breadcrumbs")) {
-            items(state.paths, key = { it }) { path ->
-                TextButton(onClick = { send(ProjectFilesFeature.Action.DirectoryTapped(path)) }, shape = OpenCodeShape.control) {
-                    Text(if (path == state.root) path.trimEnd('/').substringAfterLast('/').ifEmpty { path } else path.substringAfterLast('/'), maxLines = 1)
-                    if (path != state.path) OpenCodeIcon(SFSymbol.ChevronRight, null)
+        key(state.path) {
+            val breadcrumbScroll = rememberLazyListState(initialFirstVisibleItemIndex = breadcrumbs.lastIndex)
+            LazyRow(Modifier.fillMaxWidth().testTag("project-files-breadcrumbs"), state = breadcrumbScroll) {
+                items(breadcrumbs, key = { it }) { path ->
+                    TextButton(onClick = { send(ProjectFilesFeature.Action.BreadcrumbTapped(path)) }, shape = OpenCodeShape.control) {
+                        Text(if (path == state.root) path.trimEnd('/').substringAfterLast('/').ifEmpty { path } else path.substringAfterLast('/'), maxLines = 1)
+                        if (path != breadcrumbs.last()) OpenCodeIcon(SFSymbol.ChevronRight, null)
+                    }
                 }
             }
         }
@@ -141,7 +146,7 @@ fun ProjectFilesPage(store: StoreOf<SessionFeature.State, SessionFeature.Action>
                         ) {
                             OpenCodeIcon(if (file.isDirectory) "folder" else AgentFileReference(file.path).symbolName, null)
                             Column(Modifier.weight(1f)) {
-                                Text(file.name, style = OpenCodeTextStyles.body, color = OpenCodeTheme.colors.text, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                Text(state.entryName(file), style = OpenCodeTextStyles.body, color = OpenCodeTheme.colors.text, maxLines = 1, overflow = if (file.isDirectory) TextOverflow.MiddleEllipsis else TextOverflow.Ellipsis)
                                 if (state.searching) Text(ProjectFilePaths.relative(state.root, file.path).orEmpty(), style = OpenCodeTextStyles.caption1, color = OpenCodeTheme.colors.secondaryText, maxLines = 1, overflow = TextOverflow.Ellipsis)
                             }
                             if (file.isDirectory) OpenCodeIcon(SFSymbol.ChevronRight, null)
