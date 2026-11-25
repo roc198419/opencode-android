@@ -193,4 +193,10 @@
     <string name="media_mermaid_type_radar">Radar diagrammasy</string>
     <string name="media_mermaid_type_treemap">Agaç kartasy</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Faýlda gözle</string>
+    <string name="media_file_previous_match">Öňki gabat gelme</string>
+    <string name="media_file_next_match">Indiki gabat gelme</string>
+    <string name="media_file_match_counter">%2$d gabat gelmeden %1$d</string>
+    <string name="media_file_no_matches">Gabat gelme ýok</string>
+    <string name="media_file_searching">Gözlenýär…</string>
 </resources>

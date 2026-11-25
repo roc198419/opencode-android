@@ -192,4 +192,10 @@
     <string name="media_mermaid_type_radar">レーダーチャート</string>
     <string name="media_mermaid_type_treemap">ツリーマップ</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">ファイル内を検索</string>
+    <string name="media_file_previous_match">前の一致</string>
+    <string name="media_file_next_match">次の一致</string>
+    <string name="media_file_match_counter">一致 %1$d / %2$d</string>
+    <string name="media_file_no_matches">一致なし</string>
+    <string name="media_file_searching">検索中…</string>
 </resources>

@@ -194,4 +194,10 @@
     <string name="media_mermaid_type_radar">Graphique radar</string>
     <string name="media_mermaid_type_treemap">Carte arborescente</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Rechercher dans le fichier</string>
+    <string name="media_file_previous_match">Résultat précédent</string>
+    <string name="media_file_next_match">Résultat suivant</string>
+    <string name="media_file_match_counter">Résultat %1$d sur %2$d</string>
+    <string name="media_file_no_matches">Aucun résultat</string>
+    <string name="media_file_searching">Recherche…</string>
 </resources>

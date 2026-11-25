@@ -44,6 +44,11 @@ class AgentTextDocument private constructor(
         return start until maxOf(start, end)
     }
 
+    fun lineIndex(offset: Int): Int {
+        val found = lineStarts.binarySearch(offset.coerceIn(0, text.length))
+        return if (found >= 0) found else (-found - 2).coerceAtLeast(0)
+    }
+
     /** Whether display line [index] belongs to the focused line (lazy view). */
     fun isFocused(index: Int): Boolean {
         if (!usesLazyTextView) return index + 1 == focusLine

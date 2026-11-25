@@ -58,6 +58,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsIgnoringVisibility
@@ -260,6 +261,7 @@ class FullscreenViewerFeature(
         val drawing: ImageDrawingFeature.State? = null,
         /** Add to Prompt landed: the viewer goes with the marked-up image to its thumbnail. */
         val handOff: DrawingHandOff? = null,
+        val fileSearch: AgentFileSearchFeature.State? = null,
     ) {
         val selectedPage: TranscriptImagePreview.Page?
             get() = filePath.lastOrNull() ?: preview.pages.firstOrNull { it.id == selectedID } ?: preview.pages.firstOrNull()
@@ -286,6 +288,9 @@ class FullscreenViewerFeature(
         data object BackTapped : Action
         data object SourceTapped : Action
         data object WrapTapped : Action
+        data class SearchTapped(val document: AgentTextDocument) : Action
+        data class SearchDocumentChanged(val document: AgentTextDocument?) : Action
+        data class FileSearch(val action: PresentationAction<AgentFileSearchFeature.Action>) : Action
         data class ExternalOpenTapped(val file: File) : Action
         data class FileImageLoaded(val file: AgentFileDestination, val image: Bitmap) : Action
         data object RemoveTapped : Action
@@ -306,7 +311,7 @@ class FullscreenViewerFeature(
     private object ExportSlot
     private object DrawingSlot
 
-    private val body: Reducer<State, Action> = ifLet(
+    private val drawingBody: Reducer<State, Action> = ifLet(
         id = DrawingSlot,
         parent = Reducer(::reduceViewer),
         state = { it.drawing },
@@ -314,6 +319,13 @@ class FullscreenViewerFeature(
         action = { (it as? Action.Drawing)?.action },
         embed = { Action.Drawing(it) },
         child = ImageDrawingFeature(addDrawing ?: { null }),
+    )
+
+    private val body: Reducer<State, Action> = ifLet(
+        id = "file-search", parent = drawingBody,
+        state = { it.fileSearch }, setState = { state, search -> state.copy(fileSearch = search) },
+        action = { (it as? Action.FileSearch)?.action }, embed = { Action.FileSearch(it) },
+        child = AgentFileSearchFeature(), childID = { it.document },
     )
 
     override fun reduce(state: State, action: Action): Reduced<State, Action> = body.reduce(state, action)
@@ -324,7 +336,7 @@ class FullscreenViewerFeature(
         is Action.PageSelected -> if (!state.isDismissed && !state.isDiscarded && state.filePath.isEmpty() &&
             state.selectedID != action.id && state.preview.pages.any { it.id == action.id }
         ) {
-            val next = loadSelection(state.copy(selectedID = action.id))
+            val next = loadSelection(state.copy(selectedID = action.id, fileSearch = null))
             Reduced(next.state, Effect.merge(Effect.cancel(listOf(ExportSlot, PageLoadID(state.selectedID))), next.effect))
         } else Reduced(state)
 
@@ -333,11 +345,12 @@ class FullscreenViewerFeature(
             if (gallery != null && gallery.pages.any { it.id == gallery.id } && gallery.pages.all { gallery.pagesThrough(it) }) {
                 val back = DocumentReturn(state.preview, state.selectedID, state.filePath, state.isShowingControls)
                 val next = loadSelection(state.copy(preview = gallery, selectedID = gallery.id, filePath = emptyList(),
-                    coveredDocument = back, noAppOpens = false, shareError = null, isShowingControls = true))
+                    coveredDocument = back, noAppOpens = false, shareError = null, isShowingControls = true, fileSearch = null))
                 Reduced(next.state, Effect.merge(Effect.cancel(ExportSlot), next.effect))
             } else navigate(state, state.filePath + TranscriptImagePreview.Page(action.file))
         } else Reduced(state)
         Action.BackTapped -> when {
+            state.fileSearch != null -> Reduced(state.copy(fileSearch = null))
             state.filePath.isNotEmpty() -> navigate(state, state.filePath.dropLast(1))
             state.coveredDocument != null -> {
                 val back = state.coveredDocument
@@ -349,8 +362,13 @@ class FullscreenViewerFeature(
         }
         Action.SourceTapped -> {
             val page = state.selectedPage
-            if (page?.file == null) Reduced(state) else Reduced(state.withSelectedFile(page.copy(showsSource = !page.showsSource)))
+            if (page?.file == null) Reduced(state) else Reduced(state.copy(fileSearch = null).withSelectedFile(page.copy(showsSource = state.fileSearch == null && !page.showsSource)))
         }
+        is Action.SearchTapped -> if (state.selectedPage?.file == null || state.isDismissed || state.fileSearch != null) Reduced(state)
+            else Reduced(state.copy(fileSearch = AgentFileSearchFeature.State(action.document), isShowingControls = true))
+        is Action.SearchDocumentChanged -> if (state.fileSearch != null && state.fileSearch.document !== action.document)
+            Reduced(state.copy(fileSearch = null)) else Reduced(state)
+        is Action.FileSearch -> Reduced(state)
         Action.WrapTapped -> {
             val wraps = shared(SharedKeys.fileViewerWrapsLines)
             wraps.set(!wraps.value)
@@ -407,7 +425,7 @@ class FullscreenViewerFeature(
 
         Action.ImageTapped -> Reduced(state.copy(isShowingControls = !state.isShowingControls))
 
-        Action.CloseTapped -> Reduced(state.copy(isDismissed = true, drawing = null), Effect.cancel(listOf(ExportSlot, PageLoadID(state.selectedID))))
+        Action.CloseTapped -> Reduced(state.copy(isDismissed = true, drawing = null, fileSearch = null), Effect.cancel(listOf(ExportSlot, PageLoadID(state.selectedID))))
 
         Action.SaveTapped -> {
             val page = state.selectedPage
@@ -523,7 +541,7 @@ class FullscreenViewerFeature(
 
     private fun navigate(state: State, path: List<TranscriptImagePreview.Page>): Reduced<State, Action> = Reduced(
         state.copy(filePath = path, selectedID = path.lastOrNull()?.id ?: state.preview.id,
-            drawing = null, noAppOpens = false, shareError = null),
+            drawing = null, noAppOpens = false, shareError = null, fileSearch = null),
         Effect.cancel(ExportSlot),
     )
 
@@ -721,10 +739,19 @@ fun FullscreenViewer(
     val file = rememberSelectedFile(state)
     val ready = file?.phase as? AgentFileViewerModel.Phase.Ready
     val image = (ready?.content as? AgentFileViewerModel.Content.Image)?.image
+    val searchDocument = when (val content = ready?.content) {
+        is AgentFileViewerModel.Content.Text -> content.document
+        is AgentFileViewerModel.Content.Markdown -> content.document
+        else -> null
+    }
+    LaunchedEffect(file, searchDocument, state.fileSearch?.document) {
+        val search = state.fileSearch
+        if (search != null && search.document !== searchDocument) store.send(Action.SearchDocumentChanged(searchDocument))
+    }
     LaunchedEffect(file, image) {
         if (image != null && page.file != null) store.send(Action.FileImageLoaded(page.file, image))
     }
-    MediaBackHandler(enabled = !root && state.drawing == null) { store.send(Action.BackTapped) }
+    MediaBackHandler(enabled = (!root || state.fileSearch != null) && state.drawing == null) { store.send(Action.BackTapped) }
 
     // The status bar and the image on screen, before the flight starts; again once a `media:<hash>`
     // page's image arrives.
@@ -820,12 +847,19 @@ fun FullscreenViewer(
                     })
                 movie != null -> visualMovie()
                 image != null -> ViewerImage(page, image, viewer, selected = true, flight = root, handingOff = state.handOff != null, onTap = { store.send(Action.ImageTapped) })
-                file != null -> Box(
-                    Modifier.fillMaxSize().padding(top = safe.asPaddingValues().calculateTopPadding() + OpenCodeTopBarDefaults.height),
-                    contentAlignment = Alignment.Center,
+                file != null -> Column(
+                    Modifier.fillMaxSize().padding(top = safe.asPaddingValues().calculateTopPadding() + OpenCodeTopBarDefaults.height).imePadding(),
                 ) {
-                    AgentFilePage(file, wrapsLines, page.showsSource, state.noAppOpens, background == Color.Transparent, pip,
-                        onOpen = { store.send(Action.OpenFile(it, documentGallery(it))) }, onExternalOpen = { store.send(Action.ExternalOpenTapped(it)) })
+                    state.fileSearch?.let { search ->
+                        AgentFileSearchBar(search,
+                            send = { store.send(Action.FileSearch(PresentationAction.Presented(it))) },
+                            onClose = { store.send(Action.FileSearch(PresentationAction.Dismiss)) })
+                    }
+                    Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                        AgentFilePage(file, wrapsLines, page.showsSource, state.noAppOpens, background == Color.Transparent, pip,
+                            onOpen = { store.send(Action.OpenFile(it, documentGallery(it))) }, onExternalOpen = { store.send(Action.ExternalOpenTapped(it)) },
+                            search = state.fileSearch)
+                    }
                 }
                 else -> Unit
             }
@@ -956,11 +990,11 @@ private fun ViewerActions(
     val markdown = content is AgentFileViewerModel.Content.Markdown && LocalAgentFileMarkdown.current != null
     if (markdown) {
         IconButton(onClick = { send(Action.SourceTapped) }, modifier = Modifier.testTag("agent-file-source-toggle")) {
-            OpenCodeIcon(if (page.showsSource) "doc.richtext" else "chevron.left.forwardslash.chevron.right",
-                contentDescription = if (page.showsSource) stringResource(R.string.media_file_show_preview_description) else stringResource(R.string.media_file_show_source_description))
+            OpenCodeIcon(if (page.showsSource || state.fileSearch != null) "doc.richtext" else "chevron.left.forwardslash.chevron.right",
+                contentDescription = if (page.showsSource || state.fileSearch != null) stringResource(R.string.media_file_show_preview_description) else stringResource(R.string.media_file_show_source_description))
         }
     }
-    if (content is AgentFileViewerModel.Content.Text || (content is AgentFileViewerModel.Content.Markdown && (!markdown || page.showsSource))) {
+    if (content is AgentFileViewerModel.Content.Text || (content is AgentFileViewerModel.Content.Markdown && (!markdown || page.showsSource || state.fileSearch != null))) {
         IconButton(onClick = { send(Action.WrapTapped) }) {
             OpenCodeIcon(if (wrapsLines) "arrow.left.and.right.text.vertical" else "text.word.spacing",
                 contentDescription = if (wrapsLines) stringResource(R.string.media_file_unwrap_lines_description) else stringResource(R.string.media_file_wrap_lines_description))
@@ -979,6 +1013,15 @@ private fun ViewerActions(
     if (file == null && !page.isVideo) {
         OpenCodeIconButton(SFSymbol.SquareAndArrowDown, stringResource(R.string.media_viewer_save_to_photos_description), { send(Action.SaveTapped) }, Modifier.testTag("image-gallery-save"),
             style = OpenCodeIconButtonStyle.Standard, enabled = !state.isSaving && page.image != null)
+    }
+    val document = when (content) {
+        is AgentFileViewerModel.Content.Text -> content.document
+        is AgentFileViewerModel.Content.Markdown -> content.document
+        else -> null
+    }
+    if (document != null) {
+        OpenCodeIconButton(SFSymbol.Magnifyingglass, stringResource(R.string.media_file_find), { send(Action.SearchTapped(document)) },
+            Modifier.testTag("agent-file-search"), style = OpenCodeIconButtonStyle.Standard)
     }
     val progress = file?.shareProgress
     if (progress != null) {

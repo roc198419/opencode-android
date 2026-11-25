@@ -21,21 +21,32 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLayoutResult
 import ai.opencode.core.ui.OpenCodeFonts
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.math.max
+import kotlin.math.roundToInt
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 
 /** The `path:42` line. */
 private val FocusLineBackground = Color(red = 1f, green = 0.8f, blue = 0f, alpha = 0.22f)
@@ -55,11 +66,14 @@ private val LazyCodeStyle: TextStyle = OpenCodeTextStyles.footnote.copy(fontFami
  * 42. Only the lines on screen lay out.
  */
 @Composable
-fun AgentCodeView(document: AgentTextDocument, wrapsLines: Boolean, modifier: Modifier = Modifier) {
+fun AgentCodeView(document: AgentTextDocument, wrapsLines: Boolean, modifier: Modifier = Modifier, search: AgentFileSearchFeature.State? = null) {
     val numbered = !document.usesLazyTextView
     val style = if (numbered) NumberedCodeStyle else LazyCodeStyle
     val palette = SyntaxHighlighter.Palette.current
     val colors = OpenCodeTheme.colors
+    val scheme = MaterialTheme.colorScheme
+    val matchStyle = SpanStyle(background = scheme.tertiaryContainer, color = scheme.onTertiaryContainer)
+    val selectedStyle = SpanStyle(background = scheme.primary, color = scheme.onPrimary)
     val textStyle = style.copy(color = colors.text)
     val measurer = rememberTextMeasurer()
     val density = LocalDensity.current
@@ -92,6 +106,24 @@ fun AgentCodeView(document: AgentTextDocument, wrapsLines: Boolean, modifier: Mo
         val unwrappedWidth = (gutterWidth + gutterSpacing + charWidth * (longestLine + 1) + horizontalPadding).coerceIn(maxWidth, MaxUnwrappedWidth)
         val contentWidth = if (wrapsLines) maxWidth else unwrappedWidth
         val scroll = rememberScrollState()
+        val selected = search?.selectedRange
+        val selectedLine = selected?.let { document.lineIndex(it.first) }
+        var targetLayout by remember(document, selectedLine, wrapsLines, maxWidth, density) {
+            mutableStateOf<TextLayoutResult?>(null)
+        }
+        LaunchedEffect(document, search?.matches, search?.selectionRevision, wrapsLines, viewportHeightPx) {
+            if (selected == null || selectedLine == null) return@LaunchedEffect
+            listState.scrollToItem(selectedLine)
+            val layout = snapshotFlow { targetLayout }.filterNotNull().first()
+            if (layout.layoutInput.text.isEmpty()) return@LaunchedEffect
+            val column = (selected.first - document.lineRange(selectedLine).first).coerceIn(0, layout.layoutInput.text.lastIndex)
+            val bounds = layout.getBoundingBox(column)
+            listState.scrollToItem(selectedLine, (bounds.top - viewportHeightPx / 3).roundToInt().coerceAtLeast(0))
+            if (!wrapsLines) {
+                val start = with(density) { (TranscriptMetrics.standard + gutterWidth + gutterSpacing).toPx() } + bounds.left
+                scroll.scrollTo((start - with(density) { maxWidth.toPx() } / 3).roundToInt().coerceAtLeast(0))
+            }
+        }
         SelectionContainer(
             if (wrapsLines) Modifier.fillMaxSize() else Modifier.fillMaxSize().horizontalScroll(scroll),
         ) {
@@ -123,14 +155,29 @@ fun AgentCodeView(document: AgentTextDocument, wrapsLines: Boolean, modifier: Mo
                             Spacer(Modifier.width(gutterSpacing))
                         }
                         Text(
-                            text = document.line(index, palette),
+                            text = highlightFileMatches(document.line(index, palette), document.lineRange(index).first, search, matchStyle, selectedStyle),
                             style = textStyle,
                             softWrap = wrapsLines,
                             modifier = Modifier.weight(1f).alignByBaseline(),
+                            onTextLayout = { if (index == selectedLine) targetLayout = it },
                         )
                     }
                 }
             }
         }
     }
+}
+
+internal fun highlightFileMatches(line: AnnotatedString, offset: Int, search: AgentFileSearchFeature.State?, matchStyle: SpanStyle, selectedStyle: SpanStyle): AnnotatedString {
+    val matches = search?.matches ?: return line
+    val result = AnnotatedString.Builder(line)
+    var index = matches.firstEndingAfter(offset)
+    while (index < matches.count) {
+        val range = matches.range(index)
+        if (range.first >= offset + line.length) break
+        result.addStyle(if (index == search.selectedIndex) selectedStyle else matchStyle,
+            maxOf(0, range.first - offset), minOf(line.length, range.last + 1 - offset))
+        index++
+    }
+    return result.toAnnotatedString()
 }

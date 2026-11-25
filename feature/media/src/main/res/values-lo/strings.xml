@@ -192,4 +192,10 @@
     <string name="media_mermaid_type_radar">ແຜນພູມເຣດາ</string>
     <string name="media_mermaid_type_treemap">ແຜນພູມຕົ້ນໄມ້</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">ຄົ້ນຫາໃນໄຟລ໌</string>
+    <string name="media_file_previous_match">ຜົນກົງກັນກ່ອນໜ້າ</string>
+    <string name="media_file_next_match">ຜົນກົງກັນຖັດໄປ</string>
+    <string name="media_file_match_counter">ຜົນກົງກັນ %1$d ຈາກ %2$d</string>
+    <string name="media_file_no_matches">ບໍ່ພົບຜົນກົງກັນ</string>
+    <string name="media_file_searching">ກຳລັງຄົ້ນຫາ…</string>
 </resources>

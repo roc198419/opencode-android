@@ -195,4 +195,10 @@
     <string name="media_mermaid_type_radar">Radaro diagrama</string>
     <string name="media_mermaid_type_treemap">Medžio žemėlapis</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Ieškoti faile</string>
+    <string name="media_file_previous_match">Ankstesnis atitikmuo</string>
+    <string name="media_file_next_match">Kitas atitikmuo</string>
+    <string name="media_file_match_counter">Atitikmuo %1$d iš %2$d</string>
+    <string name="media_file_no_matches">Atitikmenų nėra</string>
+    <string name="media_file_searching">Ieškoma…</string>
 </resources>

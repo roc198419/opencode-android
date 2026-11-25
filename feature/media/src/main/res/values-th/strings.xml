@@ -192,4 +192,10 @@
     <string name="media_mermaid_type_radar">แผนภูมิเรดาร์</string>
     <string name="media_mermaid_type_treemap">แผนภูมิทรีแมป</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">ค้นหาในไฟล์</string>
+    <string name="media_file_previous_match">รายการที่ตรงกันก่อนหน้า</string>
+    <string name="media_file_next_match">รายการที่ตรงกันถัดไป</string>
+    <string name="media_file_match_counter">รายการที่ตรงกัน %1$d จาก %2$d</string>
+    <string name="media_file_no_matches">ไม่มีรายการที่ตรงกัน</string>
+    <string name="media_file_searching">กำลังค้นหา…</string>
 </resources>

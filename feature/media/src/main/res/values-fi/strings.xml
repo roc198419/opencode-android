@@ -193,4 +193,10 @@
     <string name="media_mermaid_type_radar">Tutkakaavio</string>
     <string name="media_mermaid_type_treemap">Puukartta</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Etsi tiedostosta</string>
+    <string name="media_file_previous_match">Edellinen osuma</string>
+    <string name="media_file_next_match">Seuraava osuma</string>
+    <string name="media_file_match_counter">Osuma %1$d/%2$d</string>
+    <string name="media_file_no_matches">Ei osumia</string>
+    <string name="media_file_searching">Etsitään…</string>
 </resources>

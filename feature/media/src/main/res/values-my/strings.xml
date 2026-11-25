@@ -192,4 +192,10 @@
     <string name="media_mermaid_type_radar">ရေဒါ ဇယား</string>
     <string name="media_mermaid_type_treemap">အကွက်ခွဲ ဇယား</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">ဖိုင်အတွင်း ရှာရန်</string>
+    <string name="media_file_previous_match">ယခင် ကိုက်ညီမှု</string>
+    <string name="media_file_next_match">နောက် ကိုက်ညီမှု</string>
+    <string name="media_file_match_counter">ကိုက်ညီမှု %2$d ခုအနက် %1$d</string>
+    <string name="media_file_no_matches">ကိုက်ညီမှု မရှိပါ</string>
+    <string name="media_file_searching">ရှာဖွေနေသည်…</string>
 </resources>

@@ -8,6 +8,8 @@ import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.live.MediaReferenceFetch
 import ai.opencode.server.model.OpenCodeImageAttachment
 import android.graphics.Bitmap
+import androidx.compose.ui.semantics.getOrNull
+import androidx.compose.foundation.background
 import android.graphics.Color
 import kotlinx.coroutines.async
 import kotlinx.coroutines.test.runTest
@@ -36,6 +38,123 @@ import java.util.concurrent.atomic.AtomicBoolean
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class MediaReferenceTests {
     @get:Rule val isolation = TestIsolationRule()
+
+    @Test fun fileSearchClosesBeforeGoingBackAndCancelsWhenTheFileChanges() = runTest {
+        val document = AgentTextDocument.plainText("hello file")
+        val file = AgentFileDestination(ai.opencode.server.model.AgentFileReference("/project/Test.java"), "/project")
+        val page = TranscriptImagePreview.Page(file)
+        val initial = FullscreenViewerFeature.State(TranscriptImagePreview(page.id, listOf(page)))
+        val pending = ArrayDeque<Runnable>()
+        val background = object : kotlinx.coroutines.CoroutineDispatcher() {
+            override fun dispatch(context: kotlin.coroutines.CoroutineContext, block: Runnable) { pending.addLast(block) }
+        }
+        val store = TestStore(initial, FullscreenViewerFeature(), this) { this[AgentFileSearchContext] = background }
+        store.send(FullscreenViewerFeature.Action.SearchTapped(document)) { it.copy(fileSearch = AgentFileSearchFeature.State(document)) }
+        store.send(FullscreenViewerFeature.Action.FileSearch(ai.opencode.core.store.PresentationAction.Presented(AgentFileSearchFeature.Action.QueryChanged("file")))) {
+            it.copy(fileSearch = it.fileSearch!!.copy(query = "file", generation = 1, searching = true))
+        }
+        store.send(FullscreenViewerFeature.Action.BackTapped) { it.copy(fileSearch = null) }
+        while (pending.isNotEmpty()) pending.removeFirst().run()
+        store.send(FullscreenViewerFeature.Action.SearchTapped(document)) { it.copy(fileSearch = AgentFileSearchFeature.State(document)) }
+        store.send(FullscreenViewerFeature.Action.SearchDocumentChanged(document))
+        store.send(FullscreenViewerFeature.Action.SearchDocumentChanged(AgentTextDocument.plainText("updated"))) { it.copy(fileSearch = null) }
+        store.send(FullscreenViewerFeature.Action.SearchTapped(document)) { it.copy(fileSearch = AgentFileSearchFeature.State(document)) }
+        store.send(FullscreenViewerFeature.Action.SourceTapped) { it.copy(fileSearch = null) }
+        store.send(FullscreenViewerFeature.Action.SearchTapped(document)) { it.copy(fileSearch = AgentFileSearchFeature.State(document)) }
+        store.send(FullscreenViewerFeature.Action.FileSearch(ai.opencode.core.store.PresentationAction.Dismiss)) { it.copy(fileSearch = null) }
+        store.send(FullscreenViewerFeature.Action.SearchTapped(document)) { it.copy(fileSearch = AgentFileSearchFeature.State(document)) }
+        val next = AgentFileDestination(ai.opencode.server.model.AgentFileReference("/project/Next.java"), "/project")
+        store.send(FullscreenViewerFeature.Action.OpenFile(next)) {
+            it.copy(fileSearch = null, filePath = listOf(TranscriptImagePreview.Page(next)), selectedID = TranscriptImagePreview.Page(next).id)
+        }
+        store.send(FullscreenViewerFeature.Action.SearchTapped(document)) { it.copy(fileSearch = AgentFileSearchFeature.State(document)) }
+        store.send(FullscreenViewerFeature.Action.CloseTapped) { it.copy(fileSearch = null, isDismissed = true) }
+        store.finish()
+    }
+
+    @Test
+    @Config(sdk = [35], qualifiers = "en-rUS-w360dp-h800dp-xxhdpi")
+    fun fileSearchKeepsWrappedAndHorizontalMatchesVisibleAtLargeFontSizes() {
+        val frameDelay = org.robolectric.shadows.ShadowChoreographer.getFrameDelay()
+        val paused = org.robolectric.shadows.ShadowChoreographer.isPaused()
+        org.robolectric.shadows.ShadowChoreographer.setPaused(true)
+        org.robolectric.shadows.ShadowChoreographer.setFrameDelay(java.time.Duration.ofMillis(16))
+        val source = (0 until 220).joinToString("\n") { index -> when (index) {
+            80 -> "prefix " + "x".repeat(300) + " Needle first"
+            150 -> "Needle second " + "y".repeat(100) + " Needle third"
+            else -> "line $index"
+        } }
+        val document = AgentTextDocument.plainText(source)
+        val matches = kotlinx.coroutines.runBlocking { AgentFileSearchMatches.find(document.text, "needle") }
+        fun pump() = repeat(12) {
+            androidx.compose.runtime.snapshots.Snapshot.sendApplyNotifications()
+            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(50))
+        }
+        fun root(view: android.view.View): androidx.compose.ui.node.RootForTest? {
+            if (view is androidx.compose.ui.node.RootForTest) return view
+            if (view is android.view.ViewGroup) for (index in 0 until view.childCount) root(view.getChildAt(index))?.let { return it }
+            return null
+        }
+        fun nodes(node: androidx.compose.ui.semantics.SemanticsNode): List<androidx.compose.ui.semantics.SemanticsNode> = listOf(node) + node.children.flatMap(::nodes)
+        try {
+            for (font in listOf(1f, 2f)) for (wraps in listOf(false, true)) {
+                val state = androidx.compose.runtime.mutableStateOf(AgentFileSearchFeature.State(document, "needle", matches, 0, selectionRevision = 1))
+                val controller = org.robolectric.Robolectric.buildActivity(androidx.activity.ComponentActivity::class.java).setup()
+                val view = androidx.compose.ui.platform.ComposeView(controller.get())
+                controller.get().setContentView(view)
+                try {
+                    view.setContent {
+                        ai.opencode.core.ui.OpenCodeAppTheme {
+                            androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalDensity provides androidx.compose.ui.unit.Density(3f, font)) {
+                                androidx.compose.foundation.layout.Column(androidx.compose.ui.Modifier.background(androidx.compose.material3.MaterialTheme.colorScheme.background)) {
+                                    AgentFileSearchBar(state.value, { state.value = AgentFileSearchFeature().reduce(state.value, it).state }, {})
+                                    AgentCodeView(document, wraps, search = state.value)
+                                }
+                            }
+                        }
+                    }
+                    pump()
+                    view.measure(android.view.View.MeasureSpec.makeMeasureSpec(1080, android.view.View.MeasureSpec.EXACTLY), android.view.View.MeasureSpec.makeMeasureSpec(2400, android.view.View.MeasureSpec.EXACTLY))
+                    view.layout(0, 0, 1080, 2400)
+                    pump()
+                    repeat(4) { step ->
+                        requireNotNull(root(view)).measureAndLayoutForTest()
+                        pump()
+                        val current = nodes(requireNotNull(root(view)).semanticsOwner.unmergedRootSemanticsNode)
+                        val range = state.value.selectedRange!!
+                        val line = document.lineRange(document.lineIndex(range.first))
+                        val text = document.text.substring(line)
+                        val code = current.first { node -> node.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.Text)?.any { it.text == text } == true }
+                        val layouts = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
+                        assertTrue(requireNotNull(code.config.getOrNull(androidx.compose.ui.semantics.SemanticsActions.GetTextLayoutResult)?.action).invoke(layouts))
+                        val box = layouts.single().getBoundingBox(range.first - line.first).translate(code.positionInRoot)
+                        assertTrue("Match is horizontally visible (font=$font, wraps=$wraps, step=$step): $box", box.left >= 0 && box.right <= 1080)
+                        assertTrue("Match is vertically visible (font=$font, wraps=$wraps, step=$step): $box", box.top > 250 && box.bottom < 2400)
+                        if (step == 0) System.getProperty("opencode.fileSearchScreenshots")?.let { directory ->
+                            val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+                            view.draw(android.graphics.Canvas(bitmap))
+                            val file = File(directory, "file-search-$font-$wraps.png")
+                            file.parentFile?.mkdirs()
+                            file.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+                            bitmap.recycle()
+                        }
+                        val next = current.first { it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.TestTag) == "agent-file-search-next" }
+                        assertTrue(next.touchBoundsInRoot.width >= 144 && next.touchBoundsInRoot.height >= 144)
+                        assertTrue(requireNotNull(next.config.getOrNull(androidx.compose.ui.semantics.SemanticsActions.OnClick)?.action).invoke())
+                        pump()
+                    }
+                    assertEquals(1, state.value.selectedIndex)
+                } finally {
+                    view.disposeComposition()
+                    controller.pause().stop().destroy()
+                    pump()
+                }
+            }
+        } finally {
+            org.robolectric.shadows.ShadowChoreographer.setFrameDelay(frameDelay)
+            org.robolectric.shadows.ShadowChoreographer.setPaused(paused)
+        }
+    }
 
     private val hashA = "a1".repeat(32)
     private val hashB = "b2".repeat(32)

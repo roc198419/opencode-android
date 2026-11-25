@@ -193,4 +193,10 @@
     <string name="media_mermaid_type_radar">Διάγραμμα ραντάρ</string>
     <string name="media_mermaid_type_treemap">Δενδροχάρτης</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Εύρεση στο αρχείο</string>
+    <string name="media_file_previous_match">Προηγούμενο αποτέλεσμα</string>
+    <string name="media_file_next_match">Επόμενο αποτέλεσμα</string>
+    <string name="media_file_match_counter">Αποτέλεσμα %1$d από %2$d</string>
+    <string name="media_file_no_matches">Δεν βρέθηκαν αποτελέσματα</string>
+    <string name="media_file_searching">Αναζήτηση…</string>
 </resources>

@@ -193,4 +193,10 @@
     <string name="media_mermaid_type_radar">Радар диаграмм</string>
     <string name="media_mermaid_type_treemap">Модон зураглал</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Файл дотроос хайх</string>
+    <string name="media_file_previous_match">Өмнөх тааралт</string>
+    <string name="media_file_next_match">Дараагийн тааралт</string>
+    <string name="media_file_match_counter">%2$d тааралтын %1$d</string>
+    <string name="media_file_no_matches">Тааралт алга</string>
+    <string name="media_file_searching">Хайж байна…</string>
 </resources>

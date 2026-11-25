@@ -194,4 +194,10 @@
     <string name="media_mermaid_type_radar">Gráfico de radar</string>
     <string name="media_mermaid_type_treemap">Mapa de árbol</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Buscar en el archivo</string>
+    <string name="media_file_previous_match">Coincidencia anterior</string>
+    <string name="media_file_next_match">Siguiente coincidencia</string>
+    <string name="media_file_match_counter">Coincidencia %1$d de %2$d</string>
+    <string name="media_file_no_matches">Sin coincidencias</string>
+    <string name="media_file_searching">Buscando…</string>
 </resources>

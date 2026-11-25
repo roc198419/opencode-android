@@ -193,4 +193,10 @@
     <string name="media_mermaid_type_radar">Radar grafiği</string>
     <string name="media_mermaid_type_treemap">Ağaç haritası</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Dosyada bul</string>
+    <string name="media_file_previous_match">Önceki eşleşme</string>
+    <string name="media_file_next_match">Sonraki eşleşme</string>
+    <string name="media_file_match_counter">Eşleşme %1$d / %2$d</string>
+    <string name="media_file_no_matches">Eşleşme yok</string>
+    <string name="media_file_searching">Aranıyor…</string>
 </resources>

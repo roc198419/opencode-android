@@ -43,6 +43,81 @@ import java.io.File
 class AgentFileLoadingTests {
     @get:Rule val isolation = TestIsolationRule()
 
+    @Test fun fileSearchMatchesLiteralTextWithoutLosingUnicodeOffsets() = runTest {
+        val text = "🦊Test test TEST [.*] 中文中文 aaaa"
+        val words = AgentFileSearchMatches.find(text, "test")
+        assertEquals(3, words.count)
+        assertEquals(listOf("Test", "test", "TEST"), (0 until words.count).map { text.substring(words.range(it)) })
+        assertEquals(2, words.range(0).first)
+        assertEquals(1, AgentFileSearchMatches.find(text, "[.*]").count)
+        assertEquals(2, AgentFileSearchMatches.find(text, "中文").count)
+        assertEquals(2, AgentFileSearchMatches.find(text, "aa").count)
+        assertEquals(0, AgentFileSearchMatches.find(text, "").count)
+        assertEquals(0, AgentFileSearchMatches.find(text, "missing").count)
+        assertEquals(1, AgentFileSearchMatches.find(" x ", " x ").count)
+    }
+
+    @Test fun fileSearchCoversTheWholeLazyDocumentAndPreservesSyntaxSpans() = runTest {
+        val source = "before\n" + "a ".repeat(90_000) + "Needle\nlast NEEDLE"
+        val document = AgentTextDocument.of(source, "large.txt", null)
+        val matches = AgentFileSearchMatches.find(document.text, "needle")
+        assertTrue(document.usesLazyTextView)
+        assertEquals(2, matches.count)
+        assertTrue(matches.range(0).first > AgentTextDocument.maxHighlightedCharacters)
+        for (index in 0 until matches.count) {
+            val line = document.lineIndex(matches.range(index).first)
+            assertTrue(document.lineRange(line).contains(matches.range(index).first))
+        }
+        val base = androidx.compose.ui.text.AnnotatedString("let test = test", listOf(
+            androidx.compose.ui.text.AnnotatedString.Range(androidx.compose.ui.text.SpanStyle(color = androidx.compose.ui.graphics.Color.Red), 0, 3)))
+        val found = AgentFileSearchMatches.find(base.text, "test")
+        val search = AgentFileSearchFeature.State(AgentTextDocument.plainText(base.text), "test", found, 1)
+        val normal = androidx.compose.ui.text.SpanStyle(background = androidx.compose.ui.graphics.Color.Yellow)
+        val active = androidx.compose.ui.text.SpanStyle(background = androidx.compose.ui.graphics.Color.Blue)
+        val highlighted = highlightFileMatches(base, 0, search, normal, active)
+        assertEquals(base.text, highlighted.text)
+        assertEquals(listOf(base.spanStyles.single(), androidx.compose.ui.text.AnnotatedString.Range(normal, 4, 8),
+            androidx.compose.ui.text.AnnotatedString.Range(active, 11, 15)), highlighted.spanStyles)
+        val clipped = highlightFileMatches(androidx.compose.ui.text.AnnotatedString("est"), 12, search, normal, active)
+        assertEquals(listOf(androidx.compose.ui.text.AnnotatedString.Range(active, 0, 3)), clipped.spanStyles)
+    }
+
+    @Test fun fileSearchSelectsTheFirstResultCyclesAndClearsStaleMatches() = runTest {
+        val document = AgentTextDocument.plainText("test first\ntest second")
+        val matches = AgentFileSearchMatches.find(document.text, "test")
+        val store = ai.opencode.core.store.TestStore(AgentFileSearchFeature.State(document), AgentFileSearchFeature(), this)
+        store.send(AgentFileSearchFeature.Action.QueryChanged("test")) { it.copy(query = "test", generation = 1, searching = true) }
+        var found: AgentFileSearchMatches? = null
+        store.receive({ action -> (action as? AgentFileSearchFeature.Action.Found)?.takeIf { it.generation == 1 }?.also { found = it.matches } != null }) {
+            it.copy(matches = found, selectedIndex = 0, searching = false, selectionRevision = 1)
+        }
+        assertEquals(0 until 4, store.state.selectedRange)
+        store.send(AgentFileSearchFeature.Action.Previous) { it.copy(selectedIndex = 1, selectionRevision = 2) }
+        store.send(AgentFileSearchFeature.Action.Next) { it.copy(selectedIndex = 0, selectionRevision = 3) }
+        store.send(AgentFileSearchFeature.Action.Next) { it.copy(selectedIndex = 1, selectionRevision = 4) }
+        store.send(AgentFileSearchFeature.Action.QueryChanged("test"))
+        store.send(AgentFileSearchFeature.Action.QueryChanged("")) { it.copy(query = "", matches = null, selectedIndex = -1, generation = 2) }
+        store.send(AgentFileSearchFeature.Action.Found(1, matches))
+        store.send(AgentFileSearchFeature.Action.Next)
+        store.send(AgentFileSearchFeature.Action.Previous)
+        store.send(AgentFileSearchFeature.Action.QueryChanged("none")) { it.copy(query = "none", generation = 3, searching = true) }
+        store.receive({ action -> (action as? AgentFileSearchFeature.Action.Found)?.takeIf { it.generation == 3 }?.also { found = it.matches } != null }) {
+            it.copy(matches = found, searching = false, selectionRevision = 5)
+        }
+        assertEquals(0, store.state.matches!!.count)
+        store.send(AgentFileSearchFeature.Action.Next)
+        store.finish()
+    }
+
+    @Test fun singleFileSearchMatchCanBeSelectedAgain() = runTest {
+        val document = AgentTextDocument.plainText("single")
+        val matches = AgentFileSearchMatches.find(document.text, "single")
+        val store = ai.opencode.core.store.TestStore(AgentFileSearchFeature.State(document, "single", matches, 0), AgentFileSearchFeature(), this)
+        store.send(AgentFileSearchFeature.Action.Next) { it.copy(selectionRevision = 1) }
+        store.send(AgentFileSearchFeature.Action.Previous) { it.copy(selectionRevision = 2) }
+        store.finish()
+    }
+
     private fun response(status: Int, headers: Map<String, String>, body: Long = 0): Response {
         val builder = Response.Builder()
             .request(Request.Builder().url("https://box/api/fs/read/a.mp4").build())

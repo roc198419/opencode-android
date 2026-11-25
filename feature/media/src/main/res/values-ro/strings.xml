@@ -194,4 +194,10 @@
     <string name="media_mermaid_type_radar">Diagramă radar</string>
     <string name="media_mermaid_type_treemap">Hartă arborescentă</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Caută în fișier</string>
+    <string name="media_file_previous_match">Potrivirea anterioară</string>
+    <string name="media_file_next_match">Potrivirea următoare</string>
+    <string name="media_file_match_counter">Potrivirea %1$d din %2$d</string>
+    <string name="media_file_no_matches">Nicio potrivire</string>
+    <string name="media_file_searching">Se caută…</string>
 </resources>

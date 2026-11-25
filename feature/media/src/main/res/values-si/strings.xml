@@ -193,4 +193,10 @@
     <string name="media_mermaid_type_radar">රේඩාර් ප්‍රස්තාරය</string>
     <string name="media_mermaid_type_treemap">රුක් සිතියම</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">ගොනුව තුළ සොයන්න</string>
+    <string name="media_file_previous_match">පෙර ගැළපීම</string>
+    <string name="media_file_next_match">ඊළඟ ගැළපීම</string>
+    <string name="media_file_match_counter">ගැළපීම් %2$d න් %1$d</string>
+    <string name="media_file_no_matches">ගැළපීම් නැත</string>
+    <string name="media_file_searching">සොයමින්…</string>
 </resources>

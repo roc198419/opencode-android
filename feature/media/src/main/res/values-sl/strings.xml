@@ -195,4 +195,10 @@
     <string name="media_mermaid_type_radar">Radarski grafikon</string>
     <string name="media_mermaid_type_treemap">Drevesni zemljevid</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Poišči v datoteki</string>
+    <string name="media_file_previous_match">Prejšnje ujemanje</string>
+    <string name="media_file_next_match">Naslednje ujemanje</string>
+    <string name="media_file_match_counter">Ujemanje %1$d od %2$d</string>
+    <string name="media_file_no_matches">Ni ujemanj</string>
+    <string name="media_file_searching">Iskanje…</string>
 </resources>

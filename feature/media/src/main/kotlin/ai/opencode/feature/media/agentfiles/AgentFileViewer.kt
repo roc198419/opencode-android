@@ -112,6 +112,7 @@ internal fun AgentFilePage(
     pip: AgentFilePictureInPicture?,
     onOpen: (AgentFileDestination) -> Unit,
     onExternalOpen: (java.io.File) -> Unit,
+    search: AgentFileSearchFeature.State? = null,
 ) {
     val reference = model.reference
     val markdown = LocalAgentFileMarkdown.current
@@ -141,10 +142,10 @@ internal fun AgentFilePage(
                     ExternalDocumentView(reference, noAppOpens, { onExternalOpen(content.file) }, Modifier.testTag("agent-file-quick-look"))
                 }
             }
-            is AgentFileViewerModel.Content.Text -> AgentCodeView(content.document, wrapsLines)
+            is AgentFileViewerModel.Content.Text -> AgentCodeView(content.document, wrapsLines, search = search?.takeIf { it.document === content.document })
             is AgentFileViewerModel.Content.Markdown -> {
-                if (showsSource || markdown == null) {
-                    AgentCodeView(content.document, wrapsLines)
+                if (showsSource || markdown == null || search != null) {
+                    AgentCodeView(content.document, wrapsLines, search = search?.takeIf { it.document === content.document })
                 } else {
                     val fileDirectory = model.fileDirectory
                     Box(

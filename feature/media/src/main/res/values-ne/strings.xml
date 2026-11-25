@@ -193,4 +193,10 @@
     <string name="media_mermaid_type_radar">रडार चार्ट</string>
     <string name="media_mermaid_type_treemap">ट्रीम्याप</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">फाइलमा खोज्नुहोस्</string>
+    <string name="media_file_previous_match">अघिल्लो मिलान</string>
+    <string name="media_file_next_match">अर्को मिलान</string>
+    <string name="media_file_match_counter">%2$d मध्ये %1$d मिलान</string>
+    <string name="media_file_no_matches">कुनै मिलान छैन</string>
+    <string name="media_file_searching">खोज्दै…</string>
 </resources>

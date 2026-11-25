@@ -193,4 +193,10 @@
     <string name="media_mermaid_type_radar">Grafik radar</string>
     <string name="media_mermaid_type_treemap">Hartë hierarkike</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Gjej në skedar</string>
+    <string name="media_file_previous_match">Përputhja e mëparshme</string>
+    <string name="media_file_next_match">Përputhja tjetër</string>
+    <string name="media_file_match_counter">Përputhja %1$d nga %2$d</string>
+    <string name="media_file_no_matches">Nuk ka përputhje</string>
+    <string name="media_file_searching">Duke kërkuar…</string>
 </resources>

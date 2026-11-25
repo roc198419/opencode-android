@@ -193,4 +193,10 @@
     <string name="media_mermaid_type_radar">Radardiagram</string>
     <string name="media_mermaid_type_treemap">Trädkarta</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Sök i fil</string>
+    <string name="media_file_previous_match">Föregående träff</string>
+    <string name="media_file_next_match">Nästa träff</string>
+    <string name="media_file_match_counter">Träff %1$d av %2$d</string>
+    <string name="media_file_no_matches">Inga träffar</string>
+    <string name="media_file_searching">Söker…</string>
 </resources>

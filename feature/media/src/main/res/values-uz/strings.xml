@@ -193,4 +193,10 @@
     <string name="media_mermaid_type_radar">Radar diagrammasi</string>
     <string name="media_mermaid_type_treemap">Daraxtsimon xarita</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Fayldan qidirish</string>
+    <string name="media_file_previous_match">Oldingi moslik</string>
+    <string name="media_file_next_match">Keyingi moslik</string>
+    <string name="media_file_match_counter">%2$d moslikdan %1$d</string>
+    <string name="media_file_no_matches">Moslik yo‘q</string>
+    <string name="media_file_searching">Qidirilmoqda…</string>
 </resources>

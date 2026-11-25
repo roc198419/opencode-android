@@ -195,4 +195,10 @@
     <string name="media_mermaid_type_radar">Wykres radarowy</string>
     <string name="media_mermaid_type_treemap">Mapa drzewa</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Znajdź w pliku</string>
+    <string name="media_file_previous_match">Poprzednie dopasowanie</string>
+    <string name="media_file_next_match">Następne dopasowanie</string>
+    <string name="media_file_match_counter">Dopasowanie %1$d z %2$d</string>
+    <string name="media_file_no_matches">Brak dopasowań</string>
+    <string name="media_file_searching">Wyszukiwanie…</string>
 </resources>

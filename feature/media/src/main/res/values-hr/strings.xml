@@ -194,4 +194,10 @@
     <string name="media_mermaid_type_radar">Radarski grafikon</string>
     <string name="media_mermaid_type_treemap">Karta stabla</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">Pronađi u datoteci</string>
+    <string name="media_file_previous_match">Prethodno podudaranje</string>
+    <string name="media_file_next_match">Sljedeće podudaranje</string>
+    <string name="media_file_match_counter">Podudaranje %1$d od %2$d</string>
+    <string name="media_file_no_matches">Nema podudaranja</string>
+    <string name="media_file_searching">Pretraživanje…</string>
 </resources>

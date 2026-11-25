@@ -192,4 +192,10 @@
     <string name="media_mermaid_type_radar">雷達圖</string>
     <string name="media_mermaid_type_treemap">矩形式樹狀圖</string>
     <string name="media_viewer_page_counter">%1$d / %2$d</string>
+    <string name="media_file_find">檔案內搜尋</string>
+    <string name="media_file_previous_match">上一個符合項目</string>
+    <string name="media_file_next_match">下一個符合項目</string>
+    <string name="media_file_match_counter">第 %1$d 項，共 %2$d 項</string>
+    <string name="media_file_no_matches">無符合項目</string>
+    <string name="media_file_searching">搜尋中…</string>
 </resources>
